@@ -33,8 +33,8 @@
 \usepackage{braket,physics,quantikz}
 
 % utilities
-\usepackage{xifthen, titlesec}
-\usepackage{etoolbox}
+\usepackage{xifthen, titlesec, setspace}
+\usepackage{etoolbox, datetime, lipsum}
 
 % misc (needs to be at the end)
 \usepackage{bookmark,hyperref}
@@ -196,6 +196,8 @@
 \newcommand{\Span}{\operatorname{span}}
 \newcommand{\Char}{\operatorname{char}}
 
+\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
+
 % ENVIRONMENTS
 
 % General Purpose Environments
@@ -213,7 +215,9 @@
 \newcommand{\labelref}[1]{\hyperref[#1]{#1}}
 
 % Document Control
-\pagestyle{fancy}
 \lhead{\thetitle}
 \rhead{\theauthor}
 \let\oldsection\section
+\newcommand{\header}[1]{\begin{center}
+    \Large\textbf{#1}
+\end{center}}

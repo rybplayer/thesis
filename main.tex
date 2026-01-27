@@ -1,12 +1,26 @@
 \documentclass[12pt]{article}
-\usepackage{ryblatex}
+\usepackage{styles/thesis}
 
-\title{Thesis}
-\author{Ryan Batubara}
+\newcommand{\titletext}{On the Universality of Comparability Grids for Measurement-Based Quantum Computation}
+\newcommand{\authortext}{Ryan Y. Batubara}
+
+\title{\titletext}
+\author{\authortext}
 \date{\today}
 
+\pagenumbering{roman}
 \begin{document}
 
-\maketitle
+\input{src/titlepage}
+
+\input{src/abstract}
+
+\newpage
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+
+\input{src/introduction}
 
 \end{document}
