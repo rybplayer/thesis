@@ -1,2 +1,7 @@
 .DS_Store
 *.synctex.gz
+books/*
+ComparabilityGrids/*
+examples/*
+papers/*
+notes/*

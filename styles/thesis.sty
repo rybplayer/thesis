@@ -1,60 +1,49 @@
+\ProvidesPackage{thesis}[2026/01/26 v1.0 Thesis style]
+
+% Encoding
 \usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry} 
 
-%% /Users/ryanbatubara/Library/texmf/tex/latex/ryblatex.sty
-%% \AddToHook{cmd/section/before}{\clearpage}
-
 %% IMPORTS %%
-\usepackage{amsmath,amsthm,amssymb}
-\usepackage{enumitem}
-\usepackage{graphicx}
-\usepackage{titling}
-\usepackage{nicefrac}
-\usepackage{fancyhdr}
-\usepackage{subcaption}
-\usepackage{imakeidx}
-\usepackage{tikz}
-\usepackage{esdiff}
-\usepackage{listings}
-\usepackage[many]{tcolorbox}
-\usepackage{stmaryrd}
-\usepackage{mdframed}
-\usepackage{complexity}
-\usepackage{booktabs}
-\usepackage{csquotes,tabularx}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{nicefrac}
+
+% document flow
+\usepackage{enumitem,titling,fancyhdr,imakeidx,csquotes,tabularx,booktabs,subcaption}
+
+% math
+\usepackage{amsmath,amsthm,amssymb,mathtools,esint,extarrows,stmaryrd,esdiff,faktor,cancel,nicefrac,ytableau,bold-extra}
+
+% tikz
+\usepackage{tikz,quiver,pgffor}
 \usetikzlibrary{cd}
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.markings}
-\usepackage{bold-extra}
-\usepackage{esint}
-\usepackage{extarrows}
-\usepackage{quiver}
-\usepackage{mathtools}
-\usepackage{xifthen}
-\usepackage{faktor}
-\usepackage{cancel}
-\usepackage{ytableau}
-% \usepackage{parskip}
 
-% LaTeX Control Packages
-\usepackage{pgffor}
+% graphics
+\usepackage{graphicx}
 
-% Move hyperref and bookmark to the end
-\usepackage{bookmark}
-\usepackage{hyperref}
+% algorithms
+\usepackage{algorithm,algpseudocode}
+\usepackage{complexity,listings}
 
-%% DOCUMENT CONTROLS
-\setlength{\headheight}{15pt}
-\setlength{\droptitle}{-3em}
-\setlength{\parindent}{0cm}
-\setlength{\parskip}{0em}
+% boxes
+\usepackage[many]{tcolorbox}
+\usepackage{mdframed}
 
-% Term and Example commands for indexing
-\newcommand{\term}[1]{{\color{purple}\textbf{#1}}\index[terms]{#1}}
+% quantum
+\usepackage{braket,physics,quantikz}
+
+% utilities
+\usepackage{xifthen, titlesec}
+\usepackage{etoolbox}
+
+% misc (needs to be at the end)
+\usepackage{bookmark,hyperref}
+
+% Term and example
+\newcommand{\term}[1]{{\color{black}\textbf{#1}}\index[terms]{#1}}
 \newcommand{\ex}[1]{{\color{blue}\textbf{#1}}\index[examples]{#1}}
+
+\newcommand{\ctitle}[1]{\centering\Large{}}
 
 % Section Notators
 \newtheoremstyle{mytheoremstyle}
@@ -85,7 +74,6 @@
 \newtheorem{exercise}{Exercise}
 
 % Auto-labeling for theorem-like environments
-\usepackage{etoolbox}
 \makeatletter
 \newcommand{\autolabel@hook}{%
   \addtocounter{theorem}{1}%
@@ -99,7 +87,7 @@
 \preto\example{\autolabel@hook}
 \preto\proposition{\autolabel@hook}
 \preto\lemma{\autolabel@hook}
-% \preto\corollary{\autolabel@hook}
+\preto\corollary{\autolabel@hook}
 \preto\remark{\autolabel@hook}
 \preto\conjecture{\autolabel@hook}
 \preto\notation{\autolabel@hook}
@@ -148,8 +136,10 @@
 }
 
 % MATH ESSENTIALS
+
 \let\oldemptyset\emptyset
 \let\emptyset\varnothing
+
 \renewcommand{\Mod}[1]{\ \mathrm{mod}\ #1}
 \newcommand{\divides}{\vert}
 \newcommand{\notdivides}{\nmid}
@@ -213,12 +203,6 @@
 \newenvironment{prove}{\emph{Proof. }}{\hfill\qedsymbol}
 \newenvironment{sprove}{\emph{Proof. }\sline}{\hfill\qedsymbol}
 
-% Homework Notators
-\newcommand{\Problem}{\bigskip\textbf{Problem. }}
-\newcommand{\Response}{\bigskip\textbf{Response. }}
-\newcommand{\Runtime}{\bigskip\emph{Runtime. }}
-\newcommand{\Correctness}{\bigskip\emph{Correctness. }}
-
 \hypersetup{
     % hidelinks,
     colorlinks=true,
@@ -233,10 +217,3 @@
 \lhead{\thetitle}
 \rhead{\theauthor}
 \let\oldsection\section
-
-% Lecture inclusion
-\newcommand{\includeLectures}[2][Lectures]{%
-  \foreach \i in {1,...,#2} {%
-    \input{#1/lec\i}%
-  }%
-}
