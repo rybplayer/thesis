@@ -1,9 +1,10 @@
 {
   "latex-workshop.latex.tools": [
     {
-      "name": "pdflatex",
-      "command": "pdflatex",
+      "name": "latexmk",
+      "command": "latexmk",
       "args": [
+        "-pdf",
         "-interaction=nonstopmode",
         "-synctex=1",
         "-file-line-error",
@@ -13,9 +14,16 @@
   ],
   "latex-workshop.latex.recipes": [
     {
-      "name": "pdflatex",
-      "tools": ["pdflatex"]
+      "name": "latexmk",
+      "tools": ["latexmk"]
     }
   ],
-  "latex-workshop.latex.recipe.default": "pdflatex",
+"latex-workshop.latex.recipe.default": "latexmk",
+"cSpell.words": [
+    "braket",
+    "Hadamard",
+    "kets",
+    "qubit",
+    "qubits"
+]
 }

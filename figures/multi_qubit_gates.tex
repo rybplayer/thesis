@@ -1,0 +1,46 @@
+\begin{figure}[H]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{c c c}
+
+\toprule
+\textbf{Name} & \textbf{Circuit} & \textbf{Bra-Ket} \\
+\midrule
+
+CNOT &
+$\begin{quantikz}
+\lstick{} & \ctrl{1} & \qw \\
+\lstick{} & \targ{} & \qw
+\end{quantikz}$ &
+$\ket{0}\bra{0}\otimes I + \ket{1}\bra{1}\otimes X$ \\
+
+CCNOT or Toffoli &
+$\begin{quantikz}
+\lstick{} & \ctrl{1} & \qw \\
+\lstick{} & \ctrl{1} & \qw \\
+\lstick{} & \targ{} & \qw
+\end{quantikz}$ &
+$\displaystyle \ket{11}\bra{11}\otimes X + \sum_{\substack{(a,b)\neq(1,1)\\a,b \in \{0,1\}}} \ket{ab}\bra{ab}\otimes I$ \\
+
+SWAP &
+$\begin{quantikz}
+\lstick{} & \swap{1} & \qw \\
+\lstick{} & \targX{} & \qw
+\end{quantikz}$ &
+$\displaystyle\sum_{i,j\in\{0,1\}} \ket{ij}\bra{ji}$ \\
+
+C-$Z$ &
+$\begin{quantikz}
+\lstick{} & \ctrl{1} & \qw \\
+\lstick{} & \ctrl{-1} & \qw
+\end{quantikz}$ &
+$\ket{0}\bra{0}\otimes I + \ket{1}\bra{1}\otimes Z$ \\
+
+\bottomrule
+
+\end{tabular}
+
+\caption{Common multi-qubit quantum gates}
+\label{fig:multi-qubit-gates}
+\end{figure}
+\renewcommand{\arraystretch}{1}

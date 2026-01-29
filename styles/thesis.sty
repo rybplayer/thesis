@@ -7,7 +7,7 @@
 %% IMPORTS %%
 
 % document flow
-\usepackage{enumitem,titling,fancyhdr,imakeidx,csquotes,tabularx,booktabs,subcaption}
+\usepackage{enumitem,titling,fancyhdr,imakeidx,csquotes,tabularx,booktabs,subcaption,biblatex}
 
 % math
 \usepackage{amsmath,amsthm,amssymb,mathtools,esint,extarrows,stmaryrd,esdiff,faktor,cancel,nicefrac,ytableau,bold-extra}
@@ -37,7 +37,8 @@
 \usepackage{etoolbox, datetime, lipsum}
 
 % misc (needs to be at the end)
-\usepackage{bookmark,hyperref}
+\usepackage{bookmark}
+\usepackage{hyperref}
 
 % Term and example
 \newcommand{\term}[1]{{\color{black}\textbf{#1}}\index[terms]{#1}}
@@ -65,13 +66,13 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{notation}[theorem]{Notation}
-\newtheorem*{corollary}{Corollary}
-\newtheorem*{remark*}{Remark}
+\newtheorem{corollary}{Corollary}
 \newtheorem{axiom}[theorem]{Axiom}
 \newtheorem*{claim}{Claim}
 \newtheorem{ques}{Question}
 \newtheorem{problem}{Problem}
 \newtheorem{exercise}{Exercise}
+\newtheorem{fact}[theorem]{Fact}
 
 % Auto-labeling for theorem-like environments
 \makeatletter
@@ -153,7 +154,7 @@
 \newcommand{\Choose}[2]{{}^{#1}C_{#2}}
 \newcommand{\Perm}[2]{{}^{#1}P_{#2}}
 \newcommand{\Id}{\text{Id}}
-\renewcommand{\Im}{\text{Im}\:}
+\newcommand{\im}{\text{im}}
 \newcommand{\Dom}{\operatorname{Dom}}
 \renewcommand\co{
   \mathchoice
@@ -196,6 +197,15 @@
 \newcommand{\Span}{\operatorname{span}}
 \newcommand{\Char}{\operatorname{char}}
 
+% QUANTUM
+\newcommand{\EPR}{\text{EPR}}
+\newcommand{\CNOT}{\text{CNOT}}
+\newcommand{\CCNOT}{\text{CCNOT}}
+\newcommand{\cl}{\text{C-}}
+\newcommand{\junk}{\text{junk}}
+\newcommand{\Poly}{\operatorname{poly}}
+\newcommand{\SU}{\operatorname{SU}}
+
 \newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
 
 % ENVIRONMENTS
@@ -209,6 +219,7 @@
     % hidelinks,
     colorlinks=true,
     linkcolor=black,
+    citecolor=black,
     urlcolor=blue,
     linktoc=all
 }
