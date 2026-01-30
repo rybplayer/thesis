@@ -1,0 +1,13 @@
+\section{Theoretical Approaches}
+
+Theorem \ref{thm:measure-for-universal} has potential to prove (or disprove) the universality of $\CGrid$ as a resource. However, it will be challenging to find a function $E$ that fails (satisfies Theorem \ref{thm:measure-for-universal}) for $\CGrid$ yet succeeds for $\Grid$. We formalize this attempt in the next subsection.
+
+\subsection*{LU-LC}
+
+\begin{definition}
+If $\ket{G_1} \geq_\LOCC \ket{G_2}$ and $\ket{G_2} \geq_\LOCC \ket{G_1}$ then $E(\ket{G_1}) = E(\ket{G_2})$ for any entanglement monotone $E$. An $E$ is called \term{entanglement monotone} if it does not increase, on average, for any $\LO$.
+\end{definition}
+
+\begin{definition}
+$n$-qubit states $\ket\psi$ and $\ket\phi$ are LU-equivalent if there is a local unitary $U = \otimes_{i=1}^n U_i$ such that $\ket\psi = U \ket\phi$. We say $\ket\psi =_\LU$
+\end{definition}

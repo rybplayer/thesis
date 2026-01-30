@@ -1,6 +1,11 @@
 \documentclass[12pt]{article}
 \usepackage{styles/thesis}
 
+\usepackage{background}
+\SetBgContents{DRAFT}
+\SetBgColor{black}
+\SetBgOpacity{0.1}
+
 \addbibresource{sources.bib}
 
 \newcommand{\titletext}{On the Universality of Comparability Grids for Measurement-Based Quantum Computation}
@@ -27,6 +32,9 @@
 
 \newpage
 \input{src/preliminaries}
+\input{src/algorithmic-approaches}
+\input{src/theoretical-approaches}
+\input{src/conclusion}
 
 \printbibliography
 

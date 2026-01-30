@@ -241,15 +241,15 @@ Vizing's theorem states that any graph with maximum degree $\Delta$ admits an ed
 
 \begin{fact}
 Define the Hadamard gadget as the following circuit:
-\[
+\begin{align}
 \begin{quantikz}
 \lstick{$\ket{\phi}$} & \ctrl{1} & \gate{H} & \meter{} \\
 \lstick{$\ket{+}$}    & \ctrl{-1} & \qw      & \qw
 \end{quantikz}
-\]
+\end{align}
 Commuting a Hadamard through the $\cl Z$ gives a $\CNOT$:
-\[
-\begin{aligned}
+\begin{align}
+\label{eq:push-gates-mbqc}
 \begin{quantikz}
 \lstick{$\ket{\phi}$} & \ctrl{1} & \gate{H} & \meter{} \\
 \lstick{$\ket{+}$}    & \ctrl{-1} & \qw      & \qw
@@ -264,11 +264,10 @@ Commuting a Hadamard through the $\cl Z$ gives a $\CNOT$:
 \lstick{$H\ket{\phi}$} & \targ{}  & \meter{} \\
 \lstick{$\ket{+}$}     & \ctrl{-1}& \qw
 \end{quantikz}
-\end{aligned}
-\]
+\end{align}
 Two $\CNOT$s cancel each other out and a $\CNOT$ has no effect on $\ket+$. Then
-\[
-\begin{aligned}
+\begin{align}
+\label{eq:add-cnot-mbqc}
 \begin{quantikz}
 \lstick{$H\ket{\phi}$} & \targ{}  & \meter{} \\
 \lstick{$\ket{+}$}     & \ctrl{-1}& \qw
@@ -278,11 +277,10 @@ Two $\CNOT$s cancel each other out and a $\CNOT$ has no effect on $\ket+$. Then
 \lstick{$H\ket{\phi}$} & \ctrl{1} & \targ{}  & \ctrl{1} & \ctrl{1} & \meter{} \\
 \lstick{$\ket{+}$}     & \targ{}  & \ctrl{-1}& \targ{}  & \targ{}  & \qw
 \end{quantikz}
-\end{aligned}
-\]
+\end{align}
 The first three $\CNOT$s are equivalent to a swap gate. Thus
-\[
-\begin{aligned}
+\begin{align}
+\label{eq:swap-mbqc}
 \begin{quantikz}
 \lstick{$H\ket{\phi}$} & \ctrl{1} & \targ{}  & \ctrl{1} & \targ{}  & \meter{} \\
 \lstick{$\ket{+}$}     & \targ{}  & \ctrl{-1}& \targ{}  & \ctrl{-1}& \qw
@@ -292,13 +290,12 @@ The first three $\CNOT$s are equivalent to a swap gate. Thus
 \lstick{$\ket{+}$}     & \targ{}  & \meter{} \\
 \lstick{$H\ket{\phi}$} & \ctrl{-1}& \qw
 \end{quantikz}
-\end{aligned}
-\]
+\end{align}
 The final state before measurement is
-\begin{align*}
+\begin{align}
     \CNOT (\ket+ \otimes H \ket\phi) 
     = \frac{1}{\sqrt2} \left( \ket0 \otimes H \ket\phi + \ket1 \otimes XH \ket\phi \right).
-\end{align*}
+\end{align}
 In other words, measuring in the $X$ basis ($\{\ket0, \ket1\}$) applies an $X$ to $\ket\phi$ if we measure a $\ket{1}$. This happens with only $0.5$ probability, hence the need for \term{adaptive measurements}. That is, measurements whose classical outcome can dynamically impact how other qubits are measured.
 \end{fact}
 
@@ -346,6 +343,18 @@ The previous statement is really more of a statement on the computational power 
 [\cite{MBQC-universal} Observation 2: CQ-universal implies QQ-universal]. A resource is CQ-universal if, using the MBQC protocol (namely, local operations and measurements), we obtain CQ-universality. Every CQ-universal resource can be made QQ-universal by allowing quantum inputs to be coupled into the resource state using the same coupling method as before, i.e. $\cl Z$ gates.
 \end{theorem}
 
+\subsection{The ZX-Calculus}
+
+\note{This section is meant to introduce the ZX-calculus, a graphical representation of quantum circuits that makes MBQC in particular far easier to analyze. It would be most helpful for proofs in later sections as well. That said, it requires significant diagramming which I have unfortunately not done (and am still quite slow at). I am considering referring readers to the excellent ``ZX-calclus for the working computer scientist'' by J. van de Wetering \cite{zx-working}. If the preliminary section survives the rough draft, then I will give a more formal introduction of the ZX-calculus here with a focus on MBQC and its use in finding graph identities.
+
+In particular, I would like to introduce the following ZX-rules: (the following figure is a screenshot from \cite{review-zx})}
+
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{media/ZX-Rules.png}
+    \label{fig:zx-rules}
+    \caption{The rules of ZX-calculus, taken from \cite{review-zx}}
+\end{figure}
+
 \subsection{The Grid as a Resource State}
 
 \begin{definition}
@@ -389,7 +398,7 @@ The proof of this is essentially brute force \cite{MBQC-universal}. \note{This t
 \begin{theorem}
 $\Grid$ is QQ-universal.
 \begin{proof}
-\note{To be done. It is surprisingly challenging to condense.}
+\note{To be done. I had something written here, but I decided to rewrite it using some lemmas more easily proved in the ZX-calculus.}
 \end{proof}
 \end{theorem}
 
@@ -411,7 +420,8 @@ The previous theorem informally says that the entanglement structure of a resour
 A family of states $\Phi$ is a \term{universal resource} for MBQC if for all $n$-qubit state $\ket\psi$, $\exists \ket\phi \in \Phi$ with $m \geq n$ qubits, such that the transformation $\ket\phi \mapsto \ket\psi \ket{+^{m-n}}$ is possible with probability $1$ with $\LOCC$. We denote this by $\ket\phi \geq_{\LOCC} \ket\psi$. 
 \end{definition}
 
-\begin{theorem}\:
+\begin{theorem}
+\label{thm:measure-for-universal}
 [From \cite{MBQC-measures}] Let $\Psi$ be a family of states and $\ket\phi, \ket{\phi'}$ arbitrary states with the same number of qubits. Let $E: \ket\phi \to \R$ be a function that satisfies the following properties:
 \begin{enumerate}
     \item $E(\ket\phi) \geq E(\ket{\phi'})$ whenever $\ket\phi \geq_\LOCC \ket{\phi'}$;
@@ -427,4 +437,4 @@ The first condition states that $\LOCC$ cannot increase this measure, while the 
 $E$ as a measure is so general there are many candidates. However, satisfying the converse of the second condition is not sufficient to guarantee universality. For example, the toric code states have unbounded entanglement width but are not universal \cite{toric-not-universal}.
 \end{remark}
 
-\note{THere is more to be said here, but I'm not sure how much of this additional material is necessary, so I've left this out for now.}
+\note{There is more to be said here, but I'm not sure how much of this additional material is necessary, so I've left this out for now.}
