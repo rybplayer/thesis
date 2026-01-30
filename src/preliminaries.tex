@@ -191,6 +191,7 @@ We use the following types of \term{universal computation} from \cite{MBQC-unive
 \end{definition}
 
 \begin{fact}
+\label{fact:1-qubit-and-entangling-universal}
 Any 1-qubit universal gate set and a 2 qubit entangling gate is universal [cite:need].
 \end{fact}
 
@@ -231,6 +232,7 @@ The $\cl Z$ gate is a diagonal matrix, and so is $I$. The tensor product of diag
 \end{fact}
 
 \begin{fact}
+\label{fact:graph-circuit-depth}
 Let $G$ be a graph with maximum degree $\Delta$. Then $\ket{G}$ can be constructed in depth $\Delta + 1$.
 \begin{proof}
 Vizing's theorem states that any graph with maximum degree $\Delta$ admits an edge coloring with $\Delta + 1$ colors such that no two edges that share a vertex have the same color. All edges of the same color can be implemented in the graph state in the same layer of $\cl Z$s. Thus, at most $\Delta + 1$ layers.
@@ -323,6 +325,7 @@ $R_z(\theta) Z R_z(\theta)^\dagger = Z$. That is, $R_z(\theta)$ commutes with $\
 \end{fact}
 
 \begin{fact}
+\label{fact:rz-to-rx}
 For all $\theta \in [0,2\pi]$,
 \begin{align}
     R_x(\theta) 
@@ -351,5 +354,77 @@ A $m \times n$ grid graph $G = (V,E)$ has
     V &= \{(i,j) \mid i \in [m], j \in [n]\}, \\
     E &= \{\{(i_1,j_1),(i_2,j_2)\} \mid (i_1,j_1),(i_2,j_2) \in V, |i_2-i_1| + |j_2-j_1| = 1\}
 \end{align}
-In other words, $m$ rows and $n$ columns with edges between nodes of taxicab distance $1$.
+In other words, $m$ rows and $n$ columns with edges between nodes of taxicab distance $1$. Denote such graphs as $\Grid_{m \times n}$. Let $\Grid$ denote the family of all such graphs.
 \end{definition}
+
+\begin{theorem}
+\label{thm:grid-2-qubit-qq}
+$\Grid$ is 2-qubit QQ-universal. That is, given a set of 2-qubit gates $U_1, \ldots, U_k$ applied to the $\ket{++}$ state, there is a sequence of single qubit measurements you can make on some graph state in $\Grid$, assuming all measurement results are $0$, resulting in $U_1 \cdots U_k \ket{++}$ on the last 
+\begin{proof}
+By Theorem \ref{thm:cq-implies-qq}, it suffices to show CQ-universality. Consider the following construction:
+\[
+\begin{quantikz}
+\lstick{$\ket{+}_1$} & \ctrl{1} & \ctrl{2} & \qw      & \qw      & 
+    \gate{R_z(\theta_1)} & \gate{H} & \meter{} \\
+\lstick{$\ket{+}_2$} & \ctrl{-1}& \qw      & \ctrl{2} & \qw      & 
+    \gate{R_z(\theta_2)} & \gate{H} & \meter{} \\
+\lstick{$\ket{+}_3$} & \ctrl{1} & \ctrl{-2}& \qw      & \ctrl{2} & 
+    \gate{R_z(\theta_3)} & \gate{H} & \meter{} \\
+\lstick{$\ket{+}_4$} & \ctrl{-1}& \ctrl{2} & \ctrl{-2}& \qw      & 
+    \gate{R_z(\theta_4)} & \gate{H} & \meter{} \\
+\lstick{$\ket{+}_5$} & \ctrl{1} & \qw      & \qw      & \ctrl{-2}& 
+    \qw                  & \qw      & \qw \\
+\lstick{$\ket{+}_6$} & \ctrl{-1}& \ctrl{-2}& \qw      & \qw      & 
+    \qw                  & \qw      & \qw
+\end{quantikz}
+\]
+The above construction can be repeated to apply $R_z$ as many times as necessary. The analysis is similar to Theorem \ref{thm:mbqc-line}. That is, it suffices to show that every 2-qubit gate can be decomposed into a sequence of
+\begin{align}
+    (H \otimes H) \: (R_z(\theta_1) \otimes R_z(\theta_2)) \: \cl Z.
+\end{align}
+The proof of this is essentially brute force \cite{MBQC-universal}. \note{This thesis' ultimate goal is to recreate this proof, so it should be reproduced here.}
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+$\Grid$ is QQ-universal.
+\begin{proof}
+\note{To be done. It is surprisingly challenging to condense.}
+\end{proof}
+\end{theorem}
+
+\begin{definition}
+Let $\LO$ denote local operations, i.e. any single qubit unitary. Let $\CC$ denote classical communication. Thus MBQC requires $\LOCC$, or both $\LO$ through Fact \ref{fact:rz-to-rx} and $\CC$ due to adaptive measurement.
+\end{definition}
+
+\begin{theorem}\:
+[From \cite{MBQC-universal} Observation 5] All efficient universal graph state resources can efficiently be obtained from each other by $\LOCC$.
+\end{theorem}
+
+\begin{remark}
+The previous theorem informally says that the entanglement structure of a resource state is what matters, not its phase. This is because $\LOCC$ are precisely the operations that do not add entanglement [cite:need].
+\end{remark}
+
+\subsection{Universality Theorems}
+
+\begin{definition}
+A family of states $\Phi$ is a \term{universal resource} for MBQC if for all $n$-qubit state $\ket\psi$, $\exists \ket\phi \in \Phi$ with $m \geq n$ qubits, such that the transformation $\ket\phi \mapsto \ket\psi \ket{+^{m-n}}$ is possible with probability $1$ with $\LOCC$. We denote this by $\ket\phi \geq_{\LOCC} \ket\psi$. 
+\end{definition}
+
+\begin{theorem}\:
+[From \cite{MBQC-measures}] Let $\Psi$ be a family of states and $\ket\phi, \ket{\phi'}$ arbitrary states with the same number of qubits. Let $E: \ket\phi \to \R$ be a function that satisfies the following properties:
+\begin{enumerate}
+    \item $E(\ket\phi) \geq E(\ket{\phi'})$ whenever $\ket\phi \geq_\LOCC \ket{\phi'}$;
+    \item $\sup_{\ket\phi} E(\ket\phi) > \sup_{\ket\psi \in \Psi} E(\ket\psi)$. 
+\end{enumerate}
+Then $\Psi$ cannot be a universal resource.
+\begin{proof}
+The first condition states that $\LOCC$ cannot increase this measure, while the second says that the supremum value of $E$, which can be $\infty$, is not reached among all $\ket\psi \in \Psi$. If both were true, then (CQ)-universality would be violated.
+\end{proof}
+\end{theorem}
+
+\begin{remark}
+$E$ as a measure is so general there are many candidates. However, satisfying the converse of the second condition is not sufficient to guarantee universality. For example, the toric code states have unbounded entanglement width but are not universal \cite{toric-not-universal}.
+\end{remark}
+
+\note{THere is more to be said here, but I'm not sure how much of this additional material is necessary, so I've left this out for now.}

@@ -138,6 +138,8 @@
 
 % MATH ESSENTIALS
 
+\newcommand{\note}[1]{{\color{blue}#1}}
+
 \let\oldemptyset\emptyset
 \let\emptyset\varnothing
 
@@ -187,7 +189,6 @@
 \newcommand{\Var}{\operatorname{Var}}
 \newcommand{\Cov}{\operatorname{Cov}}
 \newcommand{\Unif}{\operatorname{Unif}}
-\newcommand{\CC}{\operatorname{CC}}
 
 % TOPOLOGY
 \newcommand{\Int}{\operatorname{Int}}
@@ -205,13 +206,17 @@
 \newcommand{\junk}{\text{junk}}
 \newcommand{\Poly}{\operatorname{poly}}
 \newcommand{\SU}{\operatorname{SU}}
+\newcommand{\Grid}{\mathsf{Grid}}
+\newcommand{\CGrid}{\mathsf{CGrid}}
+\newcommand{\LO}{\mathsf{LO}}
+\newcommand{\LOCC}{\mathsf{LOCC}}
+\newcommand{\CC}{\mathsf{CC}}
 
 \newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
 
 % ENVIRONMENTS
 
 % General Purpose Environments
-\newenvironment{note}{\begingroup\fontsize{8pt}{12pt}\selectfont}{\endgroup}
 \newenvironment{prove}{\emph{Proof. }}{\hfill\qedsymbol}
 \newenvironment{sprove}{\emph{Proof. }\sline}{\hfill\qedsymbol}
 
