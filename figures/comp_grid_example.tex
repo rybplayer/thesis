@@ -38,19 +38,19 @@
 \draw[edge] (v31) -- (v32);
 \draw[edge] (v32) -- (v33);
 
-\draw[edge, bend left=18] (v11) -- (v13);
-\draw[edge, bend left=18] (v21) -- (v23);
-\draw[edge, bend left=18] (v31) -- (v33);
+\draw[edge] (v11) to[bend left=20] (v13);
+\draw[edge] (v21) to[bend left=20] (v23);
+\draw[edge] (v31) to[bend left=20] (v33);
 
-\draw[edge, bend right=18] (v11) -- (v31);
-\draw[edge, bend right=18] (v12) -- (v32);
+\draw[edge] (v11) to[bend right=20] (v31);
+\draw[edge] (v12) to[bend right=20] (v32);
 
-\draw[edge, bend right=18] (v11) -- (v33);
-\draw[edge, bend right=18] (v12) -- (v33);
-\draw[edge, bend right=18] (v13) -- (v33);
+\draw[edge] (v11) to[bend right=20] (v33);
+\draw[edge] (v12) to[bend right=20] (v33);
+\draw[edge] (v13) to[bend right=20] (v33);
 
-\draw[edge, bend right=18] (v21) -- (v33);
-\draw[edge, bend right=18] (v22) -- (v33);
+\draw[edge] (v21) to[bend right=20] (v33);
+\draw[edge] (v22) to[bend right=20] (v33);
 
 \node[draw=none, fill=none, inner sep=0pt, anchor=east] at ($(v13)+(-0.15,0)$) {$ (1,3)$};
 \node[draw=none, fill=none, inner sep=0pt, anchor=west] at ($(v33)+(0.15,0)$) {$ (3,3)$};

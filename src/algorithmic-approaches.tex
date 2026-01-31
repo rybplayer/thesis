@@ -26,6 +26,7 @@ Define a subset of a $\CGrid$ state as the graph corresponding to a state in $\C
 \end{definition}
 
 \begin{fact}
+\label{fact:tuple-construction}
 Any subset $H$ with $n$ vertices of any $\CGrid$ can be uniquely identified as a permutation of $[n]$, denoted $\pi \in S_n$. Denote this by $\pi(H)$. Similarly, let $H(\pi)$ denote the subgraph corresponding to $\pi$.
 \begin{proof}
 \note{This proof only works for finite subsets, but there is a need to define it for infinite-sized vertex subsets. }
@@ -55,6 +56,7 @@ Since $y_1, y_2 \leq n$, the RHS $\leq 1$. Contradiction. No two distinct vertic
 \end{fact}
 
 \begin{fact}
+\label{fact:tuple-not-unique}
 Two subsets $H,H'$ of a $\CGrid$ may have $\pi(H) \neq \pi(H')$ yet $H = H'$ up to vertex relabeling.
 \begin{proof}
 Take subgraphs with vertices $V = \{(1,1), (1,2)\}$ and $V' = \{(1,1), (2,1)\}$ and their induced edges. The first has permutation $(1,2)$ and the second $(2,1)$ but the graphs are clearly isomorphic.
@@ -117,8 +119,57 @@ Run the above procedure on the reverse of $\pi(H)$. This counts, for each $j$. t
 We use double-inversion rather than directly constructing the edges due to the following fact:
 
 \begin{fact}
-In a subgraph $H$ with $n$ vertices, there is at most $O(n^2)$ edges. Thus, enumerating the edges of some $\pi(H)$ cannot be better than $O(n^2)$ in the worst general case.
+In a subgraph $H$ with $n$ vertices, there are at most $O(n^2)$ edges. Thus, enumerating the edges of some $\pi(H)$ cannot be better than $O(n^2)$ in the worst general case.
 \end{fact}
+
+\begin{theorem}
+It is sufficient to explore subgraphs with at most $O(n)$ edges. Thus, enumerating the edges of some $\pi(H)$ cannot be worse than $O(n)$ in the worst general case.
+\begin{proof}
+\note{This needs some formalization.} The idea is to use early termination. Suppose we identify, even in the first pass of Theorem \ref{thm:subset-alg}, that the current graph has ``too many'' edges or ``too many'' vertices with ``high degree'' to be the construction with optimal minimum number of edges compared to the $\Grid$. Since every iteration of the algorithm through the vertices in both passes can only add 0 or more edges, we can early terminate the entire branch. We call these early terminations \term{termination strategies}.
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+When enumerating every possible subgraph $H = (V,E)$ of some $\CGrid$ with $|V| = n$, it is more than sufficient to enumerate every possible permutation of $[n]$.
+\begin{proof}
+Clearly, there is a map $f: \{\forall H\} \to S_n$. If there is a subset that does not have a representation in $S_n$, this would violate Fact \ref{fact:tuple-construction}. This is more than sufficient as Fact \ref{fact:tuple-not-unique} shows the permutation representation is not unique.
+\end{proof}
+\end{theorem}
+
+Before we enumerate the termination strategies we will use, it may be helpful to define some notation.
+
+\begin{definition}
+\label{def:vertex-names}
+Given any $\Grid$, say a vertex is a corner vertex if it has degree 2 in the grid. Say it is an edge if it has degree 3, and inner if it has degree 4. In the context of a subgraph $H$ of some $\CGrid$, say a vertex in $H$ is a \term{potential corner} if it has degree at least 2. Similarly for \term{potential edge} and \term{potential inner}. 
+
+Furthermore, say a vertex in $H$ is \term{invalid} if it has degree less than $2$. We say invalid as we wish to find the number of maximum additional edges, not minimum number of missing edges. In other words, if $H$ has an invalid vertex, no $\Grid$ $G$ with $|V(H)| = |V(G)|$ is a subgraph of $H$.
+\end{definition}
+
+\begin{fact}
+To enumerate all possible permutations of $[n]$, it suffices to consider all possible choices for the first entry, then all possible remaining choices for the second entry for each chosen first entry, and henceforth. This task is massively parallelizable by seeding $k \leq n$ first entries. 
+
+\note{This needs to be made more formal.} Thus we can say we \term{terminate} a set of permutations in $S_n$ if the processing of $j \leq n$ entries in either pass of Theorem \ref{thm:subset-alg} triggers a termination strategy.
+\end{fact}
+
+\begin{definition}
+\label{def:termination-strategies}
+\note{This needs to be edited for brevity.} We now enumerate the various termination strategies. Throughout, let $H = (V,E)$ be the subgraph of some $\CGrid$, and let $\Grid_{k \times n}$ be the grid we are comparing $H$ with. Let first and second pass refer to the two passes of Theorem \ref{thm:subset-alg}. 
+
+Suppose we set a bound $b$ on the maximum number of edges.
+\begin{enumerate}
+    \item If in the second pass, a vertex is found invalid, terminate. No vertex can be found invalid in the first pass.
+    \item If the sum of degrees, divided by 2 due to the Handshaking lemma, is larger than $b$, terminate.
+    \item Suppose a vertex has degree $> b+4$. Then this subgraph invalidates $b$. \note{This may be equivalent to the previous strategy.}
+    \item The distribution of degrees should be approximately constant. In other words, the additional edges $b$ should be spread around the graph. This can be computed by keeping a counter of the number of degree $1,\ldots,b+4$ vertices found in the second pass.
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+All the termination strategies above can be done in $\Theta(1)$ time and $\Theta(1)$ space. 
+\begin{proof}
+Most strategies can be done in such bounds by keeping a running sum, running a constant number of if statements, and other $\Theta(1)$ time and space operations.
+\end{proof}
+\end{theorem}
 
 Recall that our goal is to identify whether vertex deletion alone can get us to a subgraph isomorphic to some $\Grid$ graph. This is surprisingly true for $2 \times n$ grids for all $n \in \N$.
 
@@ -324,8 +375,6 @@ Call the above the \term{width-3 gadget}. Using Fact \ref{fact:cnot-flip-identit
 \end{align}
 \end{definition}
 
-\note{In conclusion, algorithmic approaches have the potential to uncover subgraph structures using Theorem \ref{thm:subset-alg}. Furthermore, if such gadgets are universal using only Clifford measurements (like the grid), the tableau representation can be used to (somewhat) efficiently prove this through brute force. However, for the width-3 case, it appears that switching to a more theoretical framework may give more results.}
-
 \subsection{Universality of the Width-3 Gadget}
 
 \begin{definition}
@@ -347,7 +396,7 @@ The group of Clifford operations, denoted $\langle C \rangle$, mod the group of 
 We repeatedly apply the width-3 gadget with appropriate angles and optional $S$ gates, representing measurement in the $Y$ basis instead of the $X$ basis. Let the group generated by the width-3 gadget and all $2^3 = 8$ arrangement of $S$ gates be denoted $\langle W_3 \rangle$. Then 
 \begin{align}
     | \langle W_3 \rangle | = 40,320 = 8!, \quad
-    \frac{\left| \faktor{\langle C \rangle}{\la ngle P \rangle} \right|}
+    \frac{\left| \faktor{\langle C \rangle}{\langle P \rangle} \right|}
     {| \langle W_3 \rangle |} = 36.
 \end{align}
 \begin{proof}
@@ -361,3 +410,19 @@ If the width-3 gadget is universal for quantum computation, this universality mu
 Follows from Fact \ref{fact:width-3-clifford-size}.
 \end{proof}
 \end{theorem}
+
+We now introduce two new universality tests, one informal and one formal.
+
+\begin{definition}
+(Informal universality tests). \note{Replacing the tableau representation in the algorithm behind Fact \ref{fact:width-3-clifford-size} with general matrices, and increasing the number of angles, we should expect that the number of induced gates should increase dramatically. A proof should be given for this.}
+\end{definition}
+
+\begin{fact}
+The previous algorithm does not indicate that the width-3 gadget is universal.
+\end{fact}
+
+\begin{theorem}
+\cite{universal-lin-alg} provides an algorithm for determining the universality of a gate set, in terms of a linear algebra problem. \note{Though it is not polynomial in terms of the number of qubits and gates, it is massively parallelizable. Ideally, I would like a GPU kernel that does much of this work.}
+\end{theorem}
+
+\note{In conclusion, algorithmic approaches have the potential to uncover subgraph structures using Theorem \ref{thm:subset-alg}. Furthermore, if such gadgets are universal using only Clifford measurements (like the grid), the tableau representation can be used to (somewhat) efficiently prove this through brute force. However, for the width-3 case, it appears that switching to a more theoretical framework may give more results.}

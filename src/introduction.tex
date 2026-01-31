@@ -15,3 +15,13 @@ Since measurement is irreversible, MBQC leads to a model of one-way quantum comp
 The comparability grid is the graph with vertices $V = \{(x,y) \mid x,y \in [n]\}$ and an edge from $(x_1,y_1)$ to $(x_2,y_2)$ if $x_1 \geq x_2$ and $y_1 \geq y_2$. It is an open problem whether the family of all comparability grids is universal for MBQC. There are powerful theoretical implications for both possibilities. For example, if this family is universal, then any universal family of graph states must have unbounded rank width [cite:KunalMD]. If comparability grids are not universal, then unbounded rank width is not a sufficient condition, since the family of all comparability grids have unbounded rank width.
 
 In this thesis, we explore the comparability grid's potential as a resource state for universal quantum computation. In section 2, we introduce the preliminaries necessary for such an endeavour, before exploring various algorithmic and theoretical approaches in later sections. We conclude with a discussion of similar results pertaining to circle graphs.
+
+\subsection{Informal Summary of Results}
+
+We informally summarize the main results of this thesis. Our overall goal is to determine the universality of the comparability grids for universal MBQC. This paper will not provide a definitive result to this open problem. Instead, we will lay out a series of algorithmic and theoretical approaches to more finely characterize whether the comparability grid is a universal resource.
+
+From the algorithmic perspective, we give a $O(n\log n)$ algorithm to determine whether a subset of the comparability grid is ``grid-like,'' that is, has a few edges in addition to the regular grid. Then, the tabelau formalism for Clifford circuits and a linear-algebra-based universal enumeration algorithm is introduced to check whether this ``grid-like'' structure has the potential for universal quantum computation. This pipeline forms the backbone of our results.
+
+From the theoretical perspective, we recite known results regarding local unitary and local clifford equivalence; vertex-minors; local complementation. We recall some known results on the infeasibility of an enumeration or algorithmic proof based on these mechanisms. In particular, determining vertex minors is $\NP$-hard [cite:need].  
+
+We use the theoretical recitations to provide a series of conjectures on the universality of comparability grids in the conclusion section.
