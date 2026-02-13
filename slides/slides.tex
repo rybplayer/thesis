@@ -1,0 +1,61 @@
+\documentclass{beamer}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+\mode<presentation>
+{
+  \usetheme{default}
+  \usecolortheme{default}
+  \usefonttheme{default}
+  \setbeamertemplate{caption}[numbered]
+}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{quantikz}
+\usepackage{quiver}
+\usepackage{mathtools}
+% \usetikzlibrary{decorations.pathreplacing,calc}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{positioning,decorations.pathmorphing}
+
+\newcommand{\Grid}{\textsf{Grid}}
+\newcommand{\CGrid}{\textsf{CGrid}}
+\newcommand{\LO}{\textsf{LO}}
+\newcommand{\LOCC}{\textsf{LOCC}}
+\newcommand{\CC}{\textsf{CC}}
+\newcommand{\LU}{\textsf{LU}}
+\newcommand{\LC}{\textsf{LC}}
+
+\newtheorem{observation}{Observation}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{justification}{Justification}
+
+\title{On the Universality of Comparability Grids for Measurement-Based Quantum Computation}
+\author{Ryan Y. Batubara\\Advisor: Professor Daniel Grier}
+\institute{UCSD\\[2\baselineskip]Mathematics Undergraduate Honors Presentation}
+\date{February 13, 2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\input{sections/background.tex}
+
+\input{sections/subgraph.tex}
+
+\input{sections/algorithm.tex}
+
+\input{sections/gadget.tex}
+
+\input{sections/bridge.tex}
+
+\input{sections/conjectures.tex}
+
+\input{sections/motivation.tex}
+
+\end{document}

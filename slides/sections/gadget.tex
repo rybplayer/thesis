@@ -1,0 +1,190 @@
+\section{The Width-3 Gadget}
+
+\begin{frame}{The Width-3 Gadget}
+
+\begin{definition}
+The previous graph gives rise to the following width-3 gadget:
+\begin{align*}
+\begin{quantikz}
+\lstick{$q_1$} 
+    & \gate{R_z(\theta_1)} & \targ{}   & \ctrl{1} & \gate{H} & \qw \\
+\lstick{$q_2$} 
+    & \gate{R_z(\theta_2)} & \qw       & \ctrl{-1}& \gate{H} & \qw \\
+\lstick{$q_3$} 
+    & \gate{R_z(\theta_3)} & \ctrl{-2} & \qw      & \gate{H} & \qw
+\end{quantikz}        
+\end{align*}
+\end{definition}
+
+Question: Is this gadget universal for MBQC?
+
+\end{frame}
+
+% \begin{frame}{Linear Algebra Universality Algorithm}
+
+% \begin{theorem}
+% A gate set $\mathcal{G}$ is universal for $n$ qubits if it generates $SU(2^n)$, the group of $2^n \times 2^n$ unitary matrices with determinant 1.
+% \end{theorem}
+
+% \begin{theorem}[Sawicki and Karnas, 2017]
+% Given a finite gate set $\mathcal{G}$, we can determine if it is universal in finite time by computing the kernel, trace, and product of some matrices and vectors.
+% \end{theorem}
+
+% \begin{problem}<2->
+% The gate set $\mathcal{G}$ from the width-3 gadget is not finite, since we can choose $\theta_i \in [0, 2\pi]$.
+% \end{problem}
+
+% \end{frame}
+
+\begin{frame}{Lie Algebra Universality Algorithm}
+
+\begin{definition}[Matrix Exponentiation]
+For any $A \in \mathbb{C}^{m \times m}$, 
+\begin{align*}
+    e^A = \sum_{k=0}^\infty \frac{A^k}{k!}
+\end{align*}
+\end{definition}
+
+\begin{definition}<2->[Lie Algebra of $SU(2^n)$]
+\begin{align*}
+    \mathfrak{su}(2^n) = \{ -iH \in \mathbb{C}^{2^n \times 2^n} \mid H^\dagger = H, \text{tr}(H) = 0 \}
+\end{align*}
+\end{definition}
+
+\end{frame}
+
+\begin{frame}{Lie Algebra Universality Algorithm cont'd}
+
+\begin{theorem}
+A gate set $\mathcal{G}$ is universal for $n$ qubits if it generates $SU(2^n)$, the group of $2^n \times 2^n$ unitary matrices with determinant 1.
+\end{theorem}
+
+\begin{fact}<2->
+$U \in SU(2^n)$ if and only if $U = e^{iH}$ for some $H \in \mathfrak{su}(2^n)$.
+\end{fact}
+
+\begin{corollary}<2->
+To show $\mathcal{G}$ is universal, it suffices to generate the Lie algebra.
+\end{corollary}
+
+\begin{fact}<3->
+$H \in \mathfrak{su}(2^n)$ if and only if $H = -i \sum_{P \in \mathcal{P} \setminus \{I\}} \alpha_P P$ for some $\alpha_P \in \mathbb{R}$, where $\mathcal{P}$ is the set of Pauli matrices on $n$ qubits.
+\end{fact}
+
+\begin{corollary}<3->
+The traceless Hermitian operators are exactly those that can be represented as a linear combination of Pauli operators (X, Y, Z).
+\end{corollary}
+
+\end{frame}
+
+\begin{frame}{Lie Algebra Universality Algorithm: Cliffords}
+
+\begin{lemma}
+Denote by $G(\theta_1, \theta_2, \theta_3)$ the width-3 gadget. Then $G(0,0,0)$ is some fixed Clifford operation $C$ and $C \in \mathcal{G}$. 
+\end{lemma}
+
+\begin{lemma}<2->
+If $C \in \mathcal{G}$ then $C^\dagger \in \mathcal{G}$.
+\end{lemma}
+
+\begin{proof}<3->
+The Clifford group on 3 qubits is finite. Hence every element has finite order, i.e. $\exists t$ with $C^t = I$. Thus $C^\dagger = C^{t-1} \in \mathcal{G}$.
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{Lie Algebra Universality Algorithm: Addition}
+
+\begin{fact}[Baker-Campbell-Hausdorff formula]
+For $A,B \in \mathfrak{su}(2^n)$,
+\begin{align*}
+    e^{A} e^{B} = e^{A + B + \frac{1}{2}[A,B] + \frac{1}{12}[A,[A,B]] - \frac{1}{12}[B,[A,B]] + \cdots}
+\end{align*}
+where $[A,B] = AB - BA$ is the commutator of $A$ and $B$.
+\end{fact}
+
+\begin{fact}
+For $A,B \in \mathfrak{su}(2^n)$,
+\begin{align*}
+    \lim_{k \to \infty} e^{A/k} e^{B/k} = e^{A + B}
+\end{align*}
+\end{fact}
+
+\begin{corollary}
+If we have $A,B$ in the Lie algebra, we can generate their sum.
+\end{corollary}
+
+\end{frame}
+
+\begin{frame}{Lie Algebra Universality Algorithm: Commutators}
+
+\begin{fact}
+For $A,B \in \mathfrak{su}(2^n)$,
+\begin{align*}
+    \lim_{k \to \infty} e^{B/k} e^{A/k} e^{-B/k} e^{-A/k} = e^{[A,B]}.
+\end{align*}
+\end{fact}
+
+\begin{corollary}
+If we have $A,B$ in the Lie algebra, we can generate their commutator $[A,B]$.
+\end{corollary}
+
+\end{frame}
+
+\begin{frame}{Lie Algebra Universality Algorithm: Operations}
+
+Strategy: Start with some elements in the Lie algebra and generate more using:
+\begin{itemize}
+    \item Conjugation by $C$
+    \item Addition
+    \item Commutators
+\end{itemize}
+
+\begin{fact}<2->
+We cannot generate all $|\{I,X,Y,Z\}|^3 = 64$ Pauli operators on $3$ qubits this way.
+\end{fact}
+
+\begin{proof}<3->
+Brute force using a computer program.
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{Lie Algebra Universality Algorithm: Visual Intuition}
+
+The $CNOT$ ``forbids us'' from generating $R_x(\theta_1)$ alone on $q_1$.
+\begin{center}
+\begin{tikzpicture}[scale=0.7, transform shape]
+
+\node (left) at (0,0) {
+\begin{quantikz}
+\lstick{$q_1$} 
+    & \gate{R_z(\theta_1)} & \targ{}   & \ctrl{1} & \gate{H} & \qw \\
+\lstick{$q_2$} 
+    & \gate{R_z(\theta_2)} & \qw       & \ctrl{-1}& \gate{H} & \qw \\
+\lstick{$q_3$} 
+    & \gate{R_z(\theta_3)} & \ctrl{-2} & \qw      & \gate{H} & \qw
+\end{quantikz}
+};
+
+\node (eq) at (3.25,0) {$=$};
+
+\node (right) at (7,0) {
+\begin{quantikz}
+\lstick{$q_1$} 
+    & \targ{}   & \ctrl{1} & \gate{H} & \gate{R_x(\theta_1)R_x(\theta_3)} & \qw \\
+\lstick{$q_2$} 
+    & \qw       & \ctrl{-1}& \gate{H} & \gate{R_x(\theta_2)} & \qw \\
+\lstick{$q_3$} 
+    & \ctrl{-2} & \qw      & \gate{H} & \gate{R_x(\theta_3)} & \qw
+\end{quantikz}
+};
+
+\end{tikzpicture}
+\end{center}
+
+\only<2->{
+Idea: ``Stitch'' this with another gadget to ``get'' $R_x(\theta_1)$ on $q_1$.
+}
+
+\end{frame}

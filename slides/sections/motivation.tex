@@ -1,0 +1,22 @@
+\section{Motivation for Comparability Grids}
+
+\begin{frame}{Why Care about Comparability Grids?}
+
+\begin{theorem}[Maarten Van den Nest et al, 2006]
+Let $\Psi$ be a family of resource states, and $\ket\phi, \ket{\phi'}$ arbitrary states with the same number of qubits. Let $E: \ket\phi \to \mathbb{R}$ be a function that satisfies the following properties:
+\begin{enumerate}
+    \item $E(\ket\phi) \geq E(\ket{\phi'})$ whenever $\ket\phi \geq_{\LOCC} \ket{\phi'}$;
+    \item $\sup_{\ket\phi} E(\ket\phi) > \sup_{\ket\psi \in \Psi} E(\ket\psi)$. 
+\end{enumerate}
+Then $\Psi$ cannot be a universal resource.
+\end{theorem}
+
+\begin{theorem}<2->
+$\CGrid$s have unbounded rank width (and so do grid graphs).
+\end{theorem}
+
+\begin{corollary}<3->   
+If $\CGrid$ is not a universal resource, then unbounded rank width is not sufficient for universality.
+\end{corollary}
+
+\end{frame}

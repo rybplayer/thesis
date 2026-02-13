@@ -1,0 +1,55 @@
+\section{Conjectures}
+
+\begin{frame}{Resolution?}
+
+\begin{conjecture}
+$\CGrid$ is not a universal resource for MBQC.
+\end{conjecture}
+
+\begin{justification}<2->
+Considering gadgets with more additional edges is unlikely to help get $R_z(\theta_1)$ on $q_1$. 
+\end{justification}
+
+\only<2->{%
+\begin{tikzpicture}[
+>=Latex,
+node distance=16mm and 24mm,
+box/.style={draw, rounded corners, inner sep=4pt, align=center},
+lab/.style={font=\scriptsize}
+]
+
+\node[box] (cgrid) {CGrid};
+\node[box, below=of cgrid] (H) {$\{H\}$};
+\node[box, right=of H] (Hp) {$\{H'\}$};
+\node[box, above=of Hp] (G) {$\{G\}$};
+\node[box, right=of G] (bridge) {Bridge};
+\node[box, below=of bridge] (yesno) {Yes/No};
+
+\draw[->] (cgrid) -- (H)
+node[midway, right, lab]{\color{red} subgraph}
+node[midway, left, lab]{\color{blue} Permutation};
+
+\draw[->] (H) -- (Hp)
+node[midway, above, lab]{\color{red} filter}
+node[midway, below, lab]{\color{blue} Degree Sequence};
+
+\draw[->] (Hp) -- (G)
+node[midway, left, lab]{\color{red} gadget}
+node[midway, right, lab]{\color{blue} Circuit};
+
+\draw[->] (G) -- (bridge)
+node[midway, above, lab]{\color{red} bridge}
+node[midway, below, lab]{\color{blue} Linear Program};
+
+\draw[->, decorate, decoration={snake, amplitude=0.8mm, segment length=3mm}]
+(bridge) -- (yesno)
+node[midway, right, lab]{\color{red} check universality}
+node[midway, left, lab]{\color{blue} Lie Algebra};
+
+\draw[->, decorate, decoration={snake, amplitude=0.8mm, segment length=3mm}] 
+(G) -- (yesno);
+
+\end{tikzpicture}
+}
+
+\end{frame}
