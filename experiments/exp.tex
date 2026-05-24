@@ -1,0 +1,205 @@
+\documentclass[11pt]{article}
+
+\IfFileExists{styles/zx-calculus.sty}{\usepackage{styles/zx-calculus}}{\usepackage{../styles/zx-calculus}}
+\IfFileExists{styles/thesis.sty}{\usepackage{styles/thesis}}{\usepackage{../styles/thesis}}
+
+\usetikzlibrary{shapes.geometric}
+
+\title{Introduction to ZX Calculus \\[0.5\baselineskip]
+\large SUMS x QCSA ZX Calculus Reading Group: Session 1 Notes}
+\author{Ryan Y. Batubara}
+\date{April 1, 2026}
+\lhead{Introduction to ZX Calculus}
+
+\renewcommand{\zxDefaultRowSep}{6mm}
+\renewcommand{\zxDefaultColumnSep}{1mm}
+\renewcommand{\zxDefaultLineWidth}{0.8pt}
+\zxEnableIntersections
+
+\tikzset{
+  /zx/user overlay wires/.style={
+    line width=\zxDefaultLineWidth,
+    line cap=round,
+    line join=round,
+    intersection between start end
+  },
+  /zx/user overlay nodes/.style={
+    zxNoPhase/.append style={minimum size=2.8mm},
+    zxShort/.append style={
+      font={\fontsize{10}{12}\selectfont\boldmath},
+      minimum size=6.2mm
+    },
+    zxLong/.append style={
+      font={\fontsize{10}{12}\selectfont\boldmath}
+    },
+    stylePhaseInLabel/.append style={
+      font={\fontsize{10}{12}\selectfont\boldmath}
+    }
+  }
+}
+
+\begin{document}
+
+\maketitle
+
+\emph{A note on prerequisites:} This reading group (equivalently, series of notes) assumes familiarity with quantum computing at the undergraduate level. Specifically, we assume familiarity with: linear algebra; bra-ket notation; tensor product; qubits; quantum gates and circuits; basic quantum algorithms, like quantum teleportation, superdense coding. Given enough mathematical maturity, it is possible to follow along without prior quantum computing experience. However, the usefulness of ZX-calculus may not be apparent to such readers.
+
+\section{Introduction}
+
+Before we discuss``ZX-Calculus,'' let's review some quantum computing basics. Recall the \term{circuit model} of quantum computation, where processes on qubits are represented as circuits. For example:
+\begin{figure}[H]
+    \centering
+    \begin{quantikz}
+    & \ctrl{1} & \gate{X} & \gate{S} & \\
+    & \targ{}  & \gate{T} &          & 
+    \end{quantikz}
+    \caption{Example Quantum circuit.}
+\end{figure}
+In this circuit model, we often encounter \term{circuit identities}. For example:
+\begin{figure}[H]
+    \centering
+    \begin{quantikz}
+    & \targ{}   & \ctrl{1} & \targ{}   & \\
+    & \ctrl{-1} & \targ{}  & \ctrl{-1} &
+    \end{quantikz}
+    =
+    \begin{quantikz}
+    & \permute{2,1} & \\
+    &               &
+    \end{quantikz}
+    \caption{Example Quantum circuit identity.}
+\end{figure}
+There is no formal way to verify this identity using the diagram alone. In other words, we need another representation of this quantum circuit to prove the identity. Oftentimes, we turn to the \term{matrix model} of quantum computation. Namely,
+\begin{align*}
+    \begin{quantikz}
+    & \targ{}   & \ctrl{1} & \targ{}   & \\
+    & \ctrl{-1} & \targ{}  & \ctrl{-1} &
+    \end{quantikz}
+    &= 
+    \begin{bmatrix}
+    0 & 1 & 0 & 0 \\
+    1 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+    0 & 1 & 0 & 0 \\
+    1 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1
+    \end{bmatrix}.
+\end{align*}
+Doing the matrix multiplications reveal
+\begin{align*}
+    \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0 \\
+    0 & 1 & 0 & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    1 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 1
+    \end{bmatrix}
+    = 
+    \begin{quantikz}
+    & \permute{2,1} & \\
+    &               &
+    \end{quantikz}.
+\end{align*}
+This is perfectly fine, but it gets harder for larger circuits (as the dimensions of the matrix grow exponentially with the number of qubits). Furthermore, there is no real ``visual intuition'' why these two images of quantum circuits mean the same thing. 
+
+ZX-Calculus aims to solve this by presenting a new circuit representation that is more intuitive than the circuit model. Let us look at an example. It is well known that 
+\begin{align}
+    \begin{quantikz}
+    & \targ{}   &          & \\
+    & \ctrl{-1} & \gate{T} & 
+    \end{quantikz}
+    = 
+    \begin{quantikz}
+    &          & \targ{}   & \\
+    & \gate{T} & \ctrl{-1} &
+    \end{quantikz}.
+\end{align}
+
+In ZX, $\begin{quantikz}
+    &\gate{T}&
+\end{quantikz} = \zx{
+    \zxNL \zxZ{\tfrac{\pi}{4}} \zxNR
+}$ and $\begin{quantikz}
+    & \targ{}   & \\
+    & \ctrl{-1} &
+\end{quantikz} = \zx{
+    \zxNL \zxX{} \arrow[d] \zxNR \\ \zxNL \zxZ{} \zxNR
+}$. Then 
+
+\begin{align*}
+    \begin{quantikz}
+        & \targ{}   &          & \\
+        & \ctrl{-1} & \gate{T} & 
+    \end{quantikz}
+    = 
+    \begin{ZX}
+        \zxNL \zxX{} \ar[d] \rar & \zxN{} \zxNR \\ 
+        \zxNL \zxZ{} \ar[r] & \zxZ{\tfrac{\pi}{4}} \zxNR
+    \end{ZX}
+    =
+    \begin{ZX}
+        \zxNL \zxX{} \arrow[d] \zxNR \\ 
+        \zxNL \zxZ{\tfrac{\pi}{4}} \zxNR
+    \end{ZX}
+    = 
+    \begin{ZX}
+        \zxNL \zxN{} \ar[r] & \zxX{} \ar[d] \zxNR \\
+        \zxNL \zxZ{\tfrac{\pi}{4}} \ar[r] & \zxZ{} \zxNR
+    \end{ZX}
+    = 
+    \begin{quantikz}
+    &          & \targ{}   & \\
+    & \gate{T} & \ctrl{-1} &
+    \end{quantikz}.
+\end{align*}
+
+\emph{What is this?} What does $\zx{\zxNL \zxX{} \zxNR}$ and $\zx{\zxNL \zxZ{} \zxNR}$ mean? Why can we seemingly "fuse" the white dot? We will answer these questions shortly, but let us conclude our motivation by noticing how visually natural this identity becomes. 
+
+In other words, suppose we know what the dots mean, and what allows us to fuse them. Now, we can prove this identity purely diagramatically, without relying on the matrix representation of the circuit. We literally see that both circuits are the same when simplified graphically, namely,
+\begin{align*}
+    \begin{ZX}
+        \zxNL \zxX{} \ar[d] \zxNR \\
+        \zxNL \zxZ{\tfrac{\pi}{4}} \zxNR
+    \end{ZX}.
+\end{align*}
+
+\section{Defining ZX-Calculus}
+
+The \term{ZX-Calculus} is a set of rules for manipulating\footnote{one definition of the word ``Calculus'' is a set of rules for manipulation} these ``white and gray dots.'' The ``white dots'' are called \term{Z-spiders}:
+\begin{align}
+    \begin{ZX}
+        \leftManyDots{n} \zxX{} \rightManyDots{m}
+    \end{ZX}
+    :=
+    \ket{\underbrace{0 \ldots 0}_{m\text{ zeros}}}
+\end{align} 
+
+\end{document}
