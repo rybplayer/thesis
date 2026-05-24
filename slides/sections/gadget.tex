@@ -60,7 +60,7 @@ A gate set $\mathcal{G}$ is universal for $n$ qubits if it generates $SU(2^n)$, 
 \end{theorem}
 
 \begin{fact}<2->
-$U \in SU(2^n)$ if and only if $U = e^{iH}$ for some $H \in \mathfrak{su}(2^n)$.
+$U \in SU(2^n)$ if and only if $U = e^{H}$ for some $H \in \mathfrak{su}(2^n)$.
 \end{fact}
 
 \begin{corollary}<2->
@@ -68,7 +68,7 @@ To show $\mathcal{G}$ is universal, it suffices to generate the Lie algebra.
 \end{corollary}
 
 \begin{fact}<3->
-$H \in \mathfrak{su}(2^n)$ if and only if $H = -i \sum_{P \in \mathcal{P} \setminus \{I\}} \alpha_P P$ for some $\alpha_P \in \mathbb{R}$, where $\mathcal{P}$ is the set of Pauli matrices on $n$ qubits.
+$H \in \mathfrak{su}(2^n)$ if and only if $H = -i \sum_{P \in \mathcal{P}_n \setminus \{I\}} \alpha_P P$ for some $\alpha_P \in \mathbb{R}$, where $\mathcal{P}_n$ is the set of Pauli matrices on $n$ qubits.
 \end{fact}
 
 \begin{corollary}<3->
@@ -98,7 +98,7 @@ The Clifford group on 3 qubits is finite. Hence every element has finite order, 
 \begin{fact}[Baker-Campbell-Hausdorff formula]
 For $A,B \in \mathfrak{su}(2^n)$,
 \begin{align*}
-    e^{A} e^{B} = e^{A + B + \frac{1}{2}[A,B] + \frac{1}{12}[A,[A,B]] - \frac{1}{12}[B,[A,B]] + \cdots}
+    e^{A} e^{B} = e^{A + B + \frac{1}{2}[A,B] + \frac{1}{12}[A,[A,B]] + \frac{1}{12}[B,[A,B]] + \cdots}
 \end{align*}
 where $[A,B] = AB - BA$ is the commutator of $A$ and $B$.
 \end{fact}
@@ -141,7 +141,7 @@ Strategy: Start with some elements in the Lie algebra and generate more using:
 \end{itemize}
 
 \begin{fact}<2->
-We cannot generate all $|\{I,X,Y,Z\}|^3 = 64$ Pauli operators on $3$ qubits this way.
+We cannot generate all $|\{I,X,Y,Z\}|^3 - |(I,I,I)| = 63$ non-identity Pauli operators on $3$ qubits this way.
 \end{fact}
 
 \begin{proof}<3->

@@ -69,9 +69,9 @@
 
 \node (C) [inner sep=0pt, outer sep=0pt, anchor=west] at (0,0) {
 \begin{quantikz}[row sep=0.45cm, column sep=0.45cm, wire types={q,n,q}]
-\lstick{$\ket{\psi_1}$} & \gate[3]{C} & \meter{} \\
+\lstick{$\ket{0}$} & \gate[3]{C} & \meter{} \\
 \lstick{$\vdots$}       &             & \vdots   \\
-\lstick{$\ket{\psi_n}$} &             & \meter{}
+\lstick{$\ket{0}$} &             & \meter{}
 \end{quantikz}
 };
 
@@ -227,25 +227,43 @@ $R_x(\theta) = H R_z(\theta) H$, for all $\theta \in [0,2\pi]$.
 \begin{frame}{Grid is a Universal Resource cont'd}
 
 \begin{proof}[Informal proof.]
+\vspace{-0.8cm}
 \begin{align*}
-\begin{quantikz}
+\begin{quantikz}[row sep=0.2cm, column sep=0.2cm]
 \lstick{$\ket{\phi}$} & \ctrl{1}  & \gate{R_z(\theta)} & \gate{H} & \meter{} \\
 \lstick{$\ket{+}$}    & \ctrl{-1} & \qw      &          &
 \end{quantikz}
 \;=\;
-\begin{quantikz}
+\begin{quantikz}[row sep=0.2cm, column sep=0.2cm]
 \lstick{$\ket{+}$}              & \ctrl{1}  & \meter{} \\
 \lstick{$HR_z{\theta}\ket\phi$} & \targ{}   & \qw
 \end{quantikz}
 \end{align*}
 \only<2->{%
-If we measure $0$, we get $HR_z(\theta)\ket\phi$ in the second register. If we measure $1$, we get $XH_z(\theta)\ket\phi$. Thus given the right measurements we can apply any 1-qubit gate.
+If we measure $0$, we get $HR_z(\theta)\ket\phi$ in the second register. If we measure $1$, we get $XH_z(\theta)\ket\phi$. Thus given the right measurements we can apply any 1-qubit gate by repeating the construction:
+}
+\only<3->{%
+\begin{center}
+\begin{quantikz}[row sep=0.1cm, column sep=0.1cm]
+\lstick{$\ket{\phi}$} & \ctrl{1}  & \gate{R_z(\theta_1)} & \gate{H} & \meter{} \\
+\lstick{$\ket{+}$}    & \ctrl{-1} & \ctrl{1}      & \gate{R_z(\theta_2)} & \gate{H} & \meter{} \\
+\lstick{$\ket{+}$}    & \qw       & \ctrl{-1}     & \qw & \qw & \qw & \qw \\
+\end{quantikz}
+\end{center}
 }
 \end{proof}
 
-\begin{theorem}<3->
+\end{frame}
+
+\begin{frame}{Grid is a Universal Resource cont'd}
+
+\begin{theorem}
 Let $\Grid$ denote the family of all grid graphs. $\Grid$ is a universal resource for MBQC.
 \end{theorem}
+
+\begin{proof}
+Similar to the proof for the line.
+\end{proof}
 
 \end{frame}
 
@@ -315,11 +333,11 @@ Example: $\CGrid_{3 \times 3}$:
 \draw[edge] (v12) to[bend right=20] (v32);
 
 \draw[edge] (v11) to[bend right=20] (v33);
-\draw[edge] (v12) to[bend right=20] (v33);
+\draw[edge] (v12) -- (v33);
 \draw[edge] (v13) to[bend right=20] (v33);
 
-\draw[edge] (v21) to[bend right=20] (v33);
-\draw[edge] (v22) to[bend right=20] (v33);
+\draw[edge] (v21) -- (v33);
+\draw[edge] (v22) to (v33);
 
 \node[draw=none, fill=none, inner sep=0pt, anchor=east] at ($(v13)+(-0.15,0)$) {$ (1,3)$};
 \node[draw=none, fill=none, inner sep=0pt, anchor=west] at ($(v33)+(0.15,0)$) {$ (3,3)$};
