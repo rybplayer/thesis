@@ -1,0 +1,138 @@
+
+\subsection{The One-Way Model}
+
+\begin{definition}
+Measurement-based quantum computation (MBQC) roughly proceeds as follows:
+\begin{enumerate}
+    \item A classical input specifies the data and program.
+    \item A resource state $\ket{\phi_k}$ is chosen from some set of states $\Phi = \{ \ket{\phi_1}, \ket{\phi_2}, \ldots \}$.
+    \item Local operations (single qubit unitaries), local measurements, and classical communication are used to transform this resource state.
+    \item By the end, we have a state $\ket\psi \otimes \ket{\junk}$. This $\ket\psi$ or its measurement is the desired result.
+\end{enumerate}
+The rest of this section formalizes these notions.
+\end{definition}
+
+\begin{definition}
+A resource state is a quantum state $\ket\phi$ that can be used as the initial state in MBQC. A \term{graph state} $\ket{G}$ is a particular type of resource state associated with an undirected graph $G = (V,E)$ such that:
+\begin{itemize}
+    \item For every $v \in V(G)$, create a new qubit in the $\ket+$ state using $H$.
+    \item For every $e = (u,v) \in E(G)$, apply $\cl Z$ on qubits associated with $u$ and $v$.
+\end{itemize}
+\end{definition}
+
+\begin{fact}
+There is a unique construction for every graph state, up to reordering of $\cl Z$. This is because $\cl Z$s commute with $I$ and $\cl Z$.
+\begin{proof}
+The $\cl Z$ gate is a diagonal matrix, and so is $I$. The tensor product of diagonal matrices is a diagonal matrix. Furthermore, diagonal matrices commute. Thus the order of adding edges, or equivalently applying $\cl Z$s, does not matter.
+\end{proof}
+\end{fact}
+
+\begin{fact}
+\label{fact:graph-circuit-depth}
+Let $G$ be a graph with maximum degree $\Delta$. Then $\ket{G}$ can be constructed in depth $\Delta + 1$.
+\begin{proof}
+Vizing's theorem states that any graph with maximum degree $\Delta$ admits an edge coloring with $\Delta + 1$ colors such that no two edges that share a vertex have the same color. All edges of the same color can be implemented in the graph state in the same layer of $\cl Z$s. Thus, at most $\Delta + 1$ layers.
+\end{proof}
+\end{fact}
+
+\begin{fact}
+Define the Hadamard gadget as the following circuit:
+\begin{equation}
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$\ket{\phi}$} \& \ctrl{1} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{+}$}    \& \ctrl{-1} \& \qw      \& \qw
+\end{quantikz}
+\end{equation}
+Commuting a Hadamard through the $\cl Z$ gives a $\CNOT$:
+\begin{equation}
+\label{eq:push-gates-mbqc}
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$\ket{\phi}$} \& \ctrl{1} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{+}$}    \& \ctrl{-1} \& \qw      \& \qw
+\end{quantikz}
+\;=\;
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$\ket{\phi}$} \& \gate{H} \& \targ{}  \& \meter{} \\
+\lstick{$\ket{+}$}    \& \qw      \& \ctrl{-1}\& \qw
+\end{quantikz}
+\;=\;
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$H\ket{\phi}$} \& \targ{}  \& \meter{} \\
+\lstick{$\ket{+}$}     \& \ctrl{-1}\& \qw
+\end{quantikz}
+\end{equation}
+Two $\CNOT$s cancel each other out and a $\CNOT$ has no effect on $\ket+$. Then
+\begin{equation}
+\label{eq:add-cnot-mbqc}
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$H\ket{\phi}$} \& \targ{}  \& \meter{} \\
+\lstick{$\ket{+}$}     \& \ctrl{-1}\& \qw
+\end{quantikz}
+\;=\;
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$H\ket{\phi}$} \& \ctrl{1} \& \targ{}  \& \ctrl{1} \& \ctrl{1} \& \meter{} \\
+\lstick{$\ket{+}$}     \& \targ{}  \& \ctrl{-1}\& \targ{}  \& \targ{}  \& \qw
+\end{quantikz}
+\end{equation}
+The first three $\CNOT$s are equivalent to a swap gate. Thus
+\begin{equation}
+\label{eq:swap-mbqc}
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$H\ket{\phi}$} \& \ctrl{1} \& \targ{}  \& \ctrl{1} \& \targ{}  \& \meter{} \\
+\lstick{$\ket{+}$}     \& \targ{}  \& \ctrl{-1}\& \targ{}  \& \ctrl{-1}\& \qw
+\end{quantikz}
+\;=\;
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$\ket{+}$}     \& \targ{}  \& \meter{} \\
+\lstick{$H\ket{\phi}$} \& \ctrl{-1}\& \qw
+\end{quantikz}
+\end{equation}
+The final state before measurement is
+\begin{align}
+    \CNOT (\ket+ \otimes H \ket\phi) 
+    = \frac{1}{\sqrt2} \left( \ket0 \otimes H \ket\phi + \ket1 \otimes XH \ket\phi \right).
+\end{align}
+In other words, measuring in the $X$ basis ($\{\ket0, \ket1\}$) applies an $X$ to $\ket\phi$ if we measure a $\ket{1}$. This happens with only $0.5$ probability, hence the need for \term{adaptive measurements}. That is, measurements whose classical outcome can dynamically impact how other qubits are measured.
+\end{fact}
+
+\begin{fact}
+$R_z(\theta) Z R_z(\theta)^\dagger = Z$. That is, $R_z(\theta)$ commutes with $\cl Z$ for all $\theta$. Thus,
+\begin{equation}
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$\ket{\phi}$} \& \ctrl{1}  \& \gate{R_z(\theta)} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{+}$}    \& \ctrl{-1} \& \qw      \& \qw      \& \qw
+\end{quantikz}
+\;=\;
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$\ket{+}$}              \& \ctrl{1}  \& \meter{} \\
+\lstick{$HR_z(\theta)\ket{\phi}$} \& \targ{}   \& \qw
+\end{quantikz}.
+\end{equation}
+\end{fact}
+
+\begin{fact}
+\label{fact:euler-decomposition}
+[Euler decomposition] Every single-qubit unitary can be expressed (up to global phase) as the product $R_z(\theta_3)R_x(\theta_2)R_z(\theta_1)$.
+\end{fact}
+
+\begin{fact}
+\label{fact:rz-to-rx}
+For all $\theta \in [0,2\pi]$,
+\begin{align}
+    R_x(\theta) 
+    = H R_z(\theta) H.
+\end{align} 
+Thus by Fact \ref{fact:euler-decomposition} every single-qubit unitary can be applied to any $\ket\phi$ given we are making the right measurements.
+\end{fact}
+
+\begin{theorem}
+\label{thm:mbqc-line}
+[MBQC on the line is 1-qubit CQ-universal] Suppose you wish to apply gates $U_1, \ldots U_n$ to $\ket+$. There is a sequence of single-qubit measurements you can do to the line graph state of $|V| = \Theta(n)$ such that, assuming measurements are all $0$, gives $U_1, \ldots, U_n \ket+$ on the last qubit. 
+\end{theorem}
+
+The previous statement is really more of a statement on the computational power (in terms of universality) of the line graph as opposed to MBQC itself. For example, the graph with a single vertex is clearly not universal with the same MBQC gadgets. We formalize this notion below:
+
+\begin{theorem}
+\label{thm:cq-implies-qq}
+[\cite{MBQC-universal} Observation 2: CQ-universal implies QQ-universal]. A resource is CQ-universal if, using the MBQC protocol (namely, local operations and measurements), we obtain CQ-universality. Every CQ-universal resource can be made QQ-universal by allowing quantum inputs to be coupled into the resource state using the same coupling method as before, i.e. $\cl Z$ gates.
+\end{theorem}

@@ -1,46 +1,61 @@
-\begin{figure}[H]
+\begin{table}
 \centering
-\renewcommand{\arraystretch}{1.1}
-\begin{tabular}{c c c}
-
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}c c c@{}}
 \toprule
-\textbf{Name} & \textbf{Circuit} & \textbf{Bra-Ket} \\
+Gate & Circuit & Matrix \\
 \midrule
-
-CNOT &
-$\begin{quantikz}
-\lstick{} & \ctrl{1} & \qw \\
-\lstick{} & \targ{} & \qw
-\end{quantikz}$ &
-$\ket{0}\bra{0}\otimes I + \ket{1}\bra{1}\otimes X$ \\
-
-CCNOT or Toffoli &
-$\begin{quantikz}
-\lstick{} & \ctrl{1} & \qw \\
-\lstick{} & \ctrl{1} & \qw \\
-\lstick{} & \targ{} & \qw
-\end{quantikz}$ &
-$\displaystyle \ket{11}\bra{11}\otimes X + \sum_{\substack{(a,b)\neq(1,1)\\a,b \in \{0,1\}}} \ket{ab}\bra{ab}\otimes I$ \\
-
-SWAP &
-$\begin{quantikz}
-\lstick{} & \swap{1} & \qw \\
-\lstick{} & \targX{} & \qw
-\end{quantikz}$ &
-$\displaystyle\sum_{i,j\in\{0,1\}} \ket{ij}\bra{ji}$ \\
-
-C-$Z$ &
-$\begin{quantikz}
-\lstick{} & \ctrl{1} & \qw \\
-\lstick{} & \ctrl{-1} & \qw
-\end{quantikz}$ &
-$\ket{0}\bra{0}\otimes I + \ket{1}\bra{1}\otimes Z$ \\
-
+\text{CNOT} &
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxCtrl{} \dar \rar \& \\
+\rar \& \zxNot{} \rar \&
+\end{ZX} &
+$\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0
+\end{bmatrix}$ \\
+\text{CCNOT or Toffoli} &
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxCtrl{} \dar \rar \& \\
+\rar \& \zxCtrl{} \dar \rar \& \\
+\rar \& \zxNot{} \rar \&
+\end{ZX} &
+$\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0
+\end{bmatrix}$ \\
+\text{SWAP} &
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxCross{} \dar \rar \& \\
+\rar \& \zxCross{} \uar \rar \&
+\end{ZX} &
+$\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}$ \\
+\text{C-}Z &
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxCtrl{} \dar \rar \& \\
+\rar \& \zxCtrl{} \rar \&
+\end{ZX} &
+$\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & -1
+\end{bmatrix}$ \\
 \bottomrule
-
 \end{tabular}
-
 \caption{Common multi-qubit quantum gates}
 \label{fig:multi-qubit-gates}
-\end{figure}
-\renewcommand{\arraystretch}{1}
+\end{table}

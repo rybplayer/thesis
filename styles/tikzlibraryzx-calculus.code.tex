@@ -4054,8 +4054,8 @@
   \zxExecuteWhenDrawingArrows{%
     \zxArrowNow[
       from=\zxGetNameRelativeNode{0}{0},
-      to=\zxGetNameRelativeNodeStartOne{1}{2},
-      % to=\zxGetNameRelativeNodeStartOne{1}{#3},
+    %   to=\zxGetNameRelativeNodeStartOne{1}{2},
+      to=\zxGetNameRelativeNodeStartOne{1}{#3},
       /zx/vertical input multi style/.try,
       enlarge brace/.style={
         start anchor={[xshift=-####1]},  
@@ -4345,6 +4345,16 @@
   \node[zx main node, zxNone+,inner xsep=0pt]{\scalebox{#1}{$#3$\,}\makebox[0pt][l]{\scalebox{#2}{$\cvdotsCenterMathline$}}}; \ar[r,-N.,start anchor=north east] \ar[r,-N',start anchor=south east] \pgfmatrixnextcell[\zxwCol]%
 }
 
+\NewExpandableDocumentCommand{\leftManyHDots}{O{1}O{\zxScaleDots}m}{%
+  \node[zx main node, zxNone+,inner xsep=0pt]{%
+    \scalebox{#1}{$#3$\,}%
+    \makebox[0pt][l]{\scalebox{#2}{$\cvdotsCenterMathline$}}%
+  };
+  \ar[r,-N.,H,start anchor=north east]
+  \ar[r,-N',H,start anchor=south east]
+  \pgfmatrixnextcell[\zxwCol]%
+}
+
 % Useful to link two nodes and put a vdots in between.
 \NewExpandableDocumentCommand{\middleManyDots}{}{%
   \ar[r,3 vdots] \ar[o',r] \ar[o.,r]%
@@ -4353,6 +4363,10 @@
 % Like \leftManyDots but on the right. Do *not* create a new node, like in |[zxShortZ]| \alpha \rightManyDots{m}
 \NewExpandableDocumentCommand{\rightManyDots}{O{1}O{\zxScaleDots}m}{%
   \ar[r,N'-,end anchor=north west] \ar[r,N.-,end anchor=south west] \pgfmatrixnextcell[\zxwCol] \node[zx main node, zxNone+,inner xsep=0pt]{\makebox[0pt][r]{\scalebox{#2}{$\cvdotsCenterMathline$}}\scalebox{#1}{\,$#3$}};
+}
+
+\NewExpandableDocumentCommand{\rightManyHDots}{O{1}O{\zxScaleDots}m}{%
+  \ar[r,N'-,H,end anchor=north west] \ar[r,N.-,H,end anchor=south west] \pgfmatrixnextcell[\zxwCol] \node[zx main node, zxNone+,inner xsep=0pt]{\makebox[0pt][r]{\scalebox{#2}{$\cvdotsCenterMathline$}}\scalebox{#1}{\,$#3$}};
 }
 
 % Shortcut for frequent wires

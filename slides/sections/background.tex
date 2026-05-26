@@ -194,9 +194,9 @@ Let $\LO$ denote local operations, i.e. single qubit unitaries and measurements.
 
 \begin{definition}<2->
 Let $\Psi$ be a family of resource states. $\Psi$ is a \textbf{universal resource} for MBQC if for every $U \in SU(2^n)$, $\forall n \in \mathbb{N}$, there is a sequence of $\LOCC$ and some resource state $\ket\psi \in \Psi$, such that 
-\begin{align*}
+\begin{align}
     \ket{\psi} \xrightarrow{\LOCC} U \ket{0^n}
-\end{align*}
+\end{align}
 \only<3->{%
 In other words, we can ``simulate any state'' using $\LOCC$ and a resource state from $\Psi$.
 }
@@ -212,9 +212,9 @@ $\{\Grid_{1 \times i}\}_{i\in \mathbb{N}}$ (The lines) are a 1-qubit universal r
 
 \begin{lemma}[Euler decomposition]
 Every single-qubit unitary can be expressed (up to global phase) as the product
-\begin{align*}
+\begin{align}
     R_z(\theta_3)R_x(\theta_2)R_z(\theta_1)
-\end{align*}
+\end{align}
 for some $\theta_1, \theta_2, \theta_3 \in [0,2\pi]$.
 \end{lemma}
 
@@ -228,7 +228,7 @@ $R_x(\theta) = H R_z(\theta) H$, for all $\theta \in [0,2\pi]$.
 
 \begin{proof}[Informal proof.]
 \vspace{-0.8cm}
-\begin{align*}
+\begin{align}
 \begin{quantikz}[row sep=0.2cm, column sep=0.2cm]
 \lstick{$\ket{\phi}$} & \ctrl{1}  & \gate{R_z(\theta)} & \gate{H} & \meter{} \\
 \lstick{$\ket{+}$}    & \ctrl{-1} & \qw      &          &
@@ -238,7 +238,7 @@ $R_x(\theta) = H R_z(\theta) H$, for all $\theta \in [0,2\pi]$.
 \lstick{$\ket{+}$}              & \ctrl{1}  & \meter{} \\
 \lstick{$HR_z{\theta}\ket\phi$} & \targ{}   & \qw
 \end{quantikz}
-\end{align*}
+\end{align}
 \only<2->{%
 If we measure $0$, we get $HR_z(\theta)\ket\phi$ in the second register. If we measure $1$, we get $XH_z(\theta)\ket\phi$. Thus given the right measurements we can apply any 1-qubit gate by repeating the construction:
 }
@@ -271,10 +271,10 @@ Similar to the proof for the line.
 
 \begin{definition}
 Let $\CGrid_{m \times n}$ denote the $m$ rows, $n$ column \textbf{comparability grid}, which is an undirected graph $G = (V,E)$ with
-\begin{align*}
+\begin{align}
     V &= \{(i,j) \mid i \in [m], j \in [n]\} \\
     E &= \{ \{(i_1,j_1),(i_2,j_2)\} \mid (i_1,j_1),(i_2,j_2) \in V, i_2 \geq i_1, j_2 \geq j_1. \}
-\end{align*}  
+\end{align}  
 i.e. the grid with partial order $\leq$ defining edges.
 \end{definition}
 

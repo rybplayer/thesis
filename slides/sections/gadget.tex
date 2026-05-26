@@ -4,7 +4,7 @@
 
 \begin{definition}
 The previous graph gives rise to the following width-3 gadget:
-\begin{align*}
+\begin{align}
 \begin{quantikz}
 \lstick{$q_1$} 
     & \gate{R_z(\theta_1)} & \targ{}   & \ctrl{1} & \gate{H} & \qw \\
@@ -13,7 +13,7 @@ The previous graph gives rise to the following width-3 gadget:
 \lstick{$q_3$} 
     & \gate{R_z(\theta_3)} & \ctrl{-2} & \qw      & \gate{H} & \qw
 \end{quantikz}        
-\end{align*}
+\end{align}
 \end{definition}
 
 Question: Is this gadget universal for MBQC?
@@ -40,15 +40,15 @@ Question: Is this gadget universal for MBQC?
 
 \begin{definition}[Matrix Exponentiation]
 For any $A \in \mathbb{C}^{m \times m}$, 
-\begin{align*}
+\begin{align}
     e^A = \sum_{k=0}^\infty \frac{A^k}{k!}
-\end{align*}
+\end{align}
 \end{definition}
 
 \begin{definition}<2->[Lie Algebra of $SU(2^n)$]
-\begin{align*}
+\begin{align}
     \mathfrak{su}(2^n) = \{ -iH \in \mathbb{C}^{2^n \times 2^n} \mid H^\dagger = H, \text{tr}(H) = 0 \}
-\end{align*}
+\end{align}
 \end{definition}
 
 \end{frame}
@@ -97,17 +97,17 @@ The Clifford group on 3 qubits is finite. Hence every element has finite order, 
 
 \begin{fact}[Baker-Campbell-Hausdorff formula]
 For $A,B \in \mathfrak{su}(2^n)$,
-\begin{align*}
+\begin{align}
     e^{A} e^{B} = e^{A + B + \frac{1}{2}[A,B] + \frac{1}{12}[A,[A,B]] + \frac{1}{12}[B,[A,B]] + \cdots}
-\end{align*}
+\end{align}
 where $[A,B] = AB - BA$ is the commutator of $A$ and $B$.
 \end{fact}
 
 \begin{fact}
 For $A,B \in \mathfrak{su}(2^n)$,
-\begin{align*}
+\begin{align}
     \lim_{k \to \infty} e^{A/k} e^{B/k} = e^{A + B}
-\end{align*}
+\end{align}
 \end{fact}
 
 \begin{corollary}
@@ -120,9 +120,9 @@ If we have $A,B$ in the Lie algebra, we can generate their sum.
 
 \begin{fact}
 For $A,B \in \mathfrak{su}(2^n)$,
-\begin{align*}
+\begin{align}
     \lim_{k \to \infty} e^{B/k} e^{A/k} e^{-B/k} e^{-A/k} = e^{[A,B]}.
-\end{align*}
+\end{align}
 \end{fact}
 
 \begin{corollary}

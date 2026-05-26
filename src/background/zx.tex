@@ -1,0 +1,283 @@
+\subsection{The ZX-Calculus}
+
+\begin{definition}
+The \term{ZX-Calculus} is a graphical language for representing quantum computation. Objects of the ZX-Calculus, called \term{ZX Diagrams}, are made up of two types of generators known as \term{spiders}: The \term{X-spider}, with $n$ ``inputs'' and $m$ ``outputs'' is defined as
+\begin{align}
+    \begin{ZX}
+        \leftManyDots{n} \zxX{\alpha} \rightManyDots{m}
+    \end{ZX}
+    :=
+    \ket{0}^{\otimes m} \bra{0}^{\otimes n} + e^{i \alpha} \ket{1}^{\otimes m} \bra{1}^{\otimes n}.
+\end{align}
+We say that the above spider has a \term{phase} $\alpha \in [0,2\pi)$. Similarly, the \term{Z-spider} is defined as 
+\begin{align}
+    \begin{ZX}
+        \leftManyDots{n} \zxZ{\alpha} \rightManyDots{m}
+    \end{ZX}
+    := 
+    \ket{+}^{\otimes m} \bra{+}^{\otimes n} + e^{i \alpha} \ket{-}^{\otimes m} \bra{-}^{\otimes n}.
+\end{align}
+In other words, the ZX-Calculus is a calculus (i.e. rules) for manipulating Z and X spiders.
+\end{definition}
+
+\begin{remark}
+In the literature, the X-spider is often red and the Z-spider is often green, e.g. \begin{ZX}\zxX[fill=red!70]{}\end{ZX} and \begin{ZX}\zxZ[fill=green!60!black]{}\end{ZX}. However, for accessibility reasons we choose to adopt the black-and-white ZX-Calculus color scheme instead.
+\end{remark}
+
+\begin{definition}
+Write $a \propto b$ if $a = c \cdot b$, for some $c \in \C$. Furthermore, if $D$ is a ZX diagram, write $\llbracket D \rrbracket$ to denote the matrix represented by $D$. To reduce notational clutter, we will use $\llbracket D \rrbracket$ only when it is necessary to distinguish a diagram from its matrix.
+\end{definition}
+
+\begin{example}
+\label{ex:ex-zx}
+The standard quantum states can be written as spiders without inputs:
+\begin{align}
+    \begin{ZX}
+        \zxX{0} \rar & \zxN{}
+    \end{ZX}
+    &= \sqrt{2} \ket{+} \propto \ket{+},
+    &&\begin{ZX}
+        \zxX{\pi} \rar & \zxN{}
+    \end{ZX}  
+    = \sqrt{2} \ket{-} \propto \ket{-}, \\
+    \begin{ZX}
+        \zxZ{0} \rar & \zxN{}
+    \end{ZX}
+    &= \sqrt{2} \ket{0} \propto \ket{0},
+    &&\begin{ZX}
+        \zxZ{\pi} \rar & \zxN{}
+    \end{ZX}
+    = \sqrt{2} \ket{1} \propto \ket{1}.
+\end{align}
+Single qubit gates can be written as spiders with 1 input and 1 output:
+\begin{align}
+    \begin{ZX}
+        \zxN{} \rar & \zxZ{\alpha} \rar & \zxN{}
+    \end{ZX}
+    &= \begin{bmatrix}
+        1 & 0 \\ 0 & e^{i\alpha}
+    \end{bmatrix}
+    = e^{i\alpha/2}\begin{bmatrix}
+        e^{-i\alpha/2} & 0 \\ 0 & e^{i\alpha/2}
+    \end{bmatrix}
+    = e^{i\alpha/2} R_z(\alpha) \\
+    \begin{ZX}
+        \zxN{} \rar & \zxX{\alpha} \rar & \zxN{}
+    \end{ZX}
+    &= \frac{1}{2} \begin{bmatrix}
+        1 + e^{i\alpha} & 1 - e^{i\alpha} \\ 1 - e^{i\alpha} & 1 + e^{i\alpha}
+    \end{bmatrix}
+    = e^{i\alpha/2} R_x(\alpha)
+\end{align}
+Thus $\begin{ZX}[circuit]
+    \rar & \zxBox{Z} \rar &
+\end{ZX} \propto \begin{ZX}
+    \rar & \zxZ{\pi} \rar &
+\end{ZX}$ and $\begin{ZX}[circuit]
+    \rar & \zxBox{X} \rar &
+\end{ZX} \propto \begin{ZX}
+    \rar & \zxX{\pi} \rar &
+\end{ZX}$. 
+\end{example}
+
+\begin{definition}
+\label{def:zx-composition}
+Informally, the composition of spiders in ZX diagrams is similar to the composition of quantum gates in quantum circuits: Spiders connected via wires matrix multiply, while spiders ``stacked vertically'' are tensored together.\footnote{Formally, the category of ZX diagrams, \term{$\mathsf{ZX}$}, is a compact closed symmetric monoidal category. The objects are non-negative integers and the morphisms ZX diagrams. The composition of morphisms correspond to the composition of ZX diagrams. The tensor product on objects satisfies $n \otimes m := n + m$ and the tensor product of two ZX diagrams is given by ``stacking'' the diagrams on top of another. Due to the existence of the cup and cap, this is a compact closed category. Interested readers should see \cite{zx-category} for more details.}
+\end{definition}
+
+\begin{definition}
+Here is an example of ZX composition: The Hadamard gate satisfies
+\begin{align}
+    \begin{ZX}
+        \rar & \zxBox{H} \rar &
+    \end{ZX}
+    = e^{-i\pi/4} \begin{ZX}
+        \rar & \zxZ{\pi/2} \rar & \zxX{\pi/2} \rar & \zxZ{\pi/2} \rar &
+    \end{ZX}.
+\end{align}
+Due to this verbose representation, we shorthand $\begin{ZX}
+    \rar & \zxH{} \rar &
+\end{ZX} := \begin{ZX}
+    \rar & \zxBox{H} \rar &
+\end{ZX}$ and call this the \term{H-box}.
+\end{definition}
+
+\begin{definition}
+\term{Wires} or lines between spiders may ``bend'' in the following ways:
+\begin{align}
+    \begin{ZX}
+        \zxN{} \ar[rd,s] &[\zxWRow] \zxN{} \\[\zxWRow]
+        \zxN{} \ar[ru,s] & \zxN{}
+    \end{ZX}
+    = \begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 0 & 1
+    \end{bmatrix},
+    \quad
+    \begin{ZX}
+        \zxN{} \ar[d,C] \\[\zxWRow]
+        \zxN{}
+    \end{ZX}
+    = \begin{bmatrix}
+        1 \\ 0 \\ 0 \\ 1
+    \end{bmatrix},
+    \quad
+    \begin{ZX}
+        \zxN{} \\[\zxWRow]
+        \zxN{} \ar[u,C-]
+    \end{ZX}
+    = \begin{bmatrix}
+        1 & 0 & 0 & 1
+    \end{bmatrix}.
+\end{align}
+These are called ``swap,'' ``cup,'' and ``cap,'' respectively from left to right, and their composition is treated like the composition with a 2-qubit gate.
+\end{definition}
+
+\begin{definition}
+We will be doing plenty of work with spiders moving forward, so we will set some conventions: The \term{arity} of a spider is the number of inputs and outputs it has. If a spider has phase $0$, we say it is \term{phase-less}, and often do not bother writing the $0$. Namely, $\zx{\zxZ{}} := \zx{\zxZ{0}}$ and $\zx{\zxX{}} := \zx{\zxX{0}}$.
+\end{definition}
+
+\begin{definition}
+The ZX Calculus admits a finite set of \term{rewrite rules}, or graphical equivalences for rewriting ZX diagrams. These are summarized in Table \ref{table:zx-rules}. For further explanation of these rules and some history on their names, please see \cite{zx-working}.
+\end{definition}
+
+\input{figures/zx_rules.tex}
+
+So far, it is not clear why we would choose to use ZX-Calculus over either the algebraic or circuit representation of a quantum circuit. This becomes clearer when we look at Table \ref{table:zx-rules}. Namely, Table \ref{table:zx-rules} tells us that there is a short, finite set of rules for rewriting any ZX diagram to another. Paired with the fact that there are only two types (three if you count the H-box) of objects being manipulated, this notation allows us to reason about quantum computation at a higher level compared to the matrix or circuit representations. The following lemma is an example of this.
+
+\begin{lemma}[Color Change Lemma] 
+\label{lemma:color-change}
+Any rewrite identity in ZX holds if we replace Z-spiders by X-spiders and vice versa.
+\end{lemma}
+
+\begin{proof}
+Consider a ZX diagram identity $D = D'$. For both: Apply $(cc)$ on all spiders to swap all colors. All inputs and outputs connected to a spider gain a H-box, which are the same wires in $D$ and $D'$. All wires between two spiders gain two H-boxes, which by $(hh)$ cancel. Thus the color-swapped $D$ is equivalent to the color-swapped $D'$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:yanking}
+Any ZX diagram is topologically invariant; only connectivity matters.
+\end{theorem}
+
+\begin{proof}
+The proof surmounts to a tedious enumeration of all possible rearrangements of the same quantum circuit \cite{PQP}. Like in quantum circuits, we often write ZX diagrams where inputs come from the left and outputs go to the right. This is simply convention. More formally, it suffices to maintain an ordered list of wires considered the input(s) and output(s).
+\end{proof}
+
+\begin{example}
+\label{ex:zx-cnot}
+The CNOT gate has the following ZX representation:
+\begin{align}
+    \begin{ZX}[circuit]
+        \rar & \zxCtrl{} \dar \rar & \\
+        \rar & \zxNot{} \rar &
+    \end{ZX} =
+    \begin{ZX}
+        \rar & \zxZ{} \dar \rar & \\
+        \rar & \zxX{} \rar &
+    \end{ZX}.
+\end{align}
+What Theorem \ref{thm:yanking} says is that 
+\begin{align}
+    \left\llbracket \begin{ZX}
+        \rar & \zxZ{} \rar \ar[dr] & \rar        & \\
+        \rar & \rar                & \zxX{} \rar &
+    \end{ZX}
+    \right\rrbracket =
+    \left\llbracket \begin{ZX}
+        \rar & \zxZ{} \dar \rar & \\
+        \rar & \zxX{} \rar      &
+    \end{ZX}
+    \right\rrbracket =
+    \left\llbracket \begin{ZX}
+        \rar & \rar                & \zxZ{} \rar & \\
+        \rar & \zxX{} \ar[ur] \rar & \rar        &
+    \end{ZX}
+    \right\rrbracket.
+\end{align}
+\end{example}
+
+\begin{lemma}
+\label{lemma:zx-universal-up-to-scalar}
+The ZX-Calculus is exactly universal for quantum computation\footnote{See Definition \ref{def:universality} for a clarification of what exactly universal means.}, up to some complex scalar factor.
+\end{lemma}
+
+\begin{proof}
+By Example \ref{ex:ex-zx} and Euler decomposition (Theorem \ref{thm:euler-decomposition}), we have that every single-qubit gate can be represented in the ZX-Calculus, up to some complex scalar factor. Example \ref{ex:zx-cnot} gives us a representation of CNOT, a two-qubit entangling gate in the ZX-Calculus. By Theorem 1.3 of \cite{1qubit-entangling-universal}, arbitrary single-qubit gates with any entangling 2-qubit gate are exactly universal for quantum computation.
+\end{proof}
+
+\begin{theorem}
+\label{thm:zx-any-scalar}
+Any $c \in \C$ can be written as a ZX diagram.
+\end{theorem}
+
+\begin{proof}
+Notice\footnote{Here we use the fact that composition between ZX diagrams that are scalars is regular multiplication. This is a subtle implication of \ref{def:zx-composition}.}
+\begin{align}
+    \left\llbracket
+    \begin{ZX}
+        \zxX{\pi} \rar & \zxZ{\theta} & \zxX{} \rar \ar[r,o'] \ar[r,o.] & \zxZ{}
+    \end{ZX}
+    \right\rrbracket
+    = e^{i\theta}, \quad 
+    \left\llbracket
+    \begin{ZX}
+        \zxZ{\alpha}
+    \end{ZX}
+    \right\rrbracket
+    = 1 + e^{i\alpha}, \quad 
+    \left\llbracket
+    \begin{ZX}
+        \zxX{} \rar \ar[r,o'] \ar[r,o.] & \zxZ{} &  \zxX{} \rar \ar[r,o'] \ar[r,o.] & \zxZ{}
+    \end{ZX}
+    \right\rrbracket
+    = \frac{1}{2}, \quad 
+    \left\llbracket
+    \begin{ZX}
+        \zxZ{}
+    \end{ZX}
+    \right\rrbracket
+    = 2.
+\end{align}
+Then 
+\begin{align}
+    \cos(\theta) = \frac{e^{i\theta} + e^{-i\theta}}{2}
+    = \frac{1}{2} \left(
+        e^{-i\theta} \left(
+            1 + e^{2i\theta}
+        \right)
+    \right).
+\end{align}
+Thus we can write $\cos(\theta)$ as a ZX diagram. By the Archimedean property, for all $r \in \R$, there exists $k \in \N$ such that $2^k > |r|$. So we can write 
+\begin{align}
+    r = 2^k \cos(\theta), \quad \theta = \arccos\left( \frac{r}{2^k} \right).
+\end{align}
+Then any real number can be written as a ZX diagram. Now, for any $c \in \C$, use the polar coordinates $c = \rho \cdot e^{i\theta}$ to obtain a ZX representation of $c$. Note that for $c = 0$, $\llbracket \zx{\zxZ{\pi}} \rrbracket = 1 - 1 = 0$. 
+\end{proof}
+
+\begin{theorem}
+The ZX-Calculus is exactly universal for quantum computation.
+\end{theorem}
+
+\begin{proof}
+This follows by Theorem \ref{thm:zx-any-scalar} and Lemma \ref{lemma:zx-universal-up-to-scalar}.
+\end{proof}
+
+Furthermore, it is a well-known result \cite{ZX-Complete} that the rules in Table \ref{table:zx-rules} are complete for quantum computation. That is, any identity that can be shown through the matrix representation can also be shown through ZX-Calculus. Equivalently, if two diagrams $D$, $D'$ represent the same quantum computation, the diagrams can be transformed to one another using only the rules in Table \ref{table:zx-rules}. In fact, we may largely ignore scalar factors during this rewrite process. This is formalized below:
+
+\begin{lemma}
+\label{lemma:zx-ignore-scalar}
+We may ignore scalar factors during ZX rewrites, provided that the desired scalar is restored at the end. This gives us the computation up to a global phase.
+\end{lemma}
+
+\begin{proof}
+Given a quantum computation as a unitary $U$, we can obtain a diagram $D$ where $\llbracket D \rrbracket = c U$, where $c \in \C$ is some non-zero scalar factor. We then have $\llbracket D \rrbracket \llbracket D \rrbracket^\dagger = c \overline{c} I$. Then 
+\begin{align}
+    \frac{1}{|c|} \llbracket D \rrbracket 
+    = \frac{c}{|c|} U,
+\end{align} 
+so we can recover $U$ up to a global phase.
+\end{proof}
+
+Computationally, it is often convenient to keep track of the product of all scalar factors in a diagram as a \emph{number} rather than as a ZX diagram. We can use this extraneous data structure precisely because of Theorem \ref{thm:zx-any-scalar}, and as such we will recover the computation's global phase as well (unlike Lemma \ref{lemma:zx-ignore-scalar}).

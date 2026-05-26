@@ -1,0 +1,16 @@
+\subsection{Circle Graphs}
+
+\begin{definition}
+The $m \times n$ \term{comparability grid} is a graph $G = (V,E)$ with
+\begin{align}
+    V &= \{(i,j) \mid i \in [m], j \in [n]\} \\
+    \label{eq:comp-grid-edges}
+    E &= \{ \{(i_1,j_1),(i_2,j_2)\} \mid (i_1,j_1),(i_2,j_2) \in V, i_2 \geq i_1, j_2 \geq j_1. \}
+\end{align}
+In other words, $m$ rows and $n$ columns with edges defined by the partial order $\leq$. Denote such graphs as $\CGrid_{m \times n}$. Let $\CGrid$ denote the family of all such graphs. By abuse of notation, let it also denote the resource state of all graph states corresponding to comparability grids.
+\end{definition}
+
+\begin{example}
+Figure 3 shows the $3 \times 3$ comparability grid:
+\input{figures/comp_grid_example}
+\end{example}

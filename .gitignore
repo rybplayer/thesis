@@ -7,3 +7,15 @@ papers/*
 notes/*
 *.bbl
 Icon
+temp.*
+exp.*
+*.blg
+*.fdb_latexmk
+*.bbl
+*.aux
+*.fls
+*.bcf
+*.log
+*.toc
+*.run.xml
+*.synctex(busy)

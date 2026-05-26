@@ -7,14 +7,15 @@
 %% IMPORTS %%
 
 % document flow
-\usepackage{enumitem,titling,fancyhdr,imakeidx,csquotes,tabularx,booktabs,subcaption,biblatex}
+\usepackage{enumitem,titling,fancyhdr,imakeidx,csquotes,tabularx,booktabs,subcaption}
+\usepackage[style=alphabetic]{biblatex}
 
 % math
 \usepackage{amsmath,amsthm,amssymb,mathtools,esint,extarrows,stmaryrd,esdiff,faktor,cancel,nicefrac,ytableau,bold-extra}
 \AtBeginDocument{\SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}}
 
 % tikz
-\usepackage{tikz,quiver,pgffor}
+\usepackage{tikz,pgffor}
 \usetikzlibrary{cd}
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.markings}
@@ -32,6 +33,64 @@
 
 % quantum
 \usepackage{braket,physics,quantikz}
+\renewcommand{\zxDefaultRowSep}{3mm}
+\renewcommand{\zxDefaultColumnSep}{3mm}
+\renewcommand{\zxDefaultLineWidth}{0.8pt}
+\zxEnableIntersections
+\tikzset{
+  /zx/user overlay wires/.style={
+    line width=\zxDefaultLineWidth,
+    line cap=round,
+    line join=round,
+    intersection between start end
+  },
+  /zx/user overlay nodes/.style={
+    zxNoPhase/.append style={minimum size=2.8mm},
+    zxShort/.append style={
+      font={\fontsize{10}{12}\selectfont\boldmath},
+      minimum size=6.2mm
+    },
+    zxLong/.append style={
+      font={\fontsize{10}{12}\selectfont\boldmath}
+    },
+    stylePhaseInLabel/.append style={
+      font={\fontsize{10}{12}\selectfont\boldmath}
+    }
+  }
+}
+
+\tikzset{
+  hw/.style={
+    blue,
+    dashed,
+    line width=1pt
+  }
+}
+
+\tikzset{
+  Zphase/.style={
+    "\ensuremath{#1}" {zxShortZ, anchor=center, inner sep=0pt, scale=0.7}
+  },
+  Zphase/.default={\alpha}
+}
+
+\NewExpandableDocumentCommand{\zxLoopZPhase}{O{90}O{20}O{}m}{%
+  \ar[loop,in=#1-#2,out=#1+#2,looseness=8,min distance=3mm,Zphase={#4},#3]%
+}
+
+\tikzset{
+  Xphase/.style={
+    "\ensuremath{#1}" {zxShortX, anchor=center, inner sep=0pt, scale=0.7}
+  },
+  Xphase/.default={\alpha}
+}
+
+\NewExpandableDocumentCommand{\zxLoopXPhase}{O{90}O{20}O{}m}{%
+  \ar[loop,in=#1-#2,out=#1+#2,looseness=8,min distance=3mm,Xphase={#4},#3]%
+}
+
+\newcommand{\zxlabel}[2]{\hypertarget{case:#1}{#2}}
+\newcommand{\zxref}[1]{\hyperlink{case:#1}{\ensuremath{(#1)}}}
 
 % utilities
 \usepackage{xifthen, titlesec, setspace}
@@ -67,13 +126,15 @@
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{notation}[theorem]{Notation}
-\newtheorem{corollary}{Corollary}
+\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{axiom}[theorem]{Axiom}
 \newtheorem*{claim}{Claim}
 \newtheorem{ques}{Question}
 \newtheorem{problem}{Problem}
 \newtheorem{exercise}{Exercise}
 \newtheorem{fact}[theorem]{Fact}
+
+\numberwithin{equation}{section}
 
 % Auto-labeling for theorem-like environments
 \makeatletter
@@ -202,6 +263,9 @@
 % QUANTUM
 \newcommand{\EPR}{\text{EPR}}
 \newcommand{\CNOT}{\text{CNOT}}
+\newcommand{\CZ}{\text{CZ}}
+\newcommand{\Had}{\text{H}}
+\newcommand{\Sgate}{\text{S}}
 \newcommand{\CCNOT}{\text{CCNOT}}
 \newcommand{\cl}{\text{C-}}
 \newcommand{\junk}{\text{junk}}
@@ -240,3 +304,5 @@
 \newcommand{\header}[1]{\begin{center}
     \Large\textbf{#1}
 \end{center}}
+
+\newcolumntype{C}{>{\centering\arraybackslash}m{0.31\textwidth}}

@@ -1,8 +1,6 @@
-\section{Theoretical Approaches}
-
 Theorem \ref{thm:measure-for-universal} has potential to prove (or disprove) the universality of $\CGrid$ as a resource. However, it will be challenging to find a function $E$ that fails (satisfies Theorem \ref{thm:measure-for-universal}) for $\CGrid$ yet succeeds for $\Grid$. We formalize this attempt in the next subsection.
 
-\subsection{LU-LC}
+\subsection{Local Unitary vs. Local Clifford}
 
 \begin{definition}
 If $\ket{G_1} \geq_\LOCC \ket{G_2}$ and $\ket{G_2} \geq_\LOCC \ket{G_1}$ then $E(\ket{G_1}) = E(\ket{G_2})$ for any entanglement monotone $E$. An $E$ is called \term{entanglement monotone} if it does not increase, on average, for any $\LO$.
@@ -30,39 +28,4 @@ Let $G = (V,E)$ be a graph. The local complementation around a vertex $v \in V$ 
 
 \begin{theorem}
 $\ket{G_1} =_\LC \ket{G_2}$ if and only if there is a sequence of local complementations from $G_1$ to $G_2$. Furthermore, there exists an efficient algorithm to recognize whether graphs are local clifford equivalent \cite{lc-equiv-alg}.
-\end{theorem}
-
-\subsection{Vertex Minors}
-
-\begin{definition}
-A graph $H$ is a vertex minor of a graph $G$ if there is a sequence of vertex deletions and local complementations from $G$ to $H$.
-\end{definition}
-
-\note{The above definition is a major motivation for our focus on vertex deletion in the previous section. Thus, it may make sense to swap the order of sections around}
-
-\begin{theorem}
-Deciding whether a graph $H$ is a vertex-minor of $G$ is $\NP$-complete \cite{vertex-minor-np}.
-\end{theorem}
-
-\begin{definition}
-\note{The definition of the \term{rank width} of a graph $G = (V,E)$ is quite involved and given in \cite{rank-width-def}.}
-\end{definition}
-
-\begin{fact}
-The rank width of a graph is preserved under local complementation. Vertex deletions may reduce rank-width, so the rank width of $G$ is at least the rank width of any vertex-minor of $G$.
-\end{fact}
-
-\begin{theorem}
-Every $\CGrid$ is a vertex-minor of a graph in every family of graphs with unbounded rank-width [cite:need]. Formally, there is a function $f: \N \to \N$ such that every graph of rank-width $\geq f(n)$ has a vertex-minor isomorphic to $\CGrid_{n \times n}$ \cite{grid-theorem}.
-\end{theorem}
-
-\begin{theorem}
-Grid graphs contain all graphs as vertex minors. Formally, there is a function $f: G \to \N$ such a graph $G$ is the vertex minor of $\Grid_{f(G) \times f(G)}$.
-\begin{proof}
-\note{I would like to formalize the proof in Kunal's notes from James George Davies.}
-\end{proof}
-\end{theorem}
-
-\begin{theorem}
-If $\CGrid \geq_\LOCC \Grid$ then unbounded rank-width is not sufficient for universality.
 \end{theorem}

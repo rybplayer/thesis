@@ -1,0 +1,116 @@
+\subsection{Qubits}
+
+\begin{definition}[Qubit] A single \term{qubit} $\ket\phi$ is a state
+\begin{align}
+    \ket\phi = \alpha\vect{1}{0} + \beta\vect{0}{1} \in \C^2,
+\end{align}
+where $|\alpha|^2 + |\beta|^2 = 1$ and $\alpha, \beta \in \C$. We say $\ket\phi$ is in a \term{superposition} between $\svect{1}{0}$ and $\svect{0}{1}$. Thus a single qubit is a length 2 vector in the Hilbert space $\C^2$ with a $\ell_2$ norm of 1.
+\end{definition}
+
+\begin{definition}[Braket notation]
+Define ``kets'' $\ket{0} := \svect{1}{0}$ and $\ket{1} := \svect{0}{1}$, both in $\C^2$. For any $\ket\phi$, let ``bra'' $\bra\phi := \ket\phi^\dagger = (\ket\phi^*)^T$ be its conjugate transpose. Thus the braket denotes the inner product:
+\begin{align}
+    \braket{\phi}{\phi}
+    := \bra{\phi} \cdot \ket{\phi}.
+\end{align}
+Now the $\ell_2$ norm of $\ket{\phi}$ can now be written as $|\ket{\phi}| := \|\ket\phi\|_2 =  \sqrt{\braket{\phi}{\phi}}$.
+\end{definition}
+
+\begin{definition}[Tensor Product]
+Let $A \in \C^{m \times n}$ and $B \in \C^{o \times p}$. For our purposes, it suffices to define the \term{tensor product}
+\begin{align}
+    A \otimes B := \begin{bmatrix}
+        a_{1,1}B & \cdots & a_{1,n} \\
+        \vdots & \ddots & \vdots \\
+        a_{n,1}B & \cdots & a_{n,m}B
+    \end{bmatrix}
+\end{align}
+where $a_{i,j}$ denotes the $i$th row and $j$th column of $A$. 
+\end{definition}
+
+\begin{definition}[Multiple qubits]
+Let $x = \overline{x_1 x_2 \cdots x_d} \in \{0,1\}^d$, i.e. a binary bit-string. Define
+\begin{align}
+    \ket{x} := \bigotimes_{i=1}^d \ket{x_i}.
+\end{align}
+For example, $\ket{00} = \ket{0} \otimes \ket{0} = \begin{pmatrix} 1 & 0 & 0 & 0 \end{pmatrix}^T$. We may also replace $x$ by its integer evaluation as a binary number, by abuse of notation. For example,
+\begin{align}
+    \ket{3} = \ket{11} = \begin{pmatrix}
+        0 & 0 & 0 & 1
+    \end{pmatrix}^T
+\end{align}
+but we may also have
+\begin{align}
+    \ket{3} = \ket{011} = \begin{pmatrix}
+        0 & 0 & 0 & 1 & 0 & 0 & 0 & 0
+    \end{pmatrix}^T
+\end{align}
+Which binary representation we choose should be clear from context. For example, this gives us two equivalent definitions of a $q$-qubit state
+\begin{align}
+    \ket\varphi 
+    = \sum_{x \in \{0,1\}^d} \alpha_x \ket{x} 
+    = \sum_{x \in [2^d] \cup \{0\}} \alpha_x \ket{x} 
+    \in \C^{2^d}
+\end{align}
+where $\alpha_x \in \C$ and $\sum_{x \in \{0,1\}^d} \alpha_x \ket{x} = 1$. As the number of dimensions increases exponentially with regards to the number of qubits, braket notation will become increasingly concise compared to traditional vector notation.
+\end{definition}
+
+\begin{definition}[Tensor Product Notation]
+For brevity, we will write $\ket\phi \ket\psi = \ket\phi \otimes \ket\psi$, so adjacent kets imply $\otimes$. However, note that $\ket{\phi\psi} \neq \ket\phi \ket\psi$ in general. Also, let 
+\begin{align}
+    A^{\otimes n} := \bigotimes_{i=1}^n A.
+\end{align}
+\end{definition}
+
+\begin{definition} Vectors $\ket{v_1}, \ldots, \ket{v_n} \in \C^n$ are an orthonormal basis if
+\begin{enumerate}
+    \item $|\ket{v_i}| = 1$ for every $i \in [n]$ and
+    \item $\ket{v_i} \bot \ket{v_j}$ (equivalently, $\braket{v_i}{v_j} = 0$) for every $i,j \in [n]$ with $i \neq j$.
+\end{enumerate}
+Henceforth, all bases are orthonormal unless explicitly said otherwise.
+\end{definition}
+
+\begin{definition}[Measurement]
+\label{def:measurement}
+The \term{Born Rule} defines how quantum measurement occurs: An $n$-qubit state $\ket\phi$ can be measured under any orthonormal basis $\{\ket{v_i}\}_{i \in [2^n]}$ of $\C^{2^n}$. When measured, the output $i$ occurs with probability $| \braket{v_i}{\phi} |^2$. After seeing outcome $i$, the state collapses to $\ket{v_i}$. This process is irreversible.
+\end{definition}
+
+\begin{definition}[Partial measurement]
+One can also view measurement as projection. This is useful for \term{partial measurement}, where only some qubits in a state are measured. Let the $n$-qubit space $\C^{2^n} = S_1 \otimes S_2$, where $S_1 \cong (\C^2)^{\otimes k}$. Let $\{\ket{s_i}\}_{i \in [2^k]}$ be an orthonormal basis for $S_1$. On outcome $i \in [2^k]$, define the \term{projection matrix} on $S_1$ as
+\begin{align}
+    P_i := \ket{s_i} \bra{s_i}, \quad 
+    \text{such that} \quad
+    P_i = P_i^\dagger, \quad
+    P_i^2 = P_i.
+\end{align}
+Define the \term{partial measurement} on $S_1$ by $M_i = P_i \otimes I \in \C^{2^n \times 2^n}$. For a state $\ket\phi \in \C^{2^n}$, 
+\begin{align}
+    \Pr(\text{measuring } i \text{ from } \ket\phi)
+    = \bra\phi M_i\ket\phi 
+    = \| M_i \ket\phi \|^2.
+\end{align}
+On measuring outcome $i$, the post-measurement state becomes
+\begin{align}
+    \ket{\phi_i}
+    = \frac{M_i \ket\phi}{\sqrt{\bra\phi M_i \ket\phi}}.
+\end{align}
+\end{definition}
+
+\begin{example}
+Consider the states
+\begin{align}
+    \ket{+} := \frac{1}{\sqrt2}\ket0 + \frac{1}{\sqrt2}\ket1, \quad
+    \ket{-} := \frac{1}{\sqrt2}\ket0 - \frac{1}{\sqrt2}\ket1.
+\end{align}
+Measuring either in the \term{standard basis} $\{\ket0, \ket1\}$ gives $\ket0$ with $\tfrac{1}{2}$ probability since
+\begin{align}
+    |\braket{0}{+}|^2 
+    = \left| \frac{1}{\sqrt2} \cdot 1 + \frac{1}{\sqrt2} \cdot 0 \right|^2
+    = \frac{1}{2}
+\end{align}
+and similarly for $\ket1$. The squaring makes $\ket{-}$ proceed similarly as well.
+\end{example}
+
+\begin{definition}
+A two qubit state $\ket\phi$ is \term{entangled} if it cannot be written as the tensor product of single qubits. That is, $\nexists \ket\psi, \ket\varphi \in \C^2$ such that $\ket\phi = \ket\psi \otimes \ket\varphi$. If a state is not entangled, it is called \term{separable}. An $n$ qubit state $\ket{\psi}$ is entangled (or \emph{contains} entanglement) if it is not fully separable.
+\end{definition}

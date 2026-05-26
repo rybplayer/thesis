@@ -1,121 +1,63 @@
-\begin{figure}[H]
+\begin{table}
 \centering
-\renewcommand{\arraystretch}{1.1}
-\begin{tabular}{c c c c}
-
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}l c c@{}}
 \toprule
-\textbf{Name} & \textbf{Circuit} & \textbf{Matrix} & \textbf{Bra-Ket} \\
+Gate & Circuit & Matrix \\
 \midrule
-
 $X$ &
-$\begin{quantikz}
-\lstick{} & \targ{} & \qw
-\end{quantikz}$ &
-$\begin{pmatrix}
-0 & 1 \\
-1 & 0
-\end{pmatrix}$ &
-$\ket{1}\bra{0} + \ket{0}\bra{1}$ \\
-
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxBox{X} \rar \&
+\end{ZX} &
+$\begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}$ \\
 $Y$ &
-$\begin{quantikz}
-\lstick{} & \gate{Y} & \qw
-\end{quantikz}$ &
-$\begin{pmatrix}
-0 & -i \\
-i & 0
-\end{pmatrix}$ &
-$i\ket{1}\bra{0} - i\ket{0}\bra{1}$ \\
-
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxBox{Y} \rar \&
+\end{ZX} &
+$\begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix}$ \\
 $Z$ &
-$\begin{quantikz}
-\lstick{} & \gate{Z} & \qw
-\end{quantikz}$ &
-$\begin{pmatrix}
-1 & 0 \\
-0 & -1
-\end{pmatrix}$ &
-$\ket{0}\bra{0} - \ket{1}\bra{1}$ \\
-
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxBox{Z} \rar \&
+\end{ZX} &
+$\begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}$ \\
 $H$ &
-$\begin{quantikz}
-\lstick{} & \gate{H} & \qw
-\end{quantikz}$ &
-$\displaystyle\frac{1}{\sqrt{2}}
-\begin{pmatrix}
-1 & 1 \\
-1 & -1
-\end{pmatrix}$ &
-$\ket{+}\bra{0} + \ket{-}\bra{1}$ \\
-
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxBox{H} \rar \&
+\end{ZX} &
+$\frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}$ \\
 $S$ &
-$\begin{quantikz}
-\lstick{} & \gate{S} & \qw
-\end{quantikz}$ &
-$\begin{pmatrix}
-1 & 0 \\
-0 & i
-\end{pmatrix}$ &
-$\ket{0}\bra{0} + i\ket{1}\bra{1}$ \\
-
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxBox{S} \rar \&
+\end{ZX} &
+$\begin{bmatrix} 1 & 0 \\ 0 & i \end{bmatrix}$ \\
 $T$ &
-$\begin{quantikz}
-\lstick{} & \gate{T} & \qw
-\end{quantikz}$ &
-$\begin{pmatrix}
-1 & 0 \\
-0 & e^{i\pi/4}
-\end{pmatrix}$ &
-$\ket{0}\bra{0} + e^{i\pi/4}\ket{1}\bra{1}$ \\
-
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxBox{T} \rar \&
+\end{ZX} &
+$\begin{bmatrix} 1 & 0 \\ 0 & e^{i\pi/4} \end{bmatrix}$ \\
 $R_x(\theta)$ &
-$\begin{quantikz}
-\lstick{} & \gate{R_x(\theta)} & \qw
-\end{quantikz}$ &
-$\begin{pmatrix}
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxBox{R_x(\theta)} \rar \&
+\end{ZX} &
+$\begin{bmatrix}
 \cos(\nicefrac{\theta}{2}) & -i\sin(\nicefrac{\theta}{2}) \\
 -i\sin(\nicefrac{\theta}{2}) & \cos(\nicefrac{\theta}{2})
-\end{pmatrix}$ &
-$\begin{aligned}
-\cos(\nicefrac{\theta}{2})\ket{0}\bra{0} 
-&- i\sin(\nicefrac{\theta}{2})\ket{1}\bra{0} \\[-0.5ex]
-- i\sin(\nicefrac{\theta}{2})\ket{0}\bra{1} 
-&+ \cos(\nicefrac{\theta}{2})\ket{1}\bra{1}
-\end{aligned}$ \\
-
+\end{bmatrix}$ \\
 $R_y(\theta)$ &
-$\begin{quantikz}
-\lstick{} & \gate{R_y(\theta)} & \qw
-\end{quantikz}$ &
-$\begin{pmatrix}
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxBox{R_y(\theta)} \rar \&
+\end{ZX} &
+$\begin{bmatrix}
 \cos(\nicefrac{\theta}{2}) & -\sin(\nicefrac{\theta}{2}) \\
 \sin(\nicefrac{\theta}{2}) & \cos(\nicefrac{\theta}{2})
-\end{pmatrix}$ &
-$\begin{aligned}
-\cos(\nicefrac{\theta}{2})\ket{0}\bra{0} 
-&+ \sin(\nicefrac{\theta}{2})\ket{1}\bra{0} \\[-0.5ex]
-- \sin(\nicefrac{\theta}{2})\ket{0}\bra{1}
-&+ \cos(\nicefrac{\theta}{2})\ket{1}\bra{1}
-\end{aligned}$ \\
-
+\end{bmatrix}$ \\
 $R_z(\theta)$ &
-$\begin{quantikz}
-\lstick{} & \gate{R_z(\theta)} & \qw
-\end{quantikz}$ &
-$\begin{pmatrix}
-e^{-i\nicefrac{\theta}{2}} & 0 \\
-0 & e^{i\nicefrac{\theta}{2}}
-\end{pmatrix}$ &
-$\begin{aligned}
-e^{-i\nicefrac{\theta}{2}}\ket{0}\bra{0}
-+ e^{i\nicefrac{\theta}{2}}\ket{1}\bra{1}
-\end{aligned}$ \\
-
+\begin{ZX}[circuit,thick lines,ampersand replacement=\&]
+\rar \& \zxBox{R_z(\theta)} \rar \&
+\end{ZX} &
+$\begin{bmatrix} e^{-i\nicefrac{\theta}{2}} & 0 \\ 0 & e^{i\nicefrac{\theta}{2}} \end{bmatrix}$ \\
 \bottomrule
-
 \end{tabular}
-
 \caption{Common single qubit quantum gates}
 \label{fig:single-qubit-gates}
-\end{figure}
-\renewcommand{\arraystretch}{1}
+\end{table}

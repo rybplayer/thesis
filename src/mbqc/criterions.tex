@@ -1,0 +1,24 @@
+\subsection{Universality Criterions}
+
+\begin{definition}
+A family of states $\Phi$ is a \term{universal resource} for MBQC if for all $n$-qubit state $\ket\psi$, $\exists \ket\phi \in \Phi$ with $m \geq n$ qubits, such that the transformation $\ket\phi \mapsto \ket\psi \ket{+^{m-n}}$ is possible with probability $1$ with $\LOCC$. We denote this by $\ket\phi \geq_{\LOCC} \ket\psi$. 
+\end{definition}
+
+\begin{theorem}
+\label{thm:measure-for-universal}
+[From \cite{MBQC-measures}] Let $\Psi$ be a family of states and $\ket\phi, \ket{\phi'}$ arbitrary states with the same number of qubits. Let $E: \ket\phi \to \R$ be a function that satisfies the following properties:
+\begin{enumerate}
+    \item $E(\ket\phi) \geq E(\ket{\phi'})$ whenever $\ket\phi \geq_\LOCC \ket{\phi'}$;
+    \item $\sup_{\ket\phi} E(\ket\phi) > \sup_{\ket\psi \in \Psi} E(\ket\psi)$. 
+\end{enumerate}
+Then $\Psi$ cannot be a universal resource.
+\begin{proof}
+The first condition states that $\LOCC$ cannot increase this measure, while the second says that the supremum value of $E$, which can be $\infty$, is not reached among all $\ket\psi \in \Psi$. If both were true, then (CQ)-universality would be violated.
+\end{proof}
+\end{theorem}
+
+\begin{remark}
+$E$ as a measure is so general there are many candidates. However, satisfying the converse of the second condition is not sufficient to guarantee universality. For example, the toric code states have unbounded entanglement width but are not universal \cite{toric-not-universal}.
+\end{remark}
+
+\note{There is more to be said here, but I'm not sure how much of this additional material is necessary, so I've left this out for now.}

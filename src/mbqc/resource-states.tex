@@ -1,0 +1,58 @@
+\subsection{Resource States}
+
+\begin{definition}
+A $m \times n$ grid graph $G = (V,E)$ has
+\begin{align}
+    V &= \{(i,j) \mid i \in [m], j \in [n]\}, \\
+    E &= \{\{(i_1,j_1),(i_2,j_2)\} \mid (i_1,j_1),(i_2,j_2) \in V, |i_2-i_1| + |j_2-j_1| = 1\}
+\end{align}
+In other words, $m$ rows and $n$ columns with edges between nodes of taxicab distance $1$. Denote such graphs as $\Grid_{m \times n}$. Let $\Grid$ denote the family of all such graphs.
+\end{definition}
+
+\begin{theorem}
+\label{thm:grid-2-qubit-qq}
+$\Grid$ is 2-qubit QQ-universal. That is, given a set of 2-qubit gates $U_1, \ldots, U_k$ applied to the $\ket{++}$ state, there is a sequence of single qubit measurements you can make on some graph state in $\Grid$, assuming all measurement results are $0$, resulting in $U_1 \cdots U_k \ket{++}$ on the last 
+\begin{proof}
+By Theorem \ref{thm:cq-implies-qq}, it suffices to show CQ-universality. Consider the following construction:
+\[
+\begin{quantikz}[ampersand replacement=\&]
+\lstick{$\ket{+}_1$} \& \ctrl{1} \& \ctrl{2} \& \qw      \& \qw      \& 
+    \gate{R_z(\theta_1)} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{+}_2$} \& \ctrl{-1}\& \qw      \& \ctrl{2} \& \qw      \& 
+    \gate{R_z(\theta_2)} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{+}_3$} \& \ctrl{1} \& \ctrl{-2}\& \qw      \& \ctrl{2} \& 
+    \gate{R_z(\theta_3)} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{+}_4$} \& \ctrl{-1}\& \ctrl{2} \& \ctrl{-2}\& \qw      \& 
+    \gate{R_z(\theta_4)} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{+}_5$} \& \ctrl{1} \& \qw      \& \qw      \& \ctrl{-2}\& 
+    \qw                  \& \qw      \& \qw \\
+\lstick{$\ket{+}_6$} \& \ctrl{-1}\& \ctrl{-2}\& \qw      \& \qw      \& 
+    \qw                  \& \qw      \& \qw
+\end{quantikz}
+\]
+The above construction can be repeated to apply $R_z$ as many times as necessary. The analysis is similar to Theorem \ref{thm:mbqc-line}. That is, it suffices to show that every 2-qubit gate can be decomposed into a sequence of
+\begin{align}
+    (H \otimes H) \: (R_z(\theta_1) \otimes R_z(\theta_2)) \: \cl Z.
+\end{align}
+The proof of this is essentially brute force \cite{MBQC-universal}. \note{This thesis' ultimate goal is to recreate this proof, so it should be reproduced here.}
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+$\Grid$ is QQ-universal.
+\begin{proof}
+\note{To be done. I had something written here, but I decided to rewrite it using some lemmas more easily proved in the ZX-calculus.}
+\end{proof}
+\end{theorem}
+
+\begin{definition}
+Let $\LO$ denote local operations, i.e. any single qubit unitary. Let $\CC$ denote classical communication. Thus MBQC requires $\LOCC$, or both $\LO$ through Fact \ref{fact:rz-to-rx} and $\CC$ due to adaptive measurement.
+\end{definition}
+
+\begin{theorem}\:
+[From \cite{MBQC-universal} Observation 5] All efficient universal graph state resources can efficiently be obtained from each other by $\LOCC$.
+\end{theorem}
+
+\begin{remark}
+The previous theorem informally says that the entanglement structure of a resource state is what matters, not its phase. This is because $\LOCC$ are precisely the operations that do not add entanglement [cite:need].
+\end{remark}

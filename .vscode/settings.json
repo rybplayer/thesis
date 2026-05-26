@@ -18,14 +18,34 @@
       "tools": ["latexmk"]
     }
   ],
-"latex-workshop.latex.recipe.default": "latexmk",
-"cSpell.words": [
+  "latex-workshop.latex.recipe.default": "latexmk",
+  "cSpell.words": [
     "braket",
+    "Cliffords",
+    "CNOT",
     "complementation",
     "complementations",
+    "Grier",
+    "GSLC",
     "Hadamard",
+    "Hadamards",
+    "injective",
     "kets",
+    "Kunal",
+    "Marwaha",
+    "MBQC",
+    "NISQ",
     "qubit",
-    "qubits"
-]
+    "qubits",
+    "Shor's",
+    "tabelau",
+    "Tsai",
+    "UCSD",
+    "unfusing",
+    "unitaries"
+  ],
+  //   "latex-workshop.view.pdf.invertMode.hueRotate": 180,
+  //   "latex-workshop.view.pdf.invertMode.grayscale": 0.9,
+  "latex-workshop.view.pdf.invertMode.brightness": 1,
+  "latex-workshop.view.pdf.invert": 0.15
 }

@@ -1,8 +1,13 @@
 \documentclass[12pt]{article}
+
+\IfFileExists{styles/zx-calculus.sty}{\usepackage{styles/zx-calculus}}{\usepackage{../styles/zx-calculus}}
 \usepackage{styles/thesis}
 
+\pdfcompresslevel=0
+\pdfobjcompresslevel=0
+
 \usepackage{background}
-\SetBgContents{DRAFT}
+\SetBgContents{DRAFT 2}
 \SetBgColor{black}
 \SetBgOpacity{0.1}
 
@@ -31,17 +36,51 @@
 \input{src/introduction}
 
 \newpage
-\input{src/preliminaries}
+\section{Background}
+\label{sec:background}
+\input{src/background/notation.tex}
+\input{src/background/zx.tex}
+\input{src/background/clifford.tex}
+\input{src/background/stabilizers.tex}
 
 \newpage
-\input{src/algorithmic-approaches}
+\section{Measurement-Based Quantum Computation}
+\label{sec:mbqc}
+\input{src/mbqc/universality.tex}
+\input{src/mbqc/one-way-model.tex}
+\input{src/mbqc/resource-states.tex}
+\input{src/mbqc/criterions.tex}
 
 \newpage
-\input{src/theoretical-approaches}
+\section{The Comparability Grid}
+\label{sec:cgrid}
+\input{src/cgrid/circle-graphs.tex}
+\input{src/cgrid/cgrid-subgraphs.tex}
+\input{src/cgrid/lu-lc.tex}
+\input{src/cgrid/vertex-minors.tex}
 
 \newpage
-\input{src/conclusion}
+\section{Algorithmic Approaches}
+\label{sec:algorihmic-approaches}
+\input{src/algorithms/overview.tex}
+\input{src/algorithms/subgraph.tex}
+\input{src/algorithms/gadget.tex}
+\input{src/algorithms/iterative.tex}
+\input{src/algorithms/lie-algebra.tex}
+
+\newpage
+\section{Conclusions}
+\label{sec:conclusions}
+\input{src/conclusions.tex/conjectures.tex}
+\input{src/conclusions.tex/future-directions.tex}
 
 \printbibliography
+\appendix
+
+\newpage
+\section{Appendix: Background on Quantum Computing}
+\label{appendix:background}
+\input{src/appendixA/qubits}
+\input{src/appendixA/gates}
 
 \end{document}

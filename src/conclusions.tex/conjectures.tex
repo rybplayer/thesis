@@ -1,8 +1,4 @@
-\section{Conclusions}
-
-We lay out the results of this thesis' algorithms and provide a series of conjectures based on them.
-
-\subsection{Algorithmic Results}
+\subsection{Conjectures}
 
 \note{I would like to produce a table of the minimum number of additional edges from attempting to subset $\Grid_{k \times n}$ from $\CGrid$. The cases $k=2,3$ already appear in the previous sections, but $k=4,5$ should be within reach in a few weeks. This is because of the following:}
 
@@ -27,7 +23,3 @@ It is a fact that the number of additional edges must increase as $k$ increases.
 \note{Here I want to provide a table of the results of the size of the groups generated using the width-3-gadget, and if there is enough compute, the width-4-gadget.}
 
 Another algorithmic direction is to include local complementation into the algorithmic search. \note{However this is computationally quite expensive, because it means we cannot use the tuple subset representation of Fact \ref{fact:tuple-construction}. Furthermore, (local) graph isomorphism is now necessary to prevent checking the same graph multiple times, which further adds to the complexity of the algorithm}.
-
-\subsection{Future Work}
-
-\note{Here I want to provide a table of LOCC operations that can change rank-width. These are meant to be used as a basis to conjecture what to add to local Pauli measurements, local Cliffords, and classical communication.}

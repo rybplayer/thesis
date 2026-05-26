@@ -1,0 +1,140 @@
+% \renewcommand{\arraystretch}{1.35}
+\setlength{\tabcolsep}{8pt}
+
+\begin{table}
+\centering
+\begin{tabular}{
+    >{\raggedright\arraybackslash}m{0.15\textwidth}
+    c
+    >{\raggedright\arraybackslash}m{0.3\textwidth}
+}
+\toprule
+\centering Name
+&
+\centering Rewrite rule
+&
+\centering Description
+\tabularnewline
+\midrule
+    \zxlabel{cc}{Spider fusion ($f$)} &
+    \begin{ZX}
+        \leftManyDots{n_1} \zxZ{\alpha} \ar[dr,(=15] \ar[dr,)=15] \ar[dr,3 dots] \rightManyDots{m_1} &  \\
+        & \leftManyDots{n_2} \zxZ{\beta} \rightManyDots{m_2}
+    \end{ZX} = \begin{ZX}
+        \leftManyDots{\begin{array}{c}n_1\\+\\n_2\end{array}} \zxZ{\alpha + \beta} \rightManyDots{\begin{array}{c}m_1\\+\\m_2\end{array}}
+    \end{ZX}&
+    Spiders of the same color connected by any number of wires fuse and their phases add.
+\tabularnewline
+\midrule
+    \zxlabel{id}{Identity removal ($id$)} &
+    \begin{ZX}
+        \rar & \zxZ{} \rar &
+    \end{ZX} = \begin{ZX}
+        \rar & \zxN{} \rar & \zxN{}
+    \end{ZX} &
+    Spiders with one input, one output, and phase 0 are the identity matrix and can be removed.
+\tabularnewline
+\midrule
+    \zxlabel{hh}{Hadamard cancellation ($hh$)} &
+    \begin{ZX}
+        \rar & \zxH{} \rar & \zxH{} \rar &
+    \end{ZX} = \begin{ZX}
+        \rar & \zxN{} \rar &
+    \end{ZX} &
+    Two connected Hadamards cancel each other.
+\tabularnewline
+\midrule
+    \zxlabel{$\pi$}{$\pi$-commutation ($\pi$)} &
+    \begin{ZX}
+        \zxN{} & \zxN{} & \zxN{} & \zxN{} & \\
+        \zxN{} \rar & \zxX{\pi} \rar & \zxZ{\alpha}
+            \ar[ur,)]
+            \ar[dr,(]
+            & \zxN{} \ar[3 vdotsr={$n$}] & \\
+        \zxN{} & \zxN{} & \zxN{} & \zxN{} &
+    \end{ZX}
+    = $e^{i\alpha}$
+    \begin{ZX}
+        \zxN{} & \zxN{} & \zxX{\pi} \rar & \\
+        \zxN{} \rar & \zxZ{-\alpha}
+            \ar[ur,)]
+            \ar[dr,(]
+            & \zxN{} \ar[3 vdotsr={$n$}] & \\
+        \zxN{} & \zxN{} & \zxX{\pi} \rar & 
+    \end{ZX}
+    &
+    A $\pi$ phase copies through a spider of the opposite color and flips its phase.
+\tabularnewline
+\midrule
+    \zxlabel{cp}{State copy ($cp$)} &
+    \begin{ZX}
+        \zxN{} & \zxN{} & \zxN{} & \\
+        \zxX{a\pi} \rar & \zxZ{\alpha} \ar[ur,)] \ar[dr,(] & \\
+        \zxN{} & \zxN{} & \zxN{} & 
+    \end{ZX} = $e^{ia \alpha}  \sqrt{2}^{-(n-1)}$
+    \begin{ZX}
+        \zxX{a\pi} \rar & \\
+        \zxN{} \ar[3 vdotsr={$n$}] & \\
+        \zxX{a\pi} \rar &
+    \end{ZX} &
+    A $\pi$ phase copies through a spider of the opposite color and flips its phase.
+\tabularnewline
+\midrule
+    \zxlabel{cc}{Color change ($cc$)} &
+    \begin{ZX}
+        \zxN{} & \zxN{} \ar[dr,H,)={15}] & \zxN{} & \zxN{} & \zxN{} \\
+            \zxN{} 
+            & \zxN{} \ar[3 vdots={$n$}] 
+            & \zxZ{\alpha} 
+              \ar[ur,H,)={15}] \ar[dr,H,(={15}] 
+            & \zxN{} \ar[3 vdotsr={$m$}] 
+            & \zxN{} \\
+        \zxN{} & \zxN{} \ar[ur,H,(={15}] & \zxN{} & \zxN{} & \zxN{}
+    \end{ZX} =
+    \begin{ZX}
+        \zxN{} & \zxN{} \ar[dr,)={15}] & \zxN{} & \zxN{} & \zxN{} \\
+            \zxN{} 
+            & \zxN{} \ar[3 vdots={$n$}] 
+            & \zxX{\alpha} 
+              \ar[ur,)={15}] \ar[dr,(={15}] 
+            & \zxN{} \ar[3 vdotsr={$m$}] 
+            & \zxN{} \\
+        \zxN{} & \zxN{} \ar[ur,(={15}] & \zxN{} & \zxN{} & \zxN{}
+    \end{ZX} &
+    Commuting Hadamards through a spider changes the color.
+\tabularnewline
+\midrule
+    \zxlabel{b}{Bi-algebra ($b$)} &
+    \begin{ZX}
+        \zxN{} & \zxN{} \ar[dr,)={15}] & \zxN{} & \zxN{} & \zxN{} & \zxN{} \\
+            \zxN{} 
+            & \zxN{} \ar[3 vdots={$n$}] 
+            & \zxX{} \rar
+            & \zxZ{}
+              \ar[ur,)={15}] \ar[dr,(={15}] 
+            & \zxN{} \ar[3 vdotsr={$m$}] 
+            & \zxN{} \\
+        \zxN{} & \zxN{} \ar[ur,(={15}] & \zxN{} & \zxN{} & \zxN{} & \zxN{}
+    \end{ZX} = $\sqrt{2}^{(n-1)(m-1)}$
+    \begin{ZX}
+        & \zxN{} \rar & \zxZ{} \rar \ar[ddr] & \zxX{} \rar & \zxN{} & \\
+        &\zxN{} \ar[3 vdots={$n$}] & \zxN{} & \zxN{} & \zxN{} \ar[3 vdotsr={$m$}] & \\
+        & \zxN{} \rar & \zxZ{} \rar \ar[uur] & \zxX{} \rar & \zxN{} &
+    \end{ZX} &
+    An adjacent phase 0 X and Z spider can commute past one another to create a complete bipartite graph with sides of the opposite color.
+\tabularnewline
+\midrule
+    \zxlabel{hf}{Hopf rule ($hf$)} & 
+    \begin{ZX}
+        \zxN{} \rar & \zxZ{} \ar[r,(] \ar[r,)] & \zxX{} \rar & \zxN{}
+    \end{ZX} = $\frac{1}{2}$
+    \begin{ZX}
+        \zxN{} \rar & \zxZ{} & \zxX{} \rar & \zxN{}
+    \end{ZX} &
+    If phase 0 spiders of opposite color are connected by multiple wires, we may remove the wires pairwise.
+\tabularnewline
+\bottomrule
+\end{tabular}
+\caption{ZX-Calculus Rewrite Rules}
+\label{table:zx-rules}
+\end{table}
