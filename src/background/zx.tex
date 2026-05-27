@@ -1,7 +1,7 @@
 \subsection{The ZX-Calculus}
 
 \begin{definition}
-The \term{ZX-Calculus} is a graphical language for representing quantum computation. Objects of the ZX-Calculus, called \term{ZX Diagrams}, are made up of two types of generators known as \term{spiders}: The \term{X-spider}, with $n$ ``inputs'' and $m$ ``outputs'' is defined as
+The \term{ZX-Calculus} is a graphical language for representing quantum computation. Objects of the ZX-Calculus, called \term{ZX Diagrams}, are made up of two types of generators known as \term{spiders}: The \term{X-spider}, with $n$ inputs and $m$ outputs, is defined
 \begin{align}
     \begin{ZX}
         \leftManyDots{n} \zxX{\alpha} \rightManyDots{m}
@@ -9,7 +9,7 @@ The \term{ZX-Calculus} is a graphical language for representing quantum computat
     :=
     \ket{0}^{\otimes m} \bra{0}^{\otimes n} + e^{i \alpha} \ket{1}^{\otimes m} \bra{1}^{\otimes n}.
 \end{align}
-We say that the above spider has a \term{phase} $\alpha \in [0,2\pi)$. Similarly, the \term{Z-spider} is defined as 
+We say that the above spider has a \term{phase} $\alpha \in [0,2\pi)$. Similarly, the \term{Z-spider} is defined
 \begin{align}
     \begin{ZX}
         \leftManyDots{n} \zxZ{\alpha} \rightManyDots{m}

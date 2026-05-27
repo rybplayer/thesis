@@ -1,3 +1,273 @@
 \subsection{The Stabilizer Formalism}
 
-\note{TODO}
+When we view the Clifford circuits of the previous section more algebraically, we find interesting connections to the following objects:
+
+\begin{definition}
+The \term{Pauli matrices} or \term{Pauli gates} refer to the following gates:
+\begin{equation}
+\begin{alignedat}{3}
+    X = \begin{bmatrix}
+        0 & 1 \\ 1 & 0
+    \end{bmatrix}, \quad
+    &Y = \begin{bmatrix}
+        0 & -i \\ i & 0
+    \end{bmatrix}, \quad
+    &Z = \begin{bmatrix}
+        1 & 0 \\ 0 & -1
+    \end{bmatrix}.
+\end{alignedat}
+\end{equation}
+\end{definition}
+
+\begin{definition}
+Say a matrix $A$ is a \term{stabilizer} of the state $\ket{\psi}$ when $\ket\psi$ is a +1 eigenvector of $A$, i.e. $A \ket{\psi} = \ket{\psi}$.
+\end{definition}
+
+\begin{definition}
+\label{def:pauli-group}
+The $n$-qubit Pauli group is defined as follows:
+\begin{align*}
+    \cP_n := \{i^k P_1 \otimes \cdots P_n \mid 
+    k \in \{0,1,2,3\}, P_j \in \{I,X,Y,Z\} \}.
+\end{align*}
+Call the elements of $\cP_n$ as \term{Pauli strings}, written as vectors of length $n$:
+\begin{align*}
+    \vec{P} := i^k P_1 \otimes \cdots \otimes P_n.
+\end{align*}
+\end{definition}
+
+\begin{proof}
+We need to show that this is indeed a group. Associativity follows from matrix multiplication. $I$ is the identity. Each Pauli matrix is its own inverse, i.e. $X^2 = Y^2 = Z^2 = 1$, and it is easy to see that the inverses of $i^kP$ exist for all $k$ and $P$. Finally, since two Pauli matrices $P_1 \neq P_2$ anti-commute, i.e. $P_1 P_2 = -P_2 P_1$, an exhaustive multiplication table shows the group is closed and finite.
+\end{proof}
+
+\begin{theorem}
+\label{thm:pauli-commute-clifford}
+For any Clifford unitary $U$ and Pauli string $\vec{P}$ of compatible dimensions, there exists a pauli string $Q$ such that $U \vec{P} U^\dagger = \vec{Q}$.
+\end{theorem}
+
+\begin{proof}
+It suffices to check that, when we commute a basis of the Pauli strings through the Hadamard, S, and CNOT gate, we will end up with another Pauli string. Notice that $\{X,Z\}$ is a basis for $\cP_1$, up to scalar factors. Now note that 
+\begin{equation}
+    \begin{ZX}
+        \rar & \zxZ{\pi} \rar & \zxH{} \rar &
+    \end{ZX} \overset{\zxref{cc}}{=} 
+    \begin{ZX}
+        \rar & \zxH{} \rar & \zxX{\pi} \rar &
+    \end{ZX}, \quad 
+    \begin{ZX}
+        \rar & \zxX{\pi} \rar & \zxH{} \rar &
+    \end{ZX} \overset{\zxref{cc}}{=} 
+    \begin{ZX}
+        \rar & \zxH{} \rar & \zxZ{\pi} \rar &
+    \end{ZX}.
+\end{equation}
+For the S gate,
+\begin{equation}
+    \begin{ZX}
+        \rar & \zxZ{\pi} \rar & \zxZ{\frac{\pi}{2}} \rar &
+    \end{ZX} \overset{\zxref{f}}{=} 
+    \begin{ZX}
+        \rar & \zxZ{\frac{\pi}{2}}  \rar & \zxZ{\pi} \rar &
+    \end{ZX}, \quad 
+    \begin{ZX}
+        \rar & \zxX{\pi} \rar & \zxZ{\frac{\pi}{2}}  \rar &
+    \end{ZX} \overset{\substack{\zxref{\pi}\\\zxref{f}}}{=} 
+    \begin{ZX}
+        \rar & \zxZ{\frac{\pi}{2}}  \rar & \zxZ{\pi} \rar & \zxX{\pi} \rar &
+    \end{ZX}.
+\end{equation}
+For the CNOT gate,
+\begin{align}
+    \begin{ZX}
+        \rar & \zxZ{\pi} \rar & \zxZ{} \dar \rar & \\
+        \rar & \rar           & \zxX{}      \rar &
+    \end{ZX} \overset{\zxref{f}}{=} 
+    \begin{ZX}
+        \rar & \zxZ{} \dar \rar & \zxZ{\pi} \rar & \\
+        \rar & \zxX{}      \rar &           \rar &
+    \end{ZX}, \quad 
+    \begin{ZX}
+        \rar & \zxX{\pi} \rar & \zxZ{} \dar \rar & \\
+        \rar & \rar           & \zxX{}      \rar &
+    \end{ZX} \overset{\substack{\zxref{\pi}\\\zxref{f}}}{=} 
+    \begin{ZX}
+        \rar & \zxZ{} \dar \rar & \zxX{\pi} \rar & \\
+        \rar & \zxX{}      \rar & \zxX{\pi} \rar &
+    \end{ZX}, \\
+    \begin{ZX}
+        \rar &           \rar & \zxZ{} \dar \rar & \\
+        \rar & \zxZ{\pi} \rar & \zxX{}      \rar &
+    \end{ZX} \overset{\substack{\zxref{\pi}\\\zxref{f}}}{=} 
+    \begin{ZX}
+        \rar & \zxZ{} \dar \rar & \zxZ{\pi} \rar & \\
+        \rar & \zxX{}      \rar & \zxZ{\pi} \rar &
+    \end{ZX}, \quad 
+    \begin{ZX}
+        \rar &           \rar & \zxZ{} \dar \rar & \\
+        \rar & \zxX{\pi} \rar & \zxX{}      \rar &
+    \end{ZX} \overset{\zxref{f}}{=} 
+    \begin{ZX}
+        \rar & \zxZ{} \dar \rar &           \rar & \\
+        \rar & \zxX{}      \rar & \zxX{\pi} \rar &
+    \end{ZX}. \tag*\qedhere
+\end{align}
+\end{proof}
+
+\begin{definition}
+For a group $\cS \subseteq \cP_n$, define the \term{stabilizer subspace}\footnote{This is a strictly more restrictive definition of stabilizer subspaces and stabilizer groups than the definitions found in algebra, for instance. However, since we are only dealing with pure states, and are only concerned with the stabilizer subspaces of $\cP_n$, this definition suffices.} of $\cS$ as 
+\begin{align}
+    \Stab(\cS) := \{ \ket\psi \mid \vec{P} \ket\psi = \ket\psi, \forall \vec{P} \in \cS \}.
+\end{align}
+If $\Stab(\cS) \neq \{0\}$, call $\cS$ a \term{stabilizer group}.
+\end{definition}
+
+\begin{proof}
+If $A$, $B$ are stabilizers of $\ket\psi$, then $AB \ket\psi = A \ket\psi = \ket\psi$ so $AB$ is also a stabilizer. Furthermore,
+\begin{align*}
+    A \ket\psi = \ket \psi 
+    \implies 
+    \ket\psi = A^{-1} \ket\psi
+\end{align*}
+so $A^{-1}$ is also a stabilizer of $\ket\psi$. Thus $\cS$ is a subgroup. On the other hand, if two states $\ket\psi$ and $\ket\phi$ are stabilized by $A$, then 
+\begin{align}
+    A (\lambda\ket\psi + \mu \ket\phi) 
+    = \lambda A \ket\psi + \mu A \ket \phi 
+    = \lambda \ket\psi + \mu \ket\phi,
+\end{align}
+for any $\lambda, \mu \in \C$. Since $0$ is trivially in every $\Stab(\cS)$, this is indeed a subspace.
+\end{proof}
+
+\begin{lemma}
+\label{lemma:stab-group-properties}
+If a subgroup $\cS \subseteq \P_n$ is a stabilizer subgroup, then:
+\begin{enumerate}
+    \item $-I \notin \cS$,
+    \item $\vec{P}^2 = I$ for all $\vec{P} \in \cS$, and
+    \item $\cS$ is commutative.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+If $-I \in \cS$, then all $\ket\psi \in \Stab(\cS)$ has $\ket\psi = -I \ket\psi = -\ket\psi$ such that $\Stab(\cS) = \{0\}$, a contradiction. An exhaustive multiplication table for $\cP_1$ reveals that if $\vec{P}^2 \neq I$, then $\vec{P}^2 = -I$ so again $\Stab(\cS) = \{0\}$. Thus, each $P \in \cS$ must have $P^2 = Q^2 = I$. Then $P^\dagger = P$, since $P^{-1} = P$ and its phase cannot be $\pm i$. Then for any $P,Q \in \cS$, $PQ = (PQ)^\dagger = Q^\dagger P^\dagger = QP$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:aaronson-sim-clifford}
+This is Theorem 1 of \cite{sim_stab_circuits}. Given an $n$-qubit state $\ket\psi$, the following are equivalent:
+\begin{enumerate}
+    \item $\ket\psi$ can be obtained from $\ket{0}^{\otimes n}$ by CNOT, H, and S gates only.
+    \item $\ket\psi$ can be obtained from $\ket{0}^{\otimes n}$ by CNOT, H, S, and measurement gates only.
+    \item $\ket\psi$ is stabilized by exactly $2^n$ Pauli operators.
+    \item $\ket\psi$ is uniquely determined by $\Stab(\ket\psi)$.
+\end{enumerate}
+Thus, we can all any circuit consisting entirely of Clifford gates and measurements a \term{stabilizer circuit}, and any state obtainable by applying a stabilizer circuit to $\ket{0}^{\otimes n}$ a \term{stabilizer state}. Equivalently, a stabilizer state is a state $\ket\psi \in \C^{2^n}$ such that $\vec{P} \ket{\psi} = \ket\psi$ for all $\vec{P} \in \cS \subseteq \cP_n$.
+\end{theorem}
+
+\begin{proof}
+A concise proof is available in \cite{sim_stab_circuits}, which itself relies on the Gottesman-Knill theorem (Theorem \ref{thm:Gottesman-Knill}), whose ZX-proof can be found in Chapter 5 of \cite{PQS} and non-ZX-proof in the original paper \cite{Gottesman-Knill}.
+\end{proof}
+
+\begin{lemma}
+\label{lemma:size-of-pauli-stab}
+Note that $|\cP_n| = 4^{n+1}$. Furthermore, the number of stabilizer states on $n$ qubits is:
+\begin{align}
+    2^n \prod_{i=0}^{n-1} (2^{n-i} + 1).
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The first claim follows almost immediately from Definition \ref{def:pauli-group}. By Theorem \ref{thm:aaronson-sim-clifford}, to obtain the second claim we can equivalently count the number of ordered generating sets for stabilizer groups, divided by the number of generating sets for a given stabilizer. This is the proof used in Proposition 2 of \cite{sim_stab_circuits}.
+\end{proof}
+
+Informally, what this stabilizer formalism tells us is that states obtainable by applying Clifford circuits to $\ket{0}^{\otimes n}$ are precisely the pure stabilizer states. This is significant for a whole host of reasons, not the least of which is the tableau formalism below. This tableau formalism essentially tells us that we can keep track of a Clifford computation by keeping track of changes to the stabilizer of the state.
+
+\begin{definition}
+\label{def:tableau}
+The tableau of a state $\ket\psi$ is a matrix consisting of binary variables $x_{ij}$ and $z_{ij}$ for $i \in [2n]$ and $j \in [n]$, and $r_i$ for all $i \in [2n]$:
+\begin{align}
+\left[
+\begin{array}{ccc|ccc|c}
+x_{11} & \cdots & x_{1n}
+&
+z_{11} & \cdots & z_{1n}
+&
+r_1
+\\
+\vdots & \ddots & \vdots
+&
+\vdots & \ddots & \vdots
+&
+\vdots
+\\
+x_{n1} & \cdots & x_{nn}
+&
+z_{n1} & \cdots & z_{nn}
+&
+r_n
+\\
+\hline
+x_{(n+1)1} & \cdots & x_{(n+1)n}
+&
+z_{(n+1)1} & \cdots & z_{(n+1)n}
+&
+r_{n+1}
+\\
+\vdots & \ddots & \vdots
+&
+\vdots & \ddots & \vdots
+&
+\vdots
+\\
+x_{(2n)1} & \cdots & x_{(2n)n}
+&
+z_{(2n)1} & \cdots & z_{(2n)n}
+&
+r_{2n}
+\end{array}
+\right]
+\end{align}
+where
+\begin{align}
+x_{ij}
+&=
+\begin{cases}
+1 & \text{if } P_{ij} = X \text{ or } P_{ij} = Y, \\
+0 & \text{otherwise,}
+\end{cases}
+\\[1em]
+z_{ij}
+&=
+\begin{cases}
+1 & \text{if } P_{ij} = Y \text{ or } P_{ij} = Z, \\
+0 & \text{otherwise,}
+\end{cases}
+\\[1em]
+r_i
+&=
+\begin{cases}
+1 & \text{if } R_i \text{ has negative phase,} \\
+0 & \text{otherwise.}
+\end{cases}
+\end{align}
+\end{definition}
+
+\begin{theorem}
+Using the tableau representation, we can efficiently simulate CNOT, H, and S gates. This is an alternative method of simulation compared to Theorem \ref{thm:Gottesman-Knill}.\footnote{As it turns out, both methods of simulation, i.e. the ZX-Calculus GSLC algorithm and the tableau representation, will be used in this thesis.}
+\end{theorem}
+
+\begin{proof}
+The proof surmounts to a clever bookkeeping of the stabilizers of a state as Clifford gates are applied to it. This proof can be found in \cite{sim_stab_circuits}. Here we provide some intuition for why this is the case. The key observation is that each Pauli gate and $I$ can be represented by two classical bits $(x,z)$:
+\begin{align}
+    \begin{array}{c|cc}
+    P & x & z \\
+    \hline
+    I & 0 & 0 \\
+    X & 1 & 0 \\
+    Z & 0 & 1 \\
+    Y & 1 & 1
+    \end{array}
+\end{align}
+Note that we represent $Y$ as $(1,1)$ even though $Y = iXZ$. This is due to Lemma \ref{lemma:stab-group-properties}; each Pauli stabilizer cannot have a phase of $\pm i$, but may have a sign $\pm 1$. Thus, for a Pauli string $\vec{P}$ of length $n$, we can capture its data using two bits for each of the $n$ qubits, plus an extra bit $r$ for the overall sign. The tableau has $2n$ rows for bookkeeping and algorithmic reasons.\footnote{The first $n$ rows keep track of the \emph{de-stabilizers} of the state, while the next $n$ rows keep track of the stabilizers. See \cite{sim_stab_circuits} for more details.}
+\end{proof}
+
+This algorithm may be improved further. See \cite{faster-sim-stab} for such an example.

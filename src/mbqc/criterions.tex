@@ -1,24 +1,145 @@
 \subsection{Universality Criterions}
 
+Given the difficulty of the proof of Theorem \ref{thm:grid-universal}, we now turn our attention to the development of other techniques to determine the universality of a family of resource states. We start by recalling some useful facts regarding regular quantum circuit universality.
+
+\begin{fact}
+\label{fact:1-qubit-and-entangling-universal}
+Any 1-qubit universal gate set and a 2 qubit entangling gate is universal \cite{1qubit-entangling-universal}.
+\end{fact}
+
+\begin{proof}
+The proof in \cite{1qubit-entangling-universal} turns out to be quite technical, involving many tricks from Lie Algebra. It surmounts to proving the following restatement of the theorem: Let $V$ be a 2-qubit gate. The following are equivalent:
+\begin{enumerate}
+    \item The collection of all 1-qubit gates $\cA$ together with $V$ is QQ-universal.
+    \item The collection of all 1-qubit gates $\cA$ together with $V$ is exactly QQ-universal.
+    \item $V$ is not primitive, or \term{imprimitive}.
+\end{enumerate}
+Here, say $V$ is \term{primitive} iff $V = S \otimes T$ or $V = (S \otimes T)P$ for some $1$-qubit gates $S$ and $T$, with $P$ being the swap gate.
+\end{proof}
+
+\begin{theorem}
+\label{thm:any-universal-need-entanglement}
+Any universal gate set must include at least one multi-qubit entangling gate, as it is impossible to entangle using only single-qubit gates.
+\end{theorem}
+
+\begin{proof}
+This follows from Fact \ref{fact:1-qubit-and-entangling-universal}.
+\end{proof}
+
+\begin{theorem}
+\label{thm:line-not-universal}
+Let \term{$\mathsf{Line}$} denote the family of graphs made out of line graphs. Then $\mathsf{Line}$ is not a universal resource.
+\end{theorem}
+
+\begin{proof}
+This follows from Theorem \ref{thm:any-universal-need-entanglement}.
+\end{proof}
+
+We now turn to universality criteria specifically for MBQC. We start by addressing why we only consider CQ-universality rather than QQ-universality.
+
+\begin{theorem}
+\label{thm:cq-implies-qq}
+This is Observation 2 of \cite{MBQC-universal}. Every CQ-universal resource can be made QQ-universal by allowing quantum inputs to be coupled into the resource state using the same coupling method, i.e. CZ gates.
+\end{theorem}
+
 \begin{definition}
-A family of states $\Phi$ is a \term{universal resource} for MBQC if for all $n$-qubit state $\ket\psi$, $\exists \ket\phi \in \Phi$ with $m \geq n$ qubits, such that the transformation $\ket\phi \mapsto \ket\psi \ket{+^{m-n}}$ is possible with probability $1$ with $\LOCC$. We denote this by $\ket\phi \geq_{\LOCC} \ket\psi$. 
+Let \term{$\LO$} denote local operations, i.e. any single qubit unitary and measurement. Let \term{$\LC$} denote local Clifford operations, i.e. any ZX diagram with spiders of arity at most $2$ and phases multiples of $\tfrac{\pi}{2}$. Let \term{$\CC$} denote \term{classical communication}, which represents the measurement correction and Pauli error tracking done on-the-fly in MBQC.
+
+States $\ket\psi$ and $\ket\phi$ both on $n$ qubits are called \term{$\LU$-equivalent} if there is a unitary $U = \otimes_{i=1}^n U_i$, where every $U_i$ is a local unitary, such that $\ket\psi = U \ket\phi$. In this case, write $\ket\psi =_\LU \ket\phi$. Now, if every $U_i$ is made up of only local Clifford gates, say they are \term{$\LC$-equivalent} and write $\ket\psi =_\LC \ket\phi$.
 \end{definition}
 
 \begin{theorem}
+This is the main result of \cite{stab-lc-equiv-graph}. Graph states $\ket{G_1}$ and $\ket{G_2}$ are $\LC$-equivalent iff there is a series of local complementations that transform one graph to another. 
+\end{theorem}
+
+\begin{theorem}
+This is the main result of \cite{lu-lc-false}. There are graphs that are $\LU$-equivalent but not $\LC$-equivalent. On the other hand, there are some types of graphs which are $\LU$-equivalent iff they are $\LC$-equivalent \cite{lu-equal-lc-example-1,lu-equal-lc-example-2}.
+\end{theorem}
+
+\begin{theorem}
+A family of states $\Phi$ is a universal resource for MBQC if for all $n$-qubit states $\ket\psi$, $\exists \ket\phi \in \Phi$ with $m \geq n$ qubits, such that the transformation $\ket\phi \to \ket\psi \ket{+^{m-n}}$ is possible deterministically with $\LO$ and $CC$. We denote this by $\ket\phi \geq_{\LOCC} \ket\psi$. 
+\end{theorem}
+
+\begin{proof}
+This follows almost immediately from the definition. Suppose $\Phi$ is a universal resource. Then the above is certainly true, since a measurement pattern is made up of only $\LO$ and $\CC$. Now suppose the above holds. It is clear that the resource state is universal. Thus the above is a sufficient and necessary condition.
+\end{proof}
+
+\begin{theorem}
 \label{thm:measure-for-universal}
-[From \cite{MBQC-measures}] Let $\Psi$ be a family of states and $\ket\phi, \ket{\phi'}$ arbitrary states with the same number of qubits. Let $E: \ket\phi \to \R$ be a function that satisfies the following properties:
+[From \cite{MBQC-measures}] Let $\Psi$ be a family of resource states and $\ket\phi, \ket{\phi'}$ arbitrary states with the same number of qubits. Let $E: \ket\phi \to \R$ be a function that satisfies the following properties:
 \begin{enumerate}
     \item $E(\ket\phi) \geq E(\ket{\phi'})$ whenever $\ket\phi \geq_\LOCC \ket{\phi'}$;
     \item $\sup_{\ket\phi} E(\ket\phi) > \sup_{\ket\psi \in \Psi} E(\ket\psi)$. 
 \end{enumerate}
 Then $\Psi$ cannot be a universal resource.
-\begin{proof}
-The first condition states that $\LOCC$ cannot increase this measure, while the second says that the supremum value of $E$, which can be $\infty$, is not reached among all $\ket\psi \in \Psi$. If both were true, then (CQ)-universality would be violated.
-\end{proof}
 \end{theorem}
 
-\begin{remark}
-$E$ as a measure is so general there are many candidates. However, satisfying the converse of the second condition is not sufficient to guarantee universality. For example, the toric code states have unbounded entanglement width but are not universal \cite{toric-not-universal}.
-\end{remark}
+\begin{proof}
+The first condition states that $\LOCC$ cannot increase this measure, while the second says that the supremum value of $E$, which can be $\infty$, is not reached among all $\ket\psi \in \Psi$. If both were true, then clearly universality is not possible.
+\end{proof}
 
-\note{There is more to be said here, but I'm not sure how much of this additional material is necessary, so I've left this out for now.}
+The above theorem is very general and consequently very powerful, as we will soon see. However, note that satisfying the converse of the second condition for some measure $E$ is not sufficient to guarantee universality. For example, the family of \emph{toric code states} have unbounded entanglement width but are not universal \cite{toric-not-universal}.
+
+\begin{theorem}
+\label{thm:star-not-universal}
+Consider the family of all star graphs $\Star$. A \term{star graph} on $n$ vertices is a tree where one vertex has degree $n-1$ and all other vertices have degree $1$. Then $\Star$ is not a universal resource.
+\end{theorem}
+
+We choose to prove a more powerful result. 
+
+\begin{lemma}
+Every tree has rank width at most 1.
+\end{lemma}
+
+\begin{proof}
+Let $G=(V,E)$ be a tree. We will construct a rank decomposition where every cut has cut-rank at most $1$. Root the tree $G$ at some vertex $r$. For each vertex $v \neq r$, let $G_v$ denote the subtree consisting of $v$ and all of its descendants.
+
+Let $A_v := V(G_v)$. Since $G$ is a tree, there is exactly one edge between $A_v$ and $V \setminus A_v$, namely the edge from $v$ to its parent Therefore, the cut matrix $M_{A_v}$ has exactly one nonzero entry. Hence
+\[
+    \rho_G(A_v)
+    =
+    \operatorname{rank}_{\mathbb F_2} M_{A_v}
+    \leq 1.
+\]
+Now choose a binary decomposition tree $T$ that recursively separates rooted subtrees of $G$. Every cut appearing in this decomposition is of the form $A_v \mid V \setminus A_v$ or a union of such subtrees attached to a common vertex. In either case, because $G$ is a tree, the edges crossing the cut are incident to a single vertex on one side of the cut. Thus the corresponding bipartite adjacency matrix has all nonzero entries contained in a single row or a single column, so its rank over $\mathbb F_2$ is at most $1$. Hence this rank decomposition has width at most $1$. Therefore $\operatorname{rwd}(G) \leq 1$.
+\end{proof}
+
+\begin{definition}
+Let $\Phi$ and $\Psi$ be families of resource states. We say that $\Phi$ and
+$\Psi$ are \term{$\LU$-equivalent}, and write $\Phi =_\LU \Psi$, if the following holds:
+\begin{enumerate}
+    \item For every $\ket{\phi}\in\Phi$, there exists $\ket{\psi}\in\Psi$ such
+    that $\ket{\phi}=_{\LU}\ket{\psi}$, and
+    \item for every $\ket{\psi}\in\Psi$, there exists $\ket{\phi}\in\Phi$ such
+    that $\ket{\psi}=_{\LU}\ket{\phi}$.
+\end{enumerate}
+Define \term{$\LC$-equivalent} correspondingly.
+\end{definition}
+
+\begin{lemma}
+\label{lem:lu-equivalent-families-universality}
+Let $\Phi$ and $\Psi$ be $\LU$-equivalent families of resource states. Then $\Phi$ is a universal resource for MBQC if and only if $\Psi$ is a universal resource for MBQC.
+\end{lemma}
+
+\begin{proof}
+Suppose $\Phi$ is universal, and let $\ket{\rho}$ be any $n$-qubit target state.
+By universality, there exists $\ket{\phi}\in\Phi$ on $m\ge n$ qubits such that
+$
+    \ket{\phi}
+    \geq_{\LOCC}
+    \ket{\rho}
+$
+Since $\Phi =_{\LU} \Psi$, there exists $\ket{\psi}\in\Psi$ such that
+$\ket{\psi} =_{\LU}\ket{\phi}$. Local unitaries are reversible $\LOCC$
+operations, so
+$
+    \ket{\psi}\geq_{\LOCC}\ket{\phi}.
+$
+Composing $\LOCC$ transformations gives
+$
+    \ket{\psi}
+    \geq_{\LOCC}
+    \ket{\rho}
+$
+Thus $\Psi$ is universal. The reverse implication is identical.
+\end{proof}

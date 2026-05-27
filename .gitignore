@@ -19,3 +19,8 @@ exp.*
 *.toc
 *.run.xml
 *.synctex(busy)
+*.idx
+*.ind
+*.ilg
+*.lof
+*.lot

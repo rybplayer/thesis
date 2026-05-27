@@ -36,7 +36,6 @@
 \renewcommand{\zxDefaultRowSep}{3mm}
 \renewcommand{\zxDefaultColumnSep}{3mm}
 \renewcommand{\zxDefaultLineWidth}{0.8pt}
-\zxEnableIntersections
 \tikzset{
   /zx/user overlay wires/.style={
     line width=\zxDefaultLineWidth,
@@ -103,6 +102,8 @@
 % Term and example
 \newcommand{\term}[1]{{\color{black}\textbf{#1}}\index[terms]{#1}}
 \newcommand{\ex}[1]{{\color{blue}\textbf{#1}}\index[examples]{#1}}
+\makeindex[name=terms,title={Index of Terms},columns=2]
+\makeindex[name=examples,title={Index of Examples},columns=2]
 
 \newcommand{\ctitle}[1]{\centering\Large{}}
 
@@ -245,6 +246,7 @@
 \newcommand{\Red}{\operatorname{Red}}
 \newcommand{\Fix}{\operatorname{Fix}}
 \newcommand{\Class}{\operatorname{Cl}}
+\newcommand{\Stab}{\operatorname{Stab}}
 
 % PROBABILITY
 \newcommand{\Exp}{\operatorname{Exp}}
@@ -264,8 +266,8 @@
 \newcommand{\EPR}{\text{EPR}}
 \newcommand{\CNOT}{\text{CNOT}}
 \newcommand{\CZ}{\text{CZ}}
-\newcommand{\Had}{\text{H}}
-\newcommand{\Sgate}{\text{S}}
+\newcommand{\Had}{H}
+\newcommand{\Sgate}{S}
 \newcommand{\CCNOT}{\text{CCNOT}}
 \newcommand{\cl}{\text{C-}}
 \newcommand{\junk}{\text{junk}}
@@ -278,6 +280,9 @@
 \newcommand{\CC}{\mathsf{CC}}
 \newcommand{\LU}{\mathsf{LU}}
 \newcommand{\LC}{\mathsf{LC}}
+\newcommand{\Star}{\mathsf{Star}}
+\newcommand{\Line}{\mathsf{Line}}
+\newcommand{\CompleteGraphs}{\mathsf{KGraph}}
 
 \newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
 

@@ -166,6 +166,7 @@ Let $G$ be a graph and $u \in V(G)$. The \term{local complementation} of $G$ aro
 \end{definition}
 
 \begin{lemma}
+\label{lemma:zx-local-complement-without-deletion}
 Let $D$ be a graph-state ZX diagram, and $u$ some vertex in $G(D)$. Then we can obtain a diagram $D'$ with $G(D') = G(D) \star u$ by applying a $R_X(-\pi/2)$ gate on the spider corresponding to $u$ and $R_Z(\pi/2)$ on all spiders in $N_{G(D)}(u)$. Call this rule \zxlabel{lc}{($lc$)}:
 \begin{align}
     \begin{ZX}
@@ -235,6 +236,7 @@ This is a standard proof by cases, seen for example in Definition 4.3 of \cite{z
 \end{proof}
 
 \begin{lemma}
+\label{lemma:zx-pivot-without-deleting}
 Given a graph $G$, we can pivot around $uv$ for $u,v \in V(G)$ by applying Hadamard on $u$ and $v$ and $Z$ on all vertices in $N_G(u) \cap N_G(v)$, inducing a swap gate between $u$ and $v$.
 \end{lemma}
 
@@ -334,15 +336,15 @@ This proof is taken from Theorem 5.3.11 of \cite{PQS}. We provide a proof sketch
 What remains is a bipartite graph whose left vertices are phase-less Z-spiders and right vertices phase-less X-spiders. As it turns out, because our diagram is unitary, this bipartite graph can be decomposed into a circuit made only of CNOT gates via the following identity:
 \begin{align}
     \begin{ZX}
-    \leftManyDots{} \zxZ{\alpha} \rar & \zxX{} \rar & \zxZ{} \dar \rar & \\
-    \leftManyDots{} \zxZ{\beta} \rar \ar[ur] & \zxX{} \rar & \zxX{} \rar & \\
-    \leftManyDots{} \zxZ{\gamma} \ar[ur] & &
+    \leftManyDots{} \zxZ{} \rar & \zxX{} \rar & \zxZ{} \dar \rar & \\
+    \leftManyDots{} \zxZ{} \rar \ar[ur] & \zxX{} \rar & \zxX{} \rar & \\
+    \leftManyDots{} \zxZ{} \ar[ur] & &
     \end{ZX}
     =
     \begin{ZX}
-    \leftManyDots{} \zxZ{\alpha} \rar & \zxX{} \rar & \rar & \\
-    \leftManyDots{} \zxZ{\beta} \rar & \zxX{} \rar & \rar & \\
-    \leftManyDots{} \zxZ{\gamma} \ar[ur] \ar[uur] & &
+    \leftManyDots{} \zxZ{} \rar \ar[dr] & \zxX{} \rar & \rar & \\
+    \leftManyDots{} \zxZ{} \ar[ur] & \zxX{} \rar & \rar & \\
+    \leftManyDots{} \zxZ{} \ar[ur] & &
     \end{ZX}
 \end{align}
 The proof of this surmounts to book-keeping and a clever use of \zxref{b}. Please see Lemma 4.2.11 of \cite{PQS} for a step-by-step proof.
@@ -375,7 +377,7 @@ Since we have provided an injective map in both directions, the proof of Theorem
 \end{proof}
 
 \begin{corollary}
-Any $n$-qubit Clifford unitary can be represented by an equivalent circuit in at most $4n(n+3)/2 - 1$ Hadamard, S, and CNOT gates.
+Any $n$-qubit Clifford unitary can be represented by an equivalent circuit in at most $4n(n+3/2) - 1$ Hadamard, S, and CNOT gates.
 \end{corollary}
 
 \begin{proof}

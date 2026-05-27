@@ -1,58 +1,84 @@
 \subsection{Resource States}
 
 \begin{definition}
+A \term{resource state} is a state, typically containing entanglement, on which a measurement pattern can be applied to conduct measurement-based quantum computation. Under the Measurement Calculus (Definition \ref{def:measurement-calculus}), a resource state is a graph state.\footnote{We will see in the next subsection how results of the universality of graph states may extend to the universality of non-graph states.}
+\end{definition}
+
+\begin{definition}
+A \term{family} of resource states is some collection of resource states. A family of resource states $\Psi$ is \term{universal for MBQC} if, for every $n$-qubit state $\ket\phi$, there exists some resource state $\ket{\Psi_n} \in \Psi$ and a measurement pattern $\cB$ such that the output state is $\ket\phi$. We say a family of resource states is \term{$n$-qubit universal for MBQC} if this holds for all $m$-qubit $\ket\phi$ with $m \leq n$. When the meaning is clear, we may drop the phrase ``for MBQC'' and simply say a family of resource states is universal.
+\end{definition}
+
+We start by reciting some well-known results related to graph states.
+
+\begin{fact}
+\label{fact:graph-state-unique-construction}
+There is a unique quantum circuit construction for every graph state, up to reordering of $\cl Z$.
+\end{fact}
+
+\begin{proof}
+By \zxref{f}, CZ gates commute past each other. Then each pair of qubits (vertices) has zero or one $CZ$s (edges) between them.
+\end{proof}
+
+\begin{fact}
+\label{fact:graph-circuit-depth-is-max-degree}
+Let $G$ be a graph with maximum degree $\Delta$. Then $\ket{G}$ can be constructed in depth $\Delta + 1$.
+\begin{proof}
+Vizing's theorem states that any graph with maximum degree $\Delta$ admits an edge coloring with $\Delta + 1$ colors such that no two edges that share a vertex have the same color. All edges of the same color can be implemented in the graph state in the same layer of CZs. Thus, at most $\Delta + 1$ layers are needed.
+\end{proof}
+\end{fact}
+
+\begin{fact}
+Given a graph state $\ket{G}$, a measurement in the YZ plane is equivalent to vertex deletion.
+\end{fact}
+
+\begin{proof}
+Consider a graph state $\ket{G}$ in its ZX-Calculus representation.
+\input{figures/yz-vertex-deletion.tex}
+By Lemma \ref{lemma:measurement-plane-maps}, the ZX effect of a YZ plane measurement is a $\zx{\zxX{a \pi}}$ where $a$ is the measurement outcome bit. By \zxref{cp}, we may push the $\zx{\zxX{a \pi}}$ through the vertex being measured, deleting it in the process. The result is a graph state with the measured vertex removed, and an additional phase of $a \pi$ on all vertices connected to the measured vertex.
+\end{proof}
+
+\begin{fact}
+\label{fact:can-local-complement-graph-state}
+Given a graph state $\ket{G}$, applying $\sqrt{X} = \zx{\rar & \zxX{\pi/2} \rar &}$ on a vertex $v$ and $\sqrt{Z} = \zx{\rar & \zxZ{\pi/2} \rar &}$ on $N_G(v)$ is equivalent to a local complementation around $v$, and yields $\ket{G \star v}$. Applying a $Y$ plane measurement on $v$ instead gives $\ket{G \star v - v}$ with additional phases.
+\end{fact}
+
+\begin{proof}
+The first claim is Lemma \ref{lemma:zx-local-complement-without-deletion} and the second is Lemma \ref{lemma:remove-half-pi-from-graph}.
+\end{proof}
+
+\begin{fact}
+\label{fact:can-pivot-graph-state}
+Given a graph state $\ket{G}$, applying $\Had$ on vertices $u$, $v$ and $Z$ on $N_G(u) \cap N_G(v)$ gives $\ket{G \land uv}$. Applying a $X$ plane measurement on both $u$ and $v$ instead gives $\ket{G \land uv - u - v}$ with additional phases. 
+\end{fact}
+
+\begin{proof}
+The first claim is Lemma \ref{lemma:zx-pivot-without-deleting} and the second is Lemma \ref{lemma:remove-pi-from-graph}.
+\end{proof}
+
+\begin{definition}
+\label{def:grid}
 A $m \times n$ grid graph $G = (V,E)$ has
 \begin{align}
     V &= \{(i,j) \mid i \in [m], j \in [n]\}, \\
     E &= \{\{(i_1,j_1),(i_2,j_2)\} \mid (i_1,j_1),(i_2,j_2) \in V, |i_2-i_1| + |j_2-j_1| = 1\}
 \end{align}
-In other words, $m$ rows and $n$ columns with edges between nodes of taxicab distance $1$. Denote such graphs as $\Grid_{m \times n}$. Let $\Grid$ denote the family of all such graphs.
+In other words, $m$ rows and $n$ columns with edges between nodes of taxicab distance $1$. Denote such graphs as $\Grid_{m \times n}$. Let \term{$\Grid$} denote the family of all such graphs.
 \end{definition}
 
 \begin{theorem}
-\label{thm:grid-2-qubit-qq}
-$\Grid$ is 2-qubit QQ-universal. That is, given a set of 2-qubit gates $U_1, \ldots, U_k$ applied to the $\ket{++}$ state, there is a sequence of single qubit measurements you can make on some graph state in $\Grid$, assuming all measurement results are $0$, resulting in $U_1 \cdots U_k \ket{++}$ on the last 
+\label{thm:grid-universal}
+The $\Grid$ is universal.
+\end{theorem}
+
+\input{figures/mbqc-grid}
+
 \begin{proof}
-By Theorem \ref{thm:cq-implies-qq}, it suffices to show CQ-universality. Consider the following construction:
-\[
-\begin{quantikz}[ampersand replacement=\&]
-\lstick{$\ket{+}_1$} \& \ctrl{1} \& \ctrl{2} \& \qw      \& \qw      \& 
-    \gate{R_z(\theta_1)} \& \gate{H} \& \meter{} \\
-\lstick{$\ket{+}_2$} \& \ctrl{-1}\& \qw      \& \ctrl{2} \& \qw      \& 
-    \gate{R_z(\theta_2)} \& \gate{H} \& \meter{} \\
-\lstick{$\ket{+}_3$} \& \ctrl{1} \& \ctrl{-2}\& \qw      \& \ctrl{2} \& 
-    \gate{R_z(\theta_3)} \& \gate{H} \& \meter{} \\
-\lstick{$\ket{+}_4$} \& \ctrl{-1}\& \ctrl{2} \& \ctrl{-2}\& \qw      \& 
-    \gate{R_z(\theta_4)} \& \gate{H} \& \meter{} \\
-\lstick{$\ket{+}_5$} \& \ctrl{1} \& \qw      \& \qw      \& \ctrl{-2}\& 
-    \qw                  \& \qw      \& \qw \\
-\lstick{$\ket{+}_6$} \& \ctrl{-1}\& \ctrl{-2}\& \qw      \& \qw      \& 
-    \qw                  \& \qw      \& \qw
-\end{quantikz}
-\]
-The above construction can be repeated to apply $R_z$ as many times as necessary. The analysis is similar to Theorem \ref{thm:mbqc-line}. That is, it suffices to show that every 2-qubit gate can be decomposed into a sequence of
-\begin{align}
-    (H \otimes H) \: (R_z(\theta_1) \otimes R_z(\theta_2)) \: \cl Z.
-\end{align}
-The proof of this is essentially brute force \cite{MBQC-universal}. \note{This thesis' ultimate goal is to recreate this proof, so it should be reproduced here.}
+The full proof is quite involved and very tedious. The original proof is given in \cite{MBQCOriginal}, and a more accessible proof is available in \cite{Raussendorf_2003}. A modern proof through the ZX-Calculus is available in Chapter 9 of \cite{PQS}. 
+
+There are three great difficulties in the proof. We informally discuss them. First, we need to be able to implement arbitrary single qubit gates. This is done by deleting (via $Z$ plane measurements) vertices to create line graphs, each resulting in a chain like Example \ref{ex:teleportation-gadget}. It can be shown that this allows the application of arbitrary single qubit gates up to some Pauli error.
+
+Second, we need to be able to entangle qubits. If the two line graphs containing the qubits we wish to entangle are adjacent, i.e. there are no other line graphs between them, then creating a orthogonal line of vertices between the wires may entangle them. Now, if they are not adjacent, we can swap qubits between lines (by implementing CNOT thrice) until they become adjacent.
+
+Third, we need to ensure measurement is done in the correct order. For example, suppose we delete all vertices connecting the input and output vertices. Then this computation is deterministic and not invertible, and thus does not implement a unitary. As it turns out, there is a criterion called \emph{flow} that ensures this does not happen, as well as variants of flow such as \emph{gflow} and \emph{Pauli flow} that further ensure that we can deal with the Pauli errors. Interested readers should see \cite{McElvanney_2023,Backens_2021,PQS} for more details.
 \end{proof}
-\end{theorem}
 
-\begin{theorem}
-$\Grid$ is QQ-universal.
-\begin{proof}
-\note{To be done. I had something written here, but I decided to rewrite it using some lemmas more easily proved in the ZX-calculus.}
-\end{proof}
-\end{theorem}
-
-\begin{definition}
-Let $\LO$ denote local operations, i.e. any single qubit unitary. Let $\CC$ denote classical communication. Thus MBQC requires $\LOCC$, or both $\LO$ through Fact \ref{fact:rz-to-rx} and $\CC$ due to adaptive measurement.
-\end{definition}
-
-\begin{theorem}\:
-[From \cite{MBQC-universal} Observation 5] All efficient universal graph state resources can efficiently be obtained from each other by $\LOCC$.
-\end{theorem}
-
-\begin{remark}
-The previous theorem informally says that the entanglement structure of a resource state is what matters, not its phase. This is because $\LOCC$ are precisely the operations that do not add entanglement [cite:need].
-\end{remark}

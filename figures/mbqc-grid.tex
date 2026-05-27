@@ -1,0 +1,127 @@
+\begin{figure}[!htbp]
+\centering
+\[
+\begin{ZX}
+% row 1: top padding
+& & & & & & & & & & & & \\
+% row 2: y = 1
+&
+\zxZ{} \ar[d] \ar[u]
+& & & & & &
+\zxZ{} \ar[d] \ar[u]
+& & & &
+\zxZ{} \ar[d] \ar[u]
+& \\
+% row 3: between y = 1 and y = 2
+&
+\zxH{} \ar[d]
+& & & & & &
+\zxH{} \ar[d]
+& & & &
+\zxH{} \ar[d]
+& \\
+% row 4: y = 2
+&
+\zxZ{} \ar[r] \ar[d] \ar[l]
+& \zxH{} \ar[r]
+& \zxZ{} \ar[r] \ar[u]
+& \zxH{} \ar[r]
+& \zxZ{} \ar[r] \ar[u]
+& \zxH{} \ar[r]
+& \zxZ{} \ar[d] \ar[r]
+& & & &
+\zxZ{} \ar[d] \ar[r]
+& \\
+% row 5: between y = 2 and y = 3
+&
+\zxH{} \ar[d]
+& & & & & &
+\zxH{} \ar[d]
+& & & &
+\zxH{} \ar[d]
+& \\
+% row 6: y = 3
+&
+\zxZ{} \ar[d] \ar[l]
+& & & & & &
+\zxZ{} \ar[d] \ar[r]
+& & & &
+\zxZ{} \ar[d] \ar[r]
+& \\
+% row 7: between y = 3 and y = 4
+&
+\zxH{} \ar[d]
+& & & & & &
+\zxH{} \ar[d]
+& & & &
+\zxH{} \ar[d]
+& \\
+% row 8: y = 4
+&
+\zxZ{} \ar[d] \ar[l]
+& & & &
+\zxZ{} \ar[r] \ar[d] \ar[l]
+& \zxH{} \ar[r]
+& \zxZ{} \ar[r]
+& & & &
+\zxZ{} \ar[d] \ar[r]
+& \\
+% row 9: between y = 4 and y = 5
+&
+\zxH{} \ar[d]
+& & & &
+\zxH{} \ar[d]
+& & & & & &
+\zxH{} \ar[d]
+& \\
+% row 10: y = 5
+&
+\zxZ{} \ar[d] \ar[l]
+& & & &
+\zxZ{} \ar[d] \ar[l]
+& & & & & &
+\zxZ{} \ar[d] \ar[r]
+& \\
+% row 11: between y = 5 and y = 6
+&
+\zxH{} \ar[d]
+& & & &
+\zxH{} \ar[d]
+& & & & & &
+\zxH{} \ar[d]
+& \\
+% row 12: y = 6
+&
+\zxZ{} \ar[d] \ar[l]
+& & & &
+\zxZ{} \ar[r] \ar[d] \ar[l]
+& \zxH{} \ar[r] 
+& \zxZ{} \ar[r] \ar[d]
+& \zxH{} \ar[r]
+& \zxZ{} \ar[r] \ar[d]
+& \zxH{} \ar[r]
+& \zxZ{} \ar[d] \ar[r]
+& \\
+% row 13: between y = 6 and y = 7
+&
+\zxH{} \ar[d]
+& & & &
+\zxH{} \ar[d]
+& & & & & &
+\zxH{} \ar[d]
+& \\
+% row 14: y = 7
+&
+\zxZ{} \ar[d]
+& & & &
+\zxZ{} \ar[d]
+& & & & & &
+\zxZ{} \ar[d]
+& \\
+% row 15: bottom padding
+& & & & & & & & & & & & 
+\end{ZX}
+\]
+\caption{A $\Grid$ graph state with some vertices removed, creating three vertical ``wires'' for a three qubit computation in the MBQC model. The horizontal connections between wires may entangle the qubits, given the right measurements.}
+\label{fig:padded-zx-diagram}
+\end{figure}

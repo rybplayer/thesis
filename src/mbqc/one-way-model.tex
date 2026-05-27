@@ -2,48 +2,26 @@
 \subsection{The One-Way Model}
 
 \begin{definition}
-Measurement-based quantum computation (MBQC) roughly proceeds as follows:
+Informally, \term{measurement-based quantum computation} (MBQC) is a deterministic\footnote{in the sense that we will always produce the same final qubit, whose measurement outcomes may be non-deterministic} protocol for quantum computation that roughly goes as follows:
 \begin{enumerate}
-    \item A classical input specifies the data and program.
-    \item A resource state $\ket{\phi_k}$ is chosen from some set of states $\Phi = \{ \ket{\phi_1}, \ket{\phi_2}, \ldots \}$.
-    \item Local operations (single qubit unitaries), local measurements, and classical communication are used to transform this resource state.
-    \item By the end, we have a state $\ket\psi \otimes \ket{\junk}$. This $\ket\psi$ or its measurement is the desired result.
+    \item A classical description acts as input, specifying the desired quantum state $\ket\psi$.
+    \item A resource state $\ket{\phi_k}$ is chosen from some family of resource states $\Phi = \{ \ket{\phi_1}, \ket{\phi_2}, \ldots \}$. A graph state is an example of a resource state.
+    \item Measurements are done on the qubits of $\ket{\phi_k}$ in an adaptive fashion. Adaptive means that a classical computer may decide to change the next measurement's basis depending on a previous measurement outcome.
+    \item By the end, we will have a state $\ket\psi$, the desired quantum state.
 \end{enumerate}
-The rest of this section formalizes these notions.
+We will make this definition more precise after we develop some more notation.
 \end{definition}
 
-\begin{definition}
-A resource state is a quantum state $\ket\phi$ that can be used as the initial state in MBQC. A \term{graph state} $\ket{G}$ is a particular type of resource state associated with an undirected graph $G = (V,E)$ such that:
-\begin{itemize}
-    \item For every $v \in V(G)$, create a new qubit in the $\ket+$ state using $H$.
-    \item For every $e = (u,v) \in E(G)$, apply $\cl Z$ on qubits associated with $u$ and $v$.
-\end{itemize}
-\end{definition}
-
-\begin{fact}
-There is a unique construction for every graph state, up to reordering of $\cl Z$. This is because $\cl Z$s commute with $I$ and $\cl Z$.
-\begin{proof}
-The $\cl Z$ gate is a diagonal matrix, and so is $I$. The tensor product of diagonal matrices is a diagonal matrix. Furthermore, diagonal matrices commute. Thus the order of adding edges, or equivalently applying $\cl Z$s, does not matter.
-\end{proof}
-\end{fact}
-
-\begin{fact}
-\label{fact:graph-circuit-depth}
-Let $G$ be a graph with maximum degree $\Delta$. Then $\ket{G}$ can be constructed in depth $\Delta + 1$.
-\begin{proof}
-Vizing's theorem states that any graph with maximum degree $\Delta$ admits an edge coloring with $\Delta + 1$ colors such that no two edges that share a vertex have the same color. All edges of the same color can be implemented in the graph state in the same layer of $\cl Z$s. Thus, at most $\Delta + 1$ layers.
-\end{proof}
-\end{fact}
-
-\begin{fact}
-Define the Hadamard gadget as the following circuit:
+\begin{example}
+\label{example:hadamard-gadget}
+We start by considering the simplest possible MBQC circuit. Define the \term{Hadamard gadget} as the following circuit:
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
-\lstick{$\ket{\phi}$} \& \ctrl{1} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{\phi}$} \& \ctrl{1} \& \gate{\Had} \& \meter{} \\
 \lstick{$\ket{+}$}    \& \ctrl{-1} \& \qw      \& \qw
-\end{quantikz}
+\end{quantikz}.
 \end{equation}
-Commuting a Hadamard through the $\cl Z$ gives a $\CNOT$:
+For now, we will focus on what this circuit does. Commuting a Hadamard through the CZ gives a $\CNOT$:
 \begin{equation}
 \label{eq:push-gates-mbqc}
 \begin{quantikz}[ampersand replacement=\&]
@@ -52,25 +30,25 @@ Commuting a Hadamard through the $\cl Z$ gives a $\CNOT$:
 \end{quantikz}
 \;=\;
 \begin{quantikz}[ampersand replacement=\&]
-\lstick{$\ket{\phi}$} \& \gate{H} \& \targ{}  \& \meter{} \\
+\lstick{$\ket{\phi}$} \& \gate{\Had} \& \targ{}  \& \meter{} \\
 \lstick{$\ket{+}$}    \& \qw      \& \ctrl{-1}\& \qw
 \end{quantikz}
 \;=\;
 \begin{quantikz}[ampersand replacement=\&]
-\lstick{$H\ket{\phi}$} \& \targ{}  \& \meter{} \\
+\lstick{$\Had\ket{\phi}$} \& \targ{}  \& \meter{} \\
 \lstick{$\ket{+}$}     \& \ctrl{-1}\& \qw
-\end{quantikz}
+\end{quantikz}.
 \end{equation}
-Two $\CNOT$s cancel each other out and a $\CNOT$ has no effect on $\ket+$. Then
+Two $\CNOT$s cancel each other out and a $\CNOT$'s target has no effect on $\ket+$. So
 \begin{equation}
 \label{eq:add-cnot-mbqc}
 \begin{quantikz}[ampersand replacement=\&]
-\lstick{$H\ket{\phi}$} \& \targ{}  \& \meter{} \\
+\lstick{$\Had\ket{\phi}$} \& \targ{}  \& \meter{} \\
 \lstick{$\ket{+}$}     \& \ctrl{-1}\& \qw
 \end{quantikz}
 \;=\;
 \begin{quantikz}[ampersand replacement=\&]
-\lstick{$H\ket{\phi}$} \& \ctrl{1} \& \targ{}  \& \ctrl{1} \& \ctrl{1} \& \meter{} \\
+\lstick{$\Had\ket{\phi}$} \& \ctrl{1} \& \targ{}  \& \ctrl{1} \& \ctrl{1} \& \meter{} \\
 \lstick{$\ket{+}$}     \& \targ{}  \& \ctrl{-1}\& \targ{}  \& \targ{}  \& \qw
 \end{quantikz}
 \end{equation}
@@ -78,61 +56,475 @@ The first three $\CNOT$s are equivalent to a swap gate. Thus
 \begin{equation}
 \label{eq:swap-mbqc}
 \begin{quantikz}[ampersand replacement=\&]
-\lstick{$H\ket{\phi}$} \& \ctrl{1} \& \targ{}  \& \ctrl{1} \& \targ{}  \& \meter{} \\
-\lstick{$\ket{+}$}     \& \targ{}  \& \ctrl{-1}\& \targ{}  \& \ctrl{-1}\& \qw
+\lstick{$\Had\ket{\phi}$} \& \ctrl{1} \& \targ{}  \& \ctrl{1} \& \ctrl{1} \& \meter{} \\
+\lstick{$\ket{+}$}     \& \targ{}  \& \ctrl{-1}\& \targ{}  \& \targ{}  \& \qw
 \end{quantikz}
 \;=\;
 \begin{quantikz}[ampersand replacement=\&]
-\lstick{$\ket{+}$}     \& \targ{}  \& \meter{} \\
-\lstick{$H\ket{\phi}$} \& \ctrl{-1}\& \qw
+\lstick{$\ket{+}$}     \& \ctrl{1} \& \meter{} \\
+\lstick{$\Had\ket{\phi}$} \& \targ{}  \& \qw
 \end{quantikz}
 \end{equation}
 The final state before measurement is
 \begin{align}
-    \CNOT (\ket+ \otimes H \ket\phi) 
-    = \frac{1}{\sqrt2} \left( \ket0 \otimes H \ket\phi + \ket1 \otimes XH \ket\phi \right).
+    \CNOT (\ket+ \otimes \Had \ket\phi) 
+    = \frac{1}{\sqrt2} \left( \ket0 \otimes \Had \ket\phi + \ket1 \otimes X\Had \ket\phi \right).
 \end{align}
-In other words, measuring in the $X$ basis ($\{\ket0, \ket1\}$) applies an $X$ to $\ket\phi$ if we measure a $\ket{1}$. This happens with only $0.5$ probability, hence the need for \term{adaptive measurements}. That is, measurements whose classical outcome can dynamically impact how other qubits are measured.
-\end{fact}
+In other words, a measurement of the first qubit in the \term{computational basis} ($\{\ket0, \ket1\}$) will tell us whether we have a $\Had \ket{\phi}$ or $X\Had \ket{\phi}$ on the output wire.
+\end{example}
 
-\begin{fact}
-$R_z(\theta) Z R_z(\theta)^\dagger = Z$. That is, $R_z(\theta)$ commutes with $\cl Z$ for all $\theta$. Thus,
+Now, suppose our intention in the above circuit was to apply a Hadamard gate to $\ket\phi$. Then there is a $0.5$ probability that we apply $X \Had$ instead of $\Had$, which is indicated when we measure a $1$. How can we get rid of this additional $X$?
+
+\begin{example}
+\label{ex:teleportation-gadget}
+Define the \term{teleportation gadget} as the following circuit.
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
-\lstick{$\ket{\phi}$} \& \ctrl{1}  \& \gate{R_z(\theta)} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{\phi}$} \& \ctrl{1}  \& \gate{R_Z(\theta)} \& \gate{\Had} \& \meter{} \\
 \lstick{$\ket{+}$}    \& \ctrl{-1} \& \qw      \& \qw      \& \qw
 \end{quantikz}
 \;=\;
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$\ket{+}$}              \& \ctrl{1}  \& \meter{} \\
-\lstick{$HR_z(\theta)\ket{\phi}$} \& \targ{}   \& \qw
+\lstick{$\Had R_z(\theta)\ket{\phi}$} \& \targ{}   \& \qw
 \end{quantikz}.
 \end{equation}
-\end{fact}
+Let $m \in \{0,1\}$ be the measurement outcome of measuring in the computational basis. Then we apply $X^m H R_z(\theta)$ to $\ket{\phi}$. 
+\end{example}
 
-\begin{fact}
-\label{fact:euler-decomposition}
-[Euler decomposition] Every single-qubit unitary can be expressed (up to global phase) as the product $R_z(\theta_3)R_x(\theta_2)R_z(\theta_1)$.
-\end{fact}
+\begin{proof}
+We show that the RHS circuit is indeed the LHS circuit. First note that, by \zxref{f}, the $R_Z(\theta)$ gate commutes through the CZ unchanged. The rest of the analysis is identical to Example \ref{example:one-qubit-teleportation}.
+\end{proof}
 
-\begin{fact}
-\label{fact:rz-to-rx}
-For all $\theta \in [0,2\pi]$,
+\begin{example}
+Now, suppose we chain together two teleportation gadgets, taking the output of one as the input $\phi$ to another. Then we are applying the following gate:
 \begin{align}
-    R_x(\theta) 
-    = H R_z(\theta) H.
-\end{align} 
-Thus by Fact \ref{fact:euler-decomposition} every single-qubit unitary can be applied to any $\ket\phi$ given we are making the right measurements.
-\end{fact}
+    X^{m_2} H R_Z(\theta_2) X^{m_1} H R_Z(\theta_1)
+    &\overset{\zxref{\pi}}{=}
+    X^{m_2} H X^{m_1} R_Z((-1)^{m_1} \theta_2) H R_Z(\theta_1) \\
+    &\overset{\zxref{cc}}{=}
+    X^{m_2} Z^{m_1} H R_Z((-1)^{m_1} \theta_2) H R_Z(\theta_1)
+\end{align}
+Chaining three gadgets, we are applying the following gate:
+\begin{align}
+    &X^{m_3} H R_Z(\theta_3) X^{m_2} H R_Z(\theta_2) X^{m_1} H R_Z(\theta_1) \\
+    &= X^{m_3} H R_Z(\theta_3) 
+        \left(X^{m_2} Z^{m_1} H R_Z((-1)^{m_1} \theta_2) X^{m_1} H R_Z(\theta_1)\right) \\
+    &\overset{\substack{\zxref{\pi}\\\zxref{cc}}}{=}
+    X^{m_3 + m_1} Z^{m_2} 
+        \left(H R_Z((-1)^{m_2}\theta_3) H R_Z((-1)^{m_1} \theta_2) X^{m_1} H R_Z(\theta_1)\right).
+\end{align}
+Since $X^2 = Z^2 = I$, it is not too hard to see that chaining this gadget any number of times will result in an overall Pauli error of $X^{m} Z^{n}$ for some bits $m,n$.
+\end{example}
 
-\begin{theorem}
-\label{thm:mbqc-line}
-[MBQC on the line is 1-qubit CQ-universal] Suppose you wish to apply gates $U_1, \ldots U_n$ to $\ket+$. There is a sequence of single-qubit measurements you can do to the line graph state of $|V| = \Theta(n)$ such that, assuming measurements are all $0$, gives $U_1, \ldots, U_n \ket+$ on the last qubit. 
-\end{theorem}
+The formal definition of the MBQC protocol incorporates these errors into the definition.
 
-The previous statement is really more of a statement on the computational power (in terms of universality) of the line graph as opposed to MBQC itself. For example, the graph with a single vertex is clearly not universal with the same MBQC gadgets. We formalize this notion below:
+\begin{definition}
+\label{def:measurement-calculus}
+We use the formal definition from \cite{mbqc-def}, known as the \term{Measurement Calculus}. Denote an arbitrary single qubit state by
+\begin{align}
+    \ket{+_{\theta,\phi}} 
+    := \cos\left(\frac{\theta}{2}\right)\ket{0}
+        + e^{i\phi} \sin\left(\frac{\theta}{2}\right)\ket{1}
+\end{align}
+and denote its orthogonal state by 
+\begin{align}
+    \ket{+_{\theta,\phi}} 
+    := \cos\left(\frac{\theta}{2}\right)\ket{0}
+        - e^{i\phi} \sin\left(\frac{\theta}{2}\right)\ket{1}
+\end{align}
+where $\theta \in [0,\pi]$ and $\phi \in [0,2\pi)$. A computation in this model is a series of the following deterministic \term{commands}:
+\begin{enumerate}
+    \item Preparation: 1-qubit preparations $N_i$, to prepare qubit $i$ in the state $\ket{+}$;
+    \item Entanglement: 2-qubit entangling operators $E_{i,j} := Z_{i,j}$;
+    \item Measurement: 1-qubit measurements $M_i^{\lambda, \alpha}$ on planes $\lambda \in \{(X,Y), (X,Z), (Y,Z)$\}, defined as projections into
+    \begin{enumerate}[label=(\roman*)]
+        \item $\ket{\pm_{(X,Y),\alpha}} := \ket{+_{\pi/2, \alpha}}$ for $\lambda = (X,Y)$,
+        \item $\ket{\pm_{(X,Z),\alpha}} := \ket{+_{\alpha, 0}}$ for $\lambda = (X,Z)$, and
+        \item $\ket{\pm_{(Y,Z),\alpha}} := \ket{+_{\alpha, \pi/2}}$ for $\lambda = (Y,Z)$,
+    \end{enumerate}
+    with the convention that $\ket{+_{\theta,\phi}} \bra{+_{\theta,\phi}}$ corresponds to the outcome $0$ and $\ket{-_{\theta,\phi}} \bra{-_{\theta,\phi}}$ corresponds to 1; and
+    \item Correction: 1-qubit Pauli corrections $X_i$ and $Z_i$.
+\end{enumerate}
+The measurements $M_i^{\lambda, \alpha}$ may depend on \term{signals}, namely sums of some outcomes of previous measurements mod $2$. These represent the Pauli errors of the form $X^m Z^n$ being carried through, for some bits $m,n$. A computation can then be expressed as a series of preparation, entanglement, measurement, and correction commands, strictly in this order, satisfying the following conditions:
+\begin{enumerate}[label=(\alph*)]
+    \item No command depends on an outcome not yet measured;
+    \item No command acts on a qubit already measured;
+    \item No command acts on a qubit not yet prepared, unless it is an input qubit; and
+    \item A qubit $i$ is measured if and only if $i$ is not an output.
+\end{enumerate}
+Equivalently, a computation may be defined as a \term{measurement pattern} on a some graph state $\ket{G}$. A measurement pattern $\cB = (V,I,O,S)$ consists of
+\begin{itemize}
+    \item a finite set of qubits $V \subset V(G)$,
+    \item an input set $I \subset V(G)$, possibly overlapping with
+    \item an output set $O \subset V(G)$,
+    \item and a finite sequence of measurement and correction commands $S$.
+\end{itemize}
+that satisfy the above conditions (a) to (d).
+\end{definition}
 
-\begin{theorem}
-\label{thm:cq-implies-qq}
-[\cite{MBQC-universal} Observation 2: CQ-universal implies QQ-universal]. A resource is CQ-universal if, using the MBQC protocol (namely, local operations and measurements), we obtain CQ-universality. Every CQ-universal resource can be made QQ-universal by allowing quantum inputs to be coupled into the resource state using the same coupling method as before, i.e. $\cl Z$ gates.
-\end{theorem}
+Note that the measurement bases available in the Measurement Calculus model are different from the measurements in Examples \ref{example:hadamard-gadget} and \ref{ex:teleportation-gadget}. Thus, it will be convenient to find the operations applied by measurements in the XY, YZ, and XZ planes.
+
+\begin{lemma}
+\label{lemma:measurement-plane-maps}
+Let $\ket\psi = a\ket0+b\ket1$ be an arbitrary one-qubit input state. Prepare a second qubit $\ket+$, apply CZ, and measure the first qubit in a state
+\begin{align}
+    \ket m = u\ket0+v\ket1.
+\end{align}
+Conditioned on this measurement outcome, the unnormalized output state on the second qubit is
+\begin{align}
+    \Had
+    \begin{pmatrix}
+        \overline u & 0 \\
+        0 & \overline v
+    \end{pmatrix}
+    \ket\psi.
+\end{align}
+In particular, for the standard measurement planes we obtain:
+\[
+\begin{array}{c c c c c}
+    \toprule
+    \text{Plane}
+    & \text{Measurement state}
+    & \text{ZX effect}
+    & \text{Unnormalized output}
+    & \text{Unitary?} \\
+    \midrule
+
+    XY &
+    \frac{1}{\sqrt2}(\ket0+e^{-i\alpha}\ket1) &
+    \begin{ZX}
+        \zxZ{\alpha} \rar&
+    \end{ZX}
+    &
+    \frac1{\sqrt2}\Had P(\alpha)\ket\psi
+    &
+    \text{Always}
+    \\[1.25em]
+
+    YZ &
+    c\ket0+i s\ket1 &
+    \begin{ZX}
+        \zxX{\alpha} \rar&
+    \end{ZX}
+    &
+    \Had
+    \begin{pmatrix}
+        c&0\\
+        0&-is
+    \end{pmatrix}
+    \ket\psi
+    &
+    \text{Only if } |c|=|s|
+    \\[1.25em]
+
+    XZ &
+    c\ket0+s\ket1 &
+    \begin{ZX}
+        \zxX{\alpha} \rar & \zxZ{\frac{\pi}{2}} \rar&
+    \end{ZX}
+    &
+    \Had
+    \begin{pmatrix}
+        c&0\\
+        0&s
+    \end{pmatrix}
+    \ket\psi
+    &
+    \text{Only if } |c|=|s|
+    \\
+
+    \bottomrule
+\end{array}
+\]
+where $P(\alpha)=\operatorname{Diag}(1,e^{i\alpha}) = \llbracket \zx{\zxZ{\alpha}} \rrbracket$, $c=\cos\left(\tfrac{\alpha}{2}\right)$, and $s=\sin\left(\frac{\alpha}{2}\right)$.
+\end{lemma}
+
+\begin{proof}
+Write $\ket\psi = a\ket0+b\ket1$. Prepare a second qubit $\ket+$ and apply $CZ$:
+\begin{align}
+    CZ(\ket\psi\ket+)
+    =
+    CZ\left((a\ket0+b\ket1)\ket+\right)
+    =
+    a\ket0\ket+ + b\ket1\ket-.
+\end{align}
+Now project the first qubit onto $\ket m = u\ket0+v\ket1$. The resulting unnormalized state is
+\begin{align}
+    (\bra m\otimes I)CZ(\ket\psi\ket+)
+    &=
+    (\bra m\otimes I)
+    \left(
+        a\ket0\ket+ + b\ket1\ket-
+    \right) \\
+    &=
+    a\braket{m}{0}\ket+
+    +
+    b\braket{m}{1}\ket- \\
+    &=
+    a\overline u\ket+
+    +
+    b\overline v\ket- \\
+    &=
+    \Had
+    \begin{pmatrix}
+        \overline u & 0 \\
+        0 & \overline v
+    \end{pmatrix}
+    \ket\psi.
+\end{align}
+
+For the $XY$-plane state,
+$
+    \ket m
+    =
+    \tfrac1{\sqrt2}
+    \left(
+        \ket0+e^{-i\alpha}\ket1
+    \right),
+$.
+So
+$
+    \overline u
+    =
+    \tfrac1{\sqrt2},
+$
+and
+$
+    \overline v
+    =
+    \tfrac{e^{i\alpha}}{\sqrt2}.
+$.
+Hence
+\begin{align}
+    \Had
+    \begin{pmatrix}
+        \overline u & 0 \\
+        0 & \overline v
+    \end{pmatrix}
+    \ket\psi
+    =
+    \Had
+    \begin{pmatrix}
+        1/\sqrt2 & 0 \\
+        0 & e^{i\alpha}/\sqrt2
+    \end{pmatrix}
+    \ket\psi 
+    =
+    \frac1{\sqrt2}
+    \Had
+    \begin{pmatrix}
+        1&0\\
+        0&e^{i\alpha}
+    \end{pmatrix}
+    \ket\psi 
+    =
+    \frac1{\sqrt2}\Had P(\alpha)\ket\psi.
+\end{align}
+For the $YZ$-plane state,
+$
+    \ket m
+    =
+    c\ket0+is\ket1,
+$.
+Then
+$
+    \overline u = c,
+$
+and
+$
+    \overline v = -is.
+$.
+Therefore
+\begin{align}
+    \Had
+    \begin{pmatrix}
+        \overline u & 0 \\
+        0 & \overline v
+    \end{pmatrix}
+    \ket\psi
+    &=
+    \Had
+    \begin{pmatrix}
+        c&0\\
+        0&-is
+    \end{pmatrix}
+    \ket\psi.
+\end{align}
+For the $XZ$-plane state,
+$
+    \ket m
+    =
+    c\ket0+s\ket1,
+$.
+Hence
+$
+    \overline u = c,
+$
+and
+$
+    \overline v = s.
+$
+This gives
+\begin{align}
+    \Had
+    \begin{pmatrix}
+        \overline u & 0 \\
+        0 & \overline v
+    \end{pmatrix}
+    \ket\psi
+    &=
+    \Had
+    \begin{pmatrix}
+        c&0\\
+        0&s
+    \end{pmatrix}
+    \ket\psi.
+\end{align}
+Finally, since $\Had$ is unitary,
+$
+    \Had
+    \begin{pmatrix}
+        \overline u & 0 \\
+        0 & \overline v
+    \end{pmatrix}
+$
+is proportional to a unitary iff
+$
+    \begin{pmatrix}
+        \overline u & 0 \\
+        0 & \overline v
+    \end{pmatrix}
+$
+is proportional to a unitary. A diagonal matrix
+$
+    D=
+    \begin{pmatrix}
+        r_0&0\\
+        0&r_1
+    \end{pmatrix}
+$
+is proportional to a unitary iff
+\begin{align}
+    D^\dagger D
+    &=
+    \begin{pmatrix}
+        |r_0|^2&0\\
+        0&|r_1|^2
+    \end{pmatrix}
+    =
+    \lambda I
+\end{align}
+for some $\lambda>0$, which holds exactly when
+$
+    |r_0|=|r_1|
+$.
+Thus the XY case is always unitary, while the YZ and XZ cases are unitary only when $|c| = |s|$.
+\end{proof}
+
+\begin{lemma}
+\label{lemma:pauli-states-three-plane}
+The Pauli eigenstates occur as special cases of XY, XZ, and YZ plane measurements:
+\[
+\begin{array}{c c c c}
+    \toprule
+    \text{Pauli effect} & \text{Three-plane form} & \text{State} & \text{ZX effect} \\
+    \midrule
+    \bra{+_X}
+    &
+    \bra{+_{XY,0}}
+    &
+    \ket+ = \frac{1}{\sqrt2}(\bra0+\bra1)
+    &
+    \begin{ZX}
+        \zxZ{} \rar &
+    \end{ZX}
+    \\[1em]
+
+    \bra{-_X}
+    &
+    \bra{+_{XY,\pi}}
+    &
+    \ket- = \frac{1}{\sqrt2}(\bra0-\bra1)
+    &
+    \begin{ZX}
+        \zxZ{\pi} \rar &
+    \end{ZX}
+    \\[1em]
+
+    \bra{+_Y}
+    &
+    \bra{+_{XY,\pi/2}}
+    &
+    \ket{-i} := \frac{1}{\sqrt2}(\bra0-i\bra1)
+    &
+    \begin{ZX}
+        \zxZ{-\frac{\pi}{2}} \rar &
+    \end{ZX}
+    \\[1em]
+
+    \bra{-_Y}
+    &
+    \bra{+_{XY,-\pi/2}}
+    &
+    \ket{i} := \frac{1}{\sqrt2}(\bra0+i\bra1)
+    &
+    \begin{ZX}
+        \zxZ{\frac{\pi}{2}} \rar &
+    \end{ZX}
+    \\[1em]
+
+    \bra{+_Z}
+    &
+    \bra{+_{XZ,0}}=\bra{+_{YZ,0}}
+    &
+    \bra0
+    &
+    \begin{ZX}
+        \zxX{} \rar &
+    \end{ZX}
+    \\[1em]
+
+    \bra{-_Z}
+    &
+    \bra{+_{XZ,\pi}}=\bra{+_{YZ,\pi}}
+    &
+    \bra1
+    &
+    \begin{ZX}
+        \zxX{\pi} \rar &
+    \end{ZX}
+    \\
+    \bottomrule
+\end{array}
+\]
+Consequently, $X$- and $Y$-basis measurements are contained in the $XY$-plane model, while $Z$-basis measurements require the $XZ$ (or $YZ$) plane,
+\end{lemma}
+
+\begin{proof}
+The $XY$-plane cases follow directly from substituting the relevant angles:
+\begin{align}
+    \ket{+_{XY,0}} &= \frac{1}{\sqrt2}\left(\ket0+e^{i0}\ket1\right) = \frac{1}{\sqrt2}(\ket0+\ket1) = \ket{+_X}, \\
+    \ket{+_{XY,\pi}} &= \frac{1}{\sqrt2}\left(\ket0+e^{i\pi}\ket1\right) = \frac{1}{\sqrt2}(\ket0-\ket1) = \ket{-_X}.
+\end{align}
+Similarly,
+\begin{align}
+    \ket{+_{XY,\pi/2}} &= \frac{1}{\sqrt2}\left(\ket0+e^{i\pi/2}\ket1\right) = \frac{1}{\sqrt2}(\ket0+i\ket1) = \ket{+_Y}, \\
+    \ket{+_{XY,-\pi/2}} &= \frac{1}{\sqrt2}\left(\ket0+e^{-i\pi/2}\ket1\right) = \frac{1}{\sqrt2}(\ket0-i\ket1) = \ket{-_Y}.
+\end{align}
+For the $Z$-basis states, use the $XZ$ plane:
+\begin{align}
+    \ket{+_{XZ,0}} &= \cos(0)\ket0+\sin(0)\ket1 = \ket0 = \ket{+_Z}, \\
+    \ket{+_{XZ,\pi}} &= \cos\frac{\pi}{2}\ket0+\sin\frac{\pi}{2}\ket1 = \ket1 = \ket{-_Z}.
+\end{align}
+Finally, every $XY$-plane state has the form
+\begin{align}
+    \ket{+_{XY,\alpha}} = \frac{1}{\sqrt2}\ket0 + \frac{e^{i\alpha}}{\sqrt2}\ket1.
+\end{align}
+Hence both computational-basis amplitudes have magnitude $1/\sqrt2$. Therefore
+no $XY$-plane state can equal $\ket0$ or $\ket1$, even up to global phase.
+Thus $Z$-basis measurements are not contained in the $XY$-plane measurement
+model.
+\end{proof}
+
+In this thesis, we are interested in whether there exist measurement patterns on comparability grids that result in universal quantum computation. It remains to formally define what it means to use comparability grids as a resource for universal quantum computation.

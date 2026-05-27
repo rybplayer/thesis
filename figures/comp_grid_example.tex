@@ -46,10 +46,10 @@
 \draw[edge] (v12) to[bend right=20] (v32);
 
 \draw[edge] (v11) to[bend right=20] (v33);
-\draw[edge] (v12) to[bend right=20] (v33);
+\draw[edge] (v12) -- (v33);
 \draw[edge] (v13) to[bend right=20] (v33);
 
-\draw[edge] (v21) to[bend right=20] (v33);
+\draw[edge] (v21) -- (v33);
 \draw[edge] (v22) to[bend right=20] (v33);
 
 \node[draw=none, fill=none, inner sep=0pt, anchor=east] at ($(v13)+(-0.15,0)$) {$ (1,3)$};
