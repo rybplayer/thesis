@@ -29,7 +29,7 @@ Note that
     \overset{\zxref{b}}{=}
     \begin{ZX}
         \rar & \zxX{} \ar[dr] \rar & \zxZ{}      \rar & \\
-             & \zxX{} \ar[ur] \rar & \zxZ{} \dar \rar & \\
+             & \zxX{} \ar[ur] \rar & \zxZ{} \dar      & \\
         \rar &                \rar & \zxZ{}      \rar & \\
         \rar & \zxX{} \ar[uu] \rar &             \rar &
     \end{ZX}
@@ -176,7 +176,7 @@ Dropping the Pauli gates, we get that we can apply blocks of
     \&\gate{H}  \& \qw
 \end{quantikz}.
 \end{equation}
-Call the above the \term{width-3 gadget}. Using Fact \ref{fact:cnot-flip-identity}, the above gadget simplifies to
+Call the above the \term{width-3 gadget}. Using Fact \ref{fact:cnot-flip-identity}, the gadget simplifies to
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$q_1$} 
@@ -188,23 +188,6 @@ Call the above the \term{width-3 gadget}. Using Fact \ref{fact:cnot-flip-identit
 \end{quantikz}.        
 \end{equation}
 \end{definition}
-
-\begin{fact}
-The group of Clifford operations, denoted $\langle C \rangle$, mod the group of Pauli operations, denoted $\langle P \rangle$, satisfies
-\begin{align}
-    \left| \faktor{\langle C \rangle}{\langle P \rangle} \right| = 1,451,520
-\end{align}
-\end{fact}
-
-We now introduce two new universality tests, one informal and one formal.
-
-\begin{definition}
-(Informal universality tests). \note{Replacing the tableau representation in the algorithm behind Fact \ref{fact:width-3-clifford-size} with general matrices, and increasing the number of angles, we should expect that the number of induced gates should increase dramatically. A proof should be given for this.}
-\end{definition}
-
-\begin{fact}
-The previous algorithm does not indicate that the width-3 gadget is universal.
-\end{fact}
 
 \begin{theorem}
 \cite{universal-lin-alg} provides an algorithm for determining the universality of a gate set, in terms of a linear algebra problem. \note{Though it is not polynomial in terms of the number of qubits and gates, it is massively parallelizable. Ideally, I would like a GPU kernel that does much of this work.}

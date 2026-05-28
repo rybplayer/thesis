@@ -1,25 +1,27 @@
 \subsection{Conjectures}
 
-\note{I would like to produce a table of the minimum number of additional edges from attempting to subset $\Grid_{k \times n}$ from $\CGrid$. The cases $k=2,3$ already appear in the previous sections, but $k=4,5$ should be within reach in a few weeks. This is because of the following:}
+\note{This is unfinished, but here is the main content: there are two iterative constructions which pass the Lie Algebra test up to 8 qubits. The first is the middle-all-connected construction: let $k$ be the number of qubits we desire for our computation. $k=1$ is trivial. $k=2$ is the $\Grid_{2 \times n}$.}
 
-\begin{conjecture}
-\label{conjecture:min-edges}
-\note{This needs to be formalized:} Suppose we have a construction to subset a $k \times n$ subgraph $H$ of some $\CGrid$ with $a$ additional edges compared to $\Grid_{k \times n}$. Suppose further than this construction produces $b_k$ additional edges for every column added, and this $b$ remains constant regardless of how many additional columns are added. Then a subgraph $H'$ of any $\CGrid$ with additional edges compared to $\Grid_{k+1 \times n}$ must have at least 
-\begin{align}
-    b_{k+1} \geq \lceil b_k \frac{k+1}{k} \rceil
-\end{align}
-additional edges for every column added.
-\begin{proof}
-By contradiction and induction. The base case is $3 \times n$ where $b_3 = 1$, and $4 \times n$ where if $b_4 = 1$, then at least two rows have no additional edge. Deleting the one row connected to this additional edge \note{and performing some transformations afterwards, which need to be formalized} leaves a $3 \times n$ grid with fewer than $b_3$ additional edges per column. Contradiction. \note{It is not quite clear whether this generalizes and hence is left as a conjecture.}
-\end{proof}
-\end{conjecture}
+\note{To construct the graph state for $k+1$, take two copies of $k$ and tile them together. Assume the direction of MBQC is rightwards. Add three new vertices: One on the anti-diagonal of the first column, one on the middle column that joins the two copies of the $k$ construction, and one on the rightmost column. Then these three new vertices, $v_1$, $v_2$, and $v_3$ respectively, form a complete graph with all other vertices in the same column / anti-diagonal.}
 
-\begin{conjecture}
-Using the same notation as Conjecture \ref{conjecture:min-edges}, whatever construction $H$ is minimal for $k$ rows has $H$ be a bipartite graph. In particular, it is of the form of two antidiagonal regions of the comparability grid. \note{Since the bipartite graphs with $n$ vertices are counted by $C_n$, the $n$th Catalan number, which is large but smaller than $n!$, significant early termination is still necessary to efficiently find the minimum number of additional edges for any $k$}.
-\end{conjecture}
+\note{Now, to make this construction an induced subgraph of some $\CGrid$, it turns out is suffices to make $v_2$ connected to all other vertices, including $v_1$ and $v_2$. This construction, when converted to its corresponding circuit and is tested with the Lie algebra criterion, outputs universal up to $k=8$. This takes about 15 minutes to run on a standard laptop.}
 
-It is a fact that the number of additional edges must increase as $k$ increases. In that sense, the $3 \times n$ case is the easiest case to check universality through algorithmic approaches for. 
+\note{The other construction is called all-connected. This is similar, but now have $v_1$ also connect to every vertex on the left copy of the $k$ construction. Then have $v_2$ connect to every vertex on the right copy of the $k$ construction. This turns out to be universal up to $8$ qubits too.}
 
-\note{Here I want to provide a table of the results of the size of the groups generated using the width-3-gadget, and if there is enough compute, the width-4-gadget.}
+\note{Remark. $8$ is such a large number that we may conjecture that this holds, for both constructions, for all $k$. Note that the problem becomes exponentially more difficult for every additional $k$ we wish to verify computationally. This is because the size of the gadget increases exponentially, and so does the size of the Pauli basis we wish to completely generate.}
 
-Another algorithmic direction is to include local complementation into the algorithmic search. \note{However this is computationally quite expensive, because it means we cannot use the tuple subset representation of Fact \ref{fact:tuple-construction}. Furthermore, (local) graph isomorphism is now necessary to prevent checking the same graph multiple times, which further adds to the complexity of the algorithm}.
+\note{Furthermore, a simple inductive proof is almost certainly impossible. For one, both $k+1$ constructions have many edges into all the vertices of the two $k$ gadgets within it. This makes it hard to use any facts about the $k$ gadget. Furthermore, it is not necessarily true that the $k$ gadget is one-step universal; we may need to tile the $k$ gadget many, many times to make it universal for $k$ qubits.}
+
+\note{Now suppose we have a construction where, by some miracle, in the $k+1$ construction we may choose to apply the $k$ gadget as many times as we want. An easy proof shows that if we do this, there \emph{must} be additional edges from the $k+1$th qubit into each of these $k$ gadgets. In other words, a simple inductive proof where we say "because the $k$th gadget is universal for $k$ qubits, it can handle any after effects of the $k+1$th qubit" seem intractable.}
+
+\note{Given the theory we have developed, there are five ways we may move forward.}
+
+\note{First, we need to incorporate local complementation into every part of our construction. It may be possible that there is an iterative construction like the one above that, due to local complementation, become significantly easier to construct and prove theoretically.}
+
+\note{Second, we should understand more precisely what made the all-connected and middle-all-connected constructions work.}
+
+\note{Third, we may attempt to more coarsely characterize the problem. Consider the set of all grid graphs with $k$ additional edges. For small graphs, we may compute the number of Pauli bases this gadget generates, taking for granted that the construction is tileable. Now create a plot, whose x axis is the number of additional edges $k$, and whose y axis is the average number of Pauli bases generated by this family with $k$ additional edges. What does this distribution look like?}
+
+\note{Fourth, consider instead a random variable that outputs a random vertex minor of the comparability grid that is guaranteed to have some grid as a subgraph. Can we use probabilistic methods to force a universality result out of this?}
+
+\note{Fifth, we have seen how vertex minors and rank-width are very powerful concepts for characterizing and studying the universality of comparability grids. What other measures are there?}

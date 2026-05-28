@@ -1,0 +1,184 @@
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    scale=0.8,
+    vertex/.style={circle, fill=black, inner sep=1.6pt},
+    edge/.style={line width=0.55pt},
+    arr/.style={-{Latex[length=2mm]}, line width=0.55pt}
+]
+
+% =========================
+% Graph 1
+% =========================
+\begin{scope}[xshift=0cm, yshift=0cm]
+
+\node[vertex] (a11) at (0,3) {};
+\node[vertex] (a21) at (1.2,3) {};
+\node[vertex] (a31) at (2.4,3) {};
+
+\node[vertex] (a12) at (0,2) {};
+\node[vertex] (a22) at (1.2,2) {};
+\node[vertex] (a32) at (2.4,2) {};
+
+\node[vertex] (a13) at (0,1) {};
+\node (a23) at (1.2,1) {$\times$};
+\node[vertex] (a33) at (2.4,1) {};
+
+\node[vertex] (a14) at (0,0) {};
+\node[vertex] (a24) at (1.2,0) {};
+\node[vertex] (a34) at (2.4,0) {};
+
+\draw[edge] (a11)--(a21)--(a31);
+\draw[edge] (a12)--(a22)--(a32);
+\draw[edge] (a13)--(a23)--(a33);
+\draw[edge] (a14)--(a24)--(a34);
+
+\draw[edge] (a11)--(a12)--(a13)--(a14);
+\draw[edge] (a21)--(a22)--(a23)--(a24);
+\draw[edge] (a31)--(a32)--(a33)--(a34);
+
+% \node at (1.45,1.02) {\(\star\)};
+
+\end{scope}
+
+\draw[arr] (3.1,1.5) -- (4.2,1.5);
+
+% =========================
+% Graph 2
+% =========================
+\begin{scope}[xshift=4.8cm, yshift=0.05cm]
+
+\node[vertex] (b11) at (0,3) {};
+\node[vertex] (b21) at (1.15,3) {};
+\node[vertex] (b31) at (2.3,3) {};
+
+\node[vertex] (b12) at (0,2) {};
+\node[vertex] (b22) at (1.15,2) {};
+\node[vertex] (b32) at (2.3,2) {};
+
+\node[vertex] (b13) at (0,1) {};
+\node[vertex] (b33) at (2.3,1) {};
+
+\node[vertex] (b14) at (0,0) {};
+\node[vertex] (b24) at (1.15,0) {};
+\node[vertex] (b34) at (2.3,0) {};
+
+\draw[edge] (b11)--(b21)--(b31);
+\draw[edge] (b12)--(b22)--(b32);
+\draw[edge] (b14)--(b24)--(b34);
+
+\draw[edge] (b11)--(b12)--(b13)--(b14);
+\draw[edge] (b21)--(b22);
+\draw[edge] (b31)--(b32)--(b33)--(b34);
+
+\node at (-0.3,0) {\(\star\)};
+\node at (2.6,0) {\(\star\)};
+
+\end{scope}
+
+\draw[arr] (7.75,1.5) -- (8.85,1.5);
+
+% =========================
+% Graph 3
+% =========================
+\begin{scope}[xshift=9.4cm, yshift=0.05cm]
+
+\node[vertex] (b11) at (0,3) {};
+\node[vertex] (b21) at (1.15,3) {};
+\node[vertex] (b31) at (2.3,3) {};
+
+\node[vertex] (b12) at (0,2) {};
+\node[vertex] (b22) at (1.15,2) {};
+\node[vertex] (b32) at (2.3,2) {};
+
+\node[vertex] (b13) at (0,1) {};
+\node[vertex] (b33) at (2.3,1) {};
+
+\node (b14) at (0,0) {$\times$};
+\node[vertex] (b24) at (1.15,0) {};
+\node (b34) at (2.3,0) {$\times$};
+
+\draw[edge] (b11)--(b21)--(b31);
+\draw[edge] (b12)--(b22)--(b32);
+\draw[edge] (b14)--(b24)--(b34);
+
+\draw[edge] (b11)--(b12)--(b13)--(b14);
+\draw[edge] (b21)--(b22);
+\draw[edge] (b31)--(b32)--(b33)--(b34);
+
+\draw[edge] (b13) -- (b24);
+\draw[edge] (b24) -- (b33);
+
+\node at (-0.3,1) {\(\star\)};
+\node at (2.6,1) {\(\star\)};
+
+\end{scope}
+
+\draw[arr] (11.9,1.5) -- (13.0,1.5);
+
+% =========================
+% Graph 4
+% =========================
+\begin{scope}[xshift=13.5cm, yshift=0.15cm]
+
+\node[vertex] (b11) at (0,3) {};
+\node[vertex] (b21) at (1.15,3) {};
+\node[vertex] (b31) at (2.3,3) {};
+
+\node[vertex] (b12) at (0,2) {};
+\node[vertex] (b22) at (1.15,2) {};
+\node[vertex] (b32) at (2.3,2) {};
+
+\node[] (b13) at (0,1) {$\times$};
+\node[] (b33) at (2.3,1) {$\times$};
+
+\node[vertex] (b23) at (1.15,1) {};
+
+\draw[edge] (b11)--(b21)--(b31);
+\draw[edge] (b12)--(b22)--(b32);
+
+\draw[edge] (b11)--(b12)--(b13);
+\draw[edge] (b21)--(b22);
+\draw[edge] (b31)--(b32)--(b33);
+
+\draw[edge] (b13) -- (b23);
+\draw[edge] (b23) -- (b33);
+
+\draw[edge] (b12) -- (b23) -- (b32);
+
+% \node at (-0.3,1) {\(\star\)};
+% \node at (2.6,1) {\(\star\)};
+
+\end{scope}
+
+\draw[arr] (16.2,1.5) -- (17.3,1.5);
+
+% =========================
+% Graph 5
+% =========================
+\begin{scope}[xshift=17.8cm, yshift=0.2cm]
+
+\node[vertex] (b11) at (0,3) {};
+\node[vertex] (b21) at (1.15,3) {};
+\node[vertex] (b31) at (2.3,3) {};
+
+\node[vertex] (b12) at (0,2) {};
+\node[vertex] (b22) at (1.15,2) {};
+\node[vertex] (b32) at (2.3,2) {};
+
+\node[vertex] (b23) at (1.15,1) {};
+
+\draw[edge] (b11)--(b21)--(b31);
+\draw[edge] (b12)--(b22)--(b32);
+
+\draw[edge] (b11)--(b12);
+\draw[edge] (b21)--(b22);
+\draw[edge] (b31)--(b32);
+
+\draw[edge] (b12) -- (b23) -- (b32);
+
+\end{scope}
+\end{tikzpicture}
+\caption{Vertices marked by \(\star\) are locally complemented, and vertices marked by \(\times\) are deleted. This shows that $\Grid_{3 \times 4}$ has a forbidden minor of circle graphs as a vertex minor.}
+\label{fig:grid-has-forbidden-vertex-minor}
+\end{figure}

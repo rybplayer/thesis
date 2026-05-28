@@ -1,193 +1,206 @@
 \subsection{Subgraphs of the Comparability Grid}
 
-One idea it to ask how close ``vertex deletion'' can get us to universal quantum computation. Namely, can we delete vertices to get a $\Grid$? If not, how close can we get?
-
-\begin{definition}
-Define a subset of a $\CGrid$ state as the graph corresponding to a state in $\CGrid$ with some vertices measured in the $Z$ basis. Graph theoretically, a subset of a $\CGrid$ is a $\CGrid$ with some vertices removed (alongside any edges connected to said removed vertices).
-\end{definition}
+Recall that, by Fact \ref{fact:vertex-deletion}, vertex deletion is an operation allowable in the Measurement Calculus model of MBQC. Thus, if we can show that a family of induced subgraphs of comparability grids is universal, we obtain that comparability grids are universal. We begin by characterizing the data of a comparability grid.
 
 \begin{fact}
 \label{fact:tuple-construction}
-Any subset $H$ with $n$ vertices of any $\CGrid$ can be uniquely identified as a permutation of $[n]$, denoted $\pi \in S_n$. Denote this by $\pi(H)$. Similarly, let $H(\pi)$ denote the subgraph corresponding to $\pi$.
-\begin{proof}
-\note{This proof only works for finite subsets, but there is a need to define it for infinite-sized vertex subsets. }
-Consider an arbitrary subset $H = (V,E)$ with $|V| = n$ of a fixed $\CGrid$ $G$. We claim this subgraph is isomorphic to the graph $H' = (V', E')$, where 
-\begin{enumerate}
-    \item $V' = \{ (x+\nicefrac{y}{n},y+\nicefrac{x}{n}) \mid (x,y) \in V \}$
-    \item $E' = \{ \{(x_1+\nicefrac{y_1}{n},y_1+\nicefrac{x_1}{n}), (x_2+\nicefrac{y_2}{n},y_2+\nicefrac{x_2}{n})\} \mid \{(x_1,y_1), (x_2,y_2)\} \in E\}$.
-\end{enumerate}
-That is, $H'$ is the graph whose $x'$ and $y'$ values have been shifted rightwards and upwards, respectively. Since $|V| = n$, there is a clear bijection from $V$ to $V'$. The bijection between edges follows as $|E| = |E'|$.
-
-We claim the data of $H'$ can be completely expressed as follows: Sort the vertices in $V'$ by their $x'$-coordinate. No two distinct vertices can share an $x'$ coordinate: We proceed by contradiction. If $x_1 = x_2$
-\begin{align}
-    x_1+\frac{y_1}{n} = x_2+\frac{y_2}{n}
-    \implies 
-    y_1 = y_2
-\end{align}
-but then they are not distinct vertices. If $x_1 \neq x_2$, without loss of generality let $x_1 > x_2$ so $x_1 = x_2 + c$, $c \in \N$. Then
-\begin{align}
-    x_1+\frac{y_1}{n} = x_2+\frac{y_2}{n}
-    \implies 
-    c = \frac{y_1}{n} - \frac{y_2}{n}
-    \implies
-    c = \frac{1}{n}(y_1 - y_2)
-\end{align}
-Since $y_1, y_2 \leq n$, the RHS $\leq 1$. Contradiction. No two distinct vertices share a $y'$ coordinate either, by a similar proof. Re-label each vertex by their order, from least to greatest, in both $x'$ and $y'$. Edges still form by the partial ordering rule in Equation \ref{eq:comp-grid-edges}. Reading the $x'$ coordinate as the index of a $n$-tuple and the $y'$ coordinate as the values, we obtain a permutation of $n$ as each $x'$, $y'$ is distinct.
-\end{proof}
+Let \(H\) be an induced subgraph of a comparability grid \(\CGrid\), with
+\(|V(H)|=n\). Then \(H\) admits a canonical encoding by a permutation
+\(\pi(H)\in S_n\). Conversely, every permutation \(\pi\in S_n\) determines
+an induced subgraph \(H(\pi)\) of \(\CGrid\).
 \end{fact}
+
+\begin{proof}
+Write the vertices of \(H\) as points \((x,y)\) in the comparability grid,
+where two vertices are adjacent precisely when they are comparable:
+\begin{align}
+    (x_1,y_1)(x_2,y_2)\in E(H)
+    &\iff (x_1-x_2)(y_1-y_2)>0.
+\end{align}
+Define a perturbed point set
+\begin{align}
+    V'
+    &:= \left\{
+        \left(x+\frac{y}{n+1},\ y+\frac{x}{n+1}\right)
+        : (x,y)\in V(H)
+    \right\}.
+\end{align}
+\input{figures/perturbed-cgrid.tex}
+This perturbation preserves the relative comparability of every pair of
+vertices, but ensures that no two vertices have the same first coordinate and
+no two vertices have the same second coordinate. Indeed, if
+\begin{align}
+    x_1+\frac{y_1}{n+1}
+    = x_2+\frac{y_2}{n+1}
+    \Rightarrow
+    x_1-x_2
+    = \frac{y_2-y_1}{n+1}.
+\end{align}
+The left-hand side is an integer, while the right-hand side has absolute value
+strictly less than \(1\). Hence both sides are \(0\), so \(x_1=x_2\) and
+\(y_1=y_2\). Thus the vertices are identical. The same argument applies to the
+second coordinates.
+
+Now sort the perturbed vertices by increasing first coordinate. Since the
+second coordinates are all distinct, their relative order is a permutation of
+\([n]\). Denote this permutation by \(\pi(H)\). Thus, after relabeling the
+vertices by their \(x\)-order, we may write the vertices as
+\begin{align}
+    v_i=(i,\pi(H)(i)), \qquad i\in[n].
+\end{align}
+The adjacency rule becomes
+\begin{align}
+    v_i v_j \in E(H)
+    &\iff (i-j)\bigl(\pi(H)(i)-\pi(H)(j)\bigr)>0.
+\end{align}
+Hence \(H\) is exactly the permutation graph encoded by \(\pi(H)\).
+
+Conversely, given \(\pi\in S_n\), define
+\begin{align}
+    V(H(\pi)) := \{(i,\pi(i)) : i\in[n]\},
+\end{align}
+with the induced comparability grid edges. This gives an induced subgraph
+\(H(\pi)\subseteq \CGrid\).
+\end{proof}
 
 \begin{fact}
 \label{fact:tuple-not-unique}
-Two subsets $H,H'$ of a $\CGrid$ may have $\pi(H) \neq \pi(H')$ yet $H = H'$ up to vertex relabeling.
-\begin{proof}
-Take subgraphs with vertices $V = \{(1,1), (1,2)\}$ and $V' = \{(1,1), (2,1)\}$ and their induced edges. The first has permutation $(1,2)$ and the second $(2,1)$ but the graphs are clearly isomorphic.
-\end{proof}
+Two induced subgraphs \(H,H'\) of a comparability grid may satisfy
+\(\pi(H)\neq \pi(H')\) while still being isomorphic as abstract graphs.
 \end{fact}
+
+\begin{proof}
+Consider the permutations
+\begin{align}
+    \pi = 132,
+    \qquad
+    \sigma = 213.
+\end{align}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    scale=1.1,
+    vertex/.style={circle, fill=black, inner sep=1.6pt},
+    edge/.style={line width=0.55pt},
+    gridline/.style={gray!50, thin}
+]
+
+% Left: H(132)
+\begin{scope}[xshift=0cm]
+    \draw[gridline] (0.5,0.5) grid (3.5,3.5);
+
+    \node[vertex,label={[font=\small]below:\((1,1)\)}] (a1) at (1,1) {};
+    \node[vertex,label={[font=\small]above:\((2,3)\)}] (a2) at (2,3) {};
+    \node[vertex,label={[font=\small]right:\((3,2)\)}] (a3) at (3,2) {};
+
+    \draw[edge] (a1) -- (a2);
+    \draw[edge] (a1) -- (a3);
+
+    \node at (2,4.1) {\({H(132)}\)};
+\end{scope}
+
+% Right: H(213)
+\begin{scope}[xshift=6cm]
+    \draw[gridline] (0.5,0.5) grid (3.5,3.5);
+
+    \node[vertex,label={[font=\small]left:\((1,2)\)}] (b1) at (1,2) {};
+    \node[vertex,label={[font=\small]below:\((2,1)\)}] (b2) at (2,1) {};
+    \node[vertex,label={[font=\small]above:\((3,3)\)}] (b3) at (3,3) {};
+
+    \draw[edge] (b1) -- (b3);
+    \draw[edge] (b2) -- (b3);
+
+    \node at (2,4.1) {\({H(213)}\)};
+\end{scope}
+
+\end{tikzpicture}
+\caption{The induced comparability-grid subgraphs \(H(132)\) and \(H(213)\).}
+\end{figure}
+\noindent Clearly $H(\pi)$ is isomorphic to $H(\sigma)$ though $\pi \neq \sigma$.
+\end{proof}
 
 \begin{fact}
-Let $\pi\in S_n$ and define its reverse-complement
+\label{fact:reverse-complement-isomorphic}
+Let \(\pi\in S_n\). Define its \term{reverse-complement} by
 \begin{align}
-    \pi^{\mathrm{rc}}(i) := (n+1) - \pi(n+1-i).
+    \pi^{\mathrm{rc}}(i)
+    &:= n+1-\pi(n+1-i).
 \end{align}
-Then the induced $\CGrid$ subgraphs satisfy $H(\pi)\cong H(\pi^{\mathrm{rc}})$.
-\begin{proof}
-Write vertices of $H(\pi)$ as $v_i=(i,\pi(i))$. Define a bijection
-\begin{align}
-    f: v_i \mapsto v'_{n+1-i} := \bigl(n+1-i,\; n+1-\pi(i)\bigr).    
-\end{align}
-The image vertex set is exactly $\{(k,\pi^{\mathrm{rc}}(k)) \mid k\in[n]\}$, so $f$ is a bijection from $V(H(\pi))$ to $V(H(\pi^{\mathrm{rc}}))$.
-An edge in a comparability grid exists between $v_i$ and $v_j$ iff
-\begin{align}
-    (i-j)\bigl(\pi(i)-\pi(j)\bigr) > 0,    
-\end{align}
-equivalently $(i<j \ \&\ \pi(i)<\pi(j))$ or $(i>j \ \&\ \pi(i)>\pi(j))$. But under $f$ we have
-\begin{align}
-    (n+1-i)-(n+1-j) &= -(i-j),\\
-    (n+1-\pi(i))-(n+1-\pi(j)) &= -(\pi(i)-\pi(j)),    
-\end{align}
-so the product $(i-j)(\pi(i)-\pi(j))$ is preserved. Hence $\{v_i,v_j\}$ is an edge iff $\{f(v_i),f(v_j)\}$ is an edge. Therefore $f$ is a graph isomorphism.
-\end{proof}
+Then
+$
+    H(\pi)\cong H(\pi^{\mathrm{rc}})
+$.
 \end{fact}
 
-\begin{theorem}
-\label{thm:subset-alg}
-Let $\pi(H)$ denote a permutation of $n$ capturing the data of a finite subset $H = (V,E) \leq G$ with $|V|=n$, for some $G \in \CGrid$. The degree sequence of $\pi(H)$ can be constructed algorithmically in $O(n \log n)$ time and $O(n)$ space.
 \begin{proof}
-For any $\pi \in S_n$, let an \term{inversion} be a pair $(i,j)$, $i \neq j \in [n]$, such that 
+Write the vertices of \(H(\pi)\) as
+$v_i=(i,\pi(i))$ for $i\in[n]$.
+Define
 \begin{align}
-    i < j \text{ and } \pi[i] > \pi[j].
+    f(v_i)
+    &:= \bigl(n+1-i,\ n+1-\pi(i)\bigr).
 \end{align}
-$(i,j)$ is a \term{non-inversion} if
+As \(i\) ranges over \([n]\), the image is exactly
 \begin{align}
-    i < j \text{ and } \pi[i] < \pi[j].
+    \{(k,\pi^{\mathrm{rc}}(k)) : k\in[n]\},
 \end{align}
-Since $i \neq j$, every $(i,j)$ is either an inversion or non-inversion. Thus
-\begin{align}
-    \#\text{non-inversions} = \binom{n}{2} - \#\text{inversions}.
-\end{align}
-At position $j \in [n]$ of the permutation, 
-\begin{align}
-    |\{i < j \mid \pi[i] < \pi[j]\}| = \text{prefixSum}(\pi[j] - 1).
-\end{align}
-Here, prefix sum refers to the number of indies with index $\leq j$ and value $\leq \pi[j]$. The $-1$ makes $\leq$ become $<$. In other words, for each $j$, we count the number of indices $i < j$ such that $\pi[i] < \pi[j]$.
+so \(f\) is a bijection from \(V(H(\pi))\) to \(V(H(\pi^{\mathrm{rc}}))\).
 
-It is well-known that a prefix sum can be computed in $\Theta(\log n)$ time using a binary index tree or Fenwick tree. Since there are $n$ iterations, the total time is $\Theta(n \log n)$. The Fenwick tree is the only allocation, and only needs $\Theta(n)$ more space.
-
-Run the above procedure on the reverse of $\pi(H)$. This counts, for each $j$. the number of indices $i < j$ such that $\pi[i] > \pi[j]$. Adding the two values for each index gives the degree of the corresponding vertex. Denote this algorithm as \term{double inversion}.
+For \(i\neq j\), adjacency in a comparability grid is given by
+\begin{align}
+    v_i v_j\in E(H(\pi))
+    &\iff (i-j)\bigl(\pi(i)-\pi(j)\bigr)>0.
+\end{align}
+Under \(f\), both differences change sign:
+\begin{align}
+    (n+1-i)-(n+1-j)&=-(i-j),\\
+    (n+1-\pi(i))-(n+1-\pi(j))
+    &= -(\pi(i)-\pi(j)).
+\end{align}
+Therefore the product
+\begin{align}
+    (i-j)\bigl(\pi(i)-\pi(j)\bigr)
+\end{align}
+is preserved. Hence \(v_i v_j\) is an edge if and only if \(f(v_i)f(v_j)\)
+is an edge. Thus \(f\) is a graph isomorphism, and $H(\pi)\cong H(\pi^{\mathrm{rc}})$.
 \end{proof}
-\end{theorem}
 
-We use double-inversion rather than directly constructing the edges due to the following fact:
+This representation of a subgraph will come very handy in Section \ref{sec:algorihmic-approaches}. We now conclude this section with a few observations regarding whether grids are induced subgraphs of some comparability grid.
 
 \begin{fact}
-In a subgraph $H$ with $n$ vertices, there are at most $O(n^2)$ edges. Thus, enumerating the edges of some $\pi(H)$ cannot be better than $O(n^2)$ in the worst general case.
+For all $n \in \N$, $\Grid_{2 \times n}$ is a subgraph of a $\CGrid_{n+1 \times n+1}$.
 \end{fact}
 
-\begin{theorem}
-It is sufficient to explore subgraphs with at most $O(n)$ edges. Thus, enumerating the edges of some $\pi(H)$ cannot be worse than $O(n)$ in the worst general case.
 \begin{proof}
-\note{This needs some formalization.} The idea is to use early termination. Suppose we identify, even in the first pass of Theorem \ref{thm:subset-alg}, that the current graph has ``too many'' edges or ``too many'' vertices with ``high degree'' to be the construction with optimal minimum number of edges compared to the $\Grid$. Since every iteration of the algorithm through the vertices in both passes can only add 0 or more edges, we can early terminate the entire branch. We call these early terminations \term{termination strategies}.
+Repeat and ``untwist'' the following construction: 
 \end{proof}
-\end{theorem}
+\input{figures/2n-subgrid.tex}
 
-\begin{theorem}
-When enumerating every possible subgraph $H = (V,E)$ of some $\CGrid$ with $|V| = n$, it is more than sufficient to enumerate every possible permutation of $[n]$.
-\begin{proof}
-Clearly, there is a map $f: \{\forall H\} \to S_n$. If there is a subset that does not have a representation in $S_n$, this would violate Fact \ref{fact:tuple-construction}. This is more than sufficient as Fact \ref{fact:tuple-not-unique} shows the permutation representation is not unique.
-\end{proof}
-\end{theorem}
-
-Before we enumerate the termination strategies we will use, it may be helpful to define some notation.
-
-\begin{definition}
-\label{def:vertex-names}
-Given any $\Grid$, say a vertex is a corner vertex if it has degree 2 in the grid. Say it is an edge if it has degree 3, and inner if it has degree 4. In the context of a subgraph $H$ of some $\CGrid$, say a vertex in $H$ is a \term{potential corner} if it has degree at least 2. Similarly for \term{potential edge} and \term{potential inner}. 
-
-Furthermore, say a vertex in $H$ is \term{invalid} if it has degree less than $2$. We say invalid as we wish to find the number of maximum additional edges, not minimum number of missing edges. In other words, if $H$ has an invalid vertex, no $\Grid$ $G$ with $|V(H)| = |V(G)|$ is a subgraph of $H$.
-\end{definition}
+This result is quite exciting, as it immediately implies that $\CGrid$ is 2-qubit universal, as the family of all $\Grid_{2 \times n}$ is 2-qubit universal. Unfortunately, it turns out that we cannot do much better.
 
 \begin{fact}
-To enumerate all possible permutations of $[n]$, it suffices to consider all possible choices for the first entry, then all possible remaining choices for the second entry for each chosen first entry, and henceforth. This task is massively parallelizable by seeding $k \leq n$ first entries. 
-
-\note{This needs to be made more formal.} Thus we can say we \term{terminate} a set of permutations in $S_n$ if the processing of $j \leq n$ entries in either pass of Theorem \ref{thm:subset-alg} triggers a termination strategy.
+\label{fact:grid-not-vertex-minor-cgraph}
+$\Grid_{3 \times 4}$ is not a vertex minor of any circle graph. Since vertex minors is a strictly more powerful operation than vertex deletion, $\Grid_{3 \times 4}$ is not an induced subgraph of any $\CGrid$.
 \end{fact}
 
-\begin{definition}
-\label{def:termination-strategies}
-\note{This needs to be edited for brevity.} We now enumerate the various termination strategies. Throughout, let $H = (V,E)$ be the subgraph of some $\CGrid$, and let $\Grid_{k \times n}$ be the grid we are comparing $H$ with. Let first and second pass refer to the two passes of Theorem \ref{thm:subset-alg}. 
-
-Suppose we set a bound $b$ on the maximum number of edges.
-\begin{enumerate}
-    \item If in the second pass, a vertex is found invalid, terminate. No vertex can be found invalid in the first pass.
-    \item If the sum of degrees, divided by 2 due to the Handshaking lemma, is larger than $b$, terminate.
-    \item Suppose a vertex has degree $> b+4$. Then this subgraph invalidates $b$. \note{This may be equivalent to the previous strategy.}
-    \item The distribution of degrees should be approximately constant. In other words, the additional edges $b$ should be spread around the graph. This can be computed by keeping a counter of the number of degree $1,\ldots,b+4$ vertices found in the second pass.
-\end{enumerate}
-\end{definition}
-
-\begin{theorem}
-All the termination strategies above can be done in $\Theta(1)$ time and $\Theta(1)$ space. 
 \begin{proof}
-Most strategies can be done in such bounds by keeping a running sum, running a constant number of if statements, and other $\Theta(1)$ time and space operations.
+Look at the following figure:
+\input{figures/grid-forbidden-vertex-minor.tex}
+The rightmost graph is a forbidden vertex minor of circle graphs. If the $\Grid_{3 \times 4}$ was the vertex minor of some circle graph, then so would be this forbidden minor. Thus, no circle graph, and consequently no comparability grid, has any $\Grid_{m \times n}$ with $m \geq 3$ and $n \geq 4$ as a vertex minor.
 \end{proof}
-\end{theorem}
 
-Recall that our goal is to identify whether vertex deletion alone can get us to a subgraph isomorphic to some $\Grid$ graph. This is surprisingly true for $2 \times n$ grids for all $n \in \N$.
-
-\begin{theorem}
-The $2 \times n$ $\Grid$ is obtainable from a sufficiently large $\CGrid$ through vertex deletion alone.
-\begin{proof}
-Fix $G = \CGrid_{n \times n}$. Define the $i$th \term{anti-diagonal} as
-\begin{align}
-    A_n := \{ (i,j) \mid i + j = n + 1\}
-\end{align}
-For example, $A_1 = \{(1,1)\}$ and $A_2 = \{(1,2), (2,1)\}$. Delete all vertices not in some $A_j$ or $A_{j+1} \setminus \{(j,1),(1,j)\}$ for $j \in [n-1]$. The remaining vertices and induced edges form a $2 \times n$ grid:
-\input{figures/2n-subgrid}
-To see that this is a grid, ``twist'' the above figure.
-\end{proof}
-\end{theorem}
-
-However, the above pattern does not generalize for larger widths.
+An exhaustive search (using the algorithms described in the next section) reveals that we may strengthen this result a little bit.
 
 \begin{fact}
-It is not possible to get a $\Grid_{3 \times n}$ subgraph from any size of $\CGrid$ using only vertex deletion.
-\begin{proof}
-Brute force using the algorithm described in Theorem \ref{thm:subset-alg}.
-\end{proof}
+$\Grid_{3 \times 3}$ is not a induced subgraph of any circle graph. Consequently, $\Grid_{m \times n}$ is not an induced subgraph of any circle graph, for $m,n \geq 3$.
 \end{fact}
 
-That said, we can get quite close to a grid:
-
-\begin{definition}
-\label{def:3n-subgrid}
-Consider the following construction:
-\input{figures/3n-compgraph}
-This forms the following subgrid:
-\input{figures/3n-subgrid}
-This construction is tileable. That is, it generalizes to $\Grid_{3 \times n}$ provided a sufficiently large $\CGrid$.
 \begin{proof}
-\note{I had an extremely complicated proof. The crux of the issue is that every time a new column is added, we need to ensure that it can "fit" in between (in either the x or y dimension) some previous existing points. Since our points need to in $\N \times \N$, the simplest solution is to pre-allocate some gap between the nodes. However, this becomes extremely cumbersome very quickly.
-
-An easier proof is to work graphically. That said, it would be great if the proof was in the ZX-representation of the $\CGrid$, as this may highlight some important identities and tricks usable for even higher widths.}
+The proof surmounts to enumerating every possible 9-vertex subgraph of a $\CGrid$, and concluding that none are isomorphic to $\Grid_{3 \times 3}$.
 \end{proof}
-\end{definition}
+
+Let us summarize what we have seen this section. Through vertex minors, we see that any potential proof of the universality of the comparability grid cannot involve reducing, via local complementation and vertex deletion, a comparability grid into some desired grid graph. This is the implication of Fact \ref{fact:grid-not-vertex-minor-cgraph}.
+
+Furthermore, if the comparability grid is universal, its MBQC protocol must asymptotically use a strictly super-polynomial or faster growing number of qubits with respect to the number of qubits in the desired output quantum state. This follows from \ref{thm:cgrid-efficiently-simulable}.
+
+Suppose comparability grids are universal. If we are to present a constructive proof of this, i.e. given a target state $\ket\phi$ on $n$ qubits, an explicit vertex minor of some comparability grid and a measurement pattern that generates $\ket\phi$ using it, then this vertex minor must have asymptotically super-polynomial or larger number of vertices with respect to $n$. In the next section, we outline the key methodology of this thesis: a series of algorithms for enumerating and characterizing the vertex minors of comparability graphs. We run these algorithms to create constructions which we conjecture may show the universality of the comparability grid. These are presented in Section \ref{sec:conclusions}.

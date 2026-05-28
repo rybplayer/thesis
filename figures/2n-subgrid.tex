@@ -1,6 +1,6 @@
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[scale=1, line cap=round, line join=round]
+\begin{tikzpicture}[line cap=round, line join=round]
 
 \foreach \x in {0,...,5} {
     \foreach \y in {0,...,5} {
@@ -30,8 +30,7 @@
 \foreach \p in {(0,4),(1,5),(1,3),(2,4),(2,2),(3,3),(3,1),(4,2),(4,0),(5,1)}{
     \fill[black] \p circle[radius=0.10];
 }
-
 \end{tikzpicture}
-\label{fig:2n-subgrid}
-\caption{The $2 \times 5$ $\Grid$ subset in a $\CGrid_{6 \times 6}$ using only vertex deletion.}
+\caption{A $\Grid_{2 \times 5}$ in a $\CGrid_{6 \times 6}$.}
+\label{fig:two-wide-grid-in-cgrid}
 \end{figure}

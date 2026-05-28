@@ -1,6 +1,7 @@
 \subsection{Circle Graphs}
 
 \begin{definition}
+\label{def:cgrid}
 The $m \times n$ \term{comparability grid} is a graph $G = (V,E)$ with
 \begin{align}
     V &= \{(i,j) \mid i \in [m], j \in [n]\} \\
@@ -11,6 +12,116 @@ In other words, $m$ rows and $n$ columns with edges defined by the partial order
 \end{definition}
 
 \begin{example}
-Figure \ref{fig:comp-grid-example} shows the $3 \times 3$ comparability grid:
+The figure below shows the $3 \times 3$ comparability grid:
 \input{figures/comp_grid_example}
 \end{example}
+
+The comparability grid is the ``maximal'' object of what are called circle graphs.
+
+\begin{definition}
+\label{def:circle-graph}
+A \term{circle graph} is an intersection graph of chords of a circle. Equivalently, a graph $G = (V,E)$ is a circle graph if we can assign each $v \in V$ a chord $c_v$ in a circle such that 
+\begin{align}
+    uv \in E \iff c_u \text{ and } c_v \text{ intersect}.
+\end{align}
+Denote the family of all circle graphs as $\CGraph$.
+\end{definition}
+
+To see that comparability graphs are circle graphs, we introduce another kind of circle graph: permutation graphs.
+
+\begin{definition}
+\label{def:permutation-graph}
+A \term{permutation graph} is a graph that records which pairs of objects are in opposite order in two different lists. More precisely, let $V$ be a finite set of labels, and choose two total orders $<_1$ and $<_2$ on $V$. The permutation graph $(G = V,E)$ associated with these two orders has $V$ as its vertices, and edges
+\begin{align*}
+    uv \in E \iff (u <_1 v \land v <_2 u) \lor (v <_1 u \land u <_2 v).
+\end{align*}
+To draw a permutation graph, place the vertices in $<_1$ order on one horizontal line, and place the vertices in $<_2$ order on a second horizontal line below it. Connect matching labels with a line segment. Then two vertices are adjacent exactly when their line segments cross. Denote the family of all permutation graphs as $\PGraph$.
+\end{definition}
+
+\input{figures/perm-circle-comp-grid.tex}
+
+\begin{theorem}
+\label{thm:cgrid-is-perm-is-circle}
+A comparability grid is a permutation graph, and hence a circle graph.
+\end{theorem}
+
+\begin{proof}
+Fix a $G = \CGrid_{m \times n}$. We start by recasting the edge condition to a more tractable form. For vertices $(i,j), (i',j') \in V(G)$, write $(i,j) \sim_G (i',j')$ if there is an edge between them in $G$. Then
+\begin{align*}
+    (i,j) \sim_G (i',j') \iff 
+    (i - i')(j - j') > 0.
+\end{align*}
+Define two orders on $V(G)$:
+\begin{align}
+    (i,j) <_1 (i',j') &\iff i < i' \lor (i = i' \land j < j') \\
+    (i,j) <_2 (i',j') &\iff j > j' \lor (j = j' \land i > i')
+\end{align}
+These are lexicographic orders and thus total orders. Now, draw a permutation diagram with vertices on the top line in order $<_2$ and $<_1$ on the bottom line. Connect equal labels with a line segment. Two segments cross exactly when their two labels appear in opposite orders on the two lines. This happens exactly when $(i - i')(j - j') \geq 0$. Hence $G$ is a permutation graph.
+
+Finally, we show that any permutation graph is a circle graph. Place the two parallel lines of a permutation graph inside a circle and identify their endpoints along the boundary, such that each line segment becomes a chord of a circle. This preserves crossings. Therefore every permutation graph is a circle graph.
+\end{proof}
+
+\begin{theorem}
+\label{thm:circle-graph-lu-equals-lc}
+This is Theorem 1 of \cite{circle-graphs}. For circle graph states, $\LU = \LC$. Furthermore, the only graphs $\LU$-equivalent to circle graph states are circle graphs themselves. In other words, $\CGraph$ is closed under local complementation.
+\end{theorem}
+
+\begin{definition}
+\label{def:vertex-minor}
+A graph $H$ is a \term{vertex minor} of a graph $G$ if there a sequence of vertex deletions and local complementations from $G$ to $H$.
+\end{definition}
+
+\begin{theorem}
+\label{thm:circle-graph-closed-vertex-minor}
+Circle graphs are closed under vertex minors.
+\end{theorem}
+
+\begin{proof}
+This follows from Theorem \ref{thm:circle-graph-lu-equals-lc}.
+\end{proof}
+
+\begin{theorem}
+\label{thm:cgraph-vertex-minor-bipartite-cgraph}
+This is Corollary 53 of \cite{brijder2016isotropicmatroidsiicircle}, strengthened by \cite{circle-graphs}. Every circle graph is a vertex minor of some bipartite circle graph that is at most quadratically larger in the number of vertices.
+\end{theorem}
+
+\begin{theorem}
+\label{thm:cgraph-vertex-minor-cgrid}
+This is Lemma 3.1, 3.2, and 3.3 of \cite{grid-theorem}. Every circle graph on $n$ vertices is isomorphic to a vertex minor of the $3n \times 3n$ comparability grid. More specifically, every $n$-vertex permutation graph is isomorphic to an induced subgraph of the $n \times n$ comparability grid, and every circle graph on $n$ vertices is a vertex minor of a permutation graph on $3n$ vertices.\footnote{This is what we meant when we introduced comparability grids as the ``maximal'' object of circle graphs in the remark before Definition \ref{def:circle-graph}.}
+\end{theorem}
+
+\begin{theorem}
+\label{thm:cgrid-efficiently-simulable}
+This is Corollary 3 and 4 of \cite{circle-graphs}. MBQC on circle graph states is efficiently classically simulable. Furthermore, assuming $\BPP \neq \BQP$\footnote{\term{$\BPP$} is the classical complexity class for bounded polynomial-time, defined in \cite{bpp-def}. \term{$\BQP$} is the quantum complexity class for bounded-error quantum polynomial-time, defined in \cite{bqp-def}}, polynomial rank width is not a sufficient condition for efficient universality of a graph state resource MBQC.
+\end{theorem}
+
+The previous theorem begins to highlight connections between rank-width and the circle graphs. Restricting our attention to comparability grids, we observe even more connections.
+
+\begin{theorem}
+\label{thm:cgrid-unbounded-rank-width}
+The rank-width of the $n \times n$ comparability grid is at least $n/4$. Thus, $\CGrid$ has unbounded rank-width, and so does $\PGraph$ and $\CGraph$.
+\end{theorem}
+
+\begin{proof}
+The first claim is Lemma 4 of \cite{circle-graphs}. The second follows by Theorem \ref{thm:cgrid-is-perm-is-circle}.
+\end{proof}
+
+\begin{theorem}
+\label{thm:rank-width-vertex-minor-cgrid}
+This is Theorem 1.1 and 1.3 of \cite{GEELEN202393}. There is a function $f: \Z \to \Z$ so that for every positive integer $n$, every graph of rank-width at least $f(n)$ has a vertex minor isomorphic to the $n \times n$ comparability grid. On the other hand, there is a function $g: \Z \to \Z$ so that for every circle graph $H$, every graph with no vertex-minor isomorphic to $H$ has rank-width at most $g(|V(H)|)$.
+\end{theorem}
+
+We conclude this section by contrasting the above results for circle graphs and comparability grids with a result for grid graphs.
+
+\begin{theorem}
+\label{thm:every-graph-vertex-minor-of-grid}
+This is Theorem 12 and 19 of \cite{campbell2024treewidthhadwigernumberinduced}. Every planar graph is a vertex minor of some grid. Furthermore, every graph is a vertex minor of some planar graph. Thus every graph is a vertex minor of some grid.
+\end{theorem}
+
+This is in sharp contrast with the following result.
+
+\begin{theorem}
+\label{thm:forbidden-minor-of-cgraph}
+This is the main result of \cite{BOUCHET1994107}. A graph is a circle graph if and only if no graph obtained by a sequence of local complementations to $G$ has an induced subgraph isomorphic to one of the graphs below. These are known as the \term{forbidden minors} of circle graphs (and consequently, by Theorem \ref{thm:cgraph-vertex-minor-cgrid}, of comparability grids).
+\input{figures/forbidden-minors.tex}
+\end{theorem}
