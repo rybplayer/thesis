@@ -46,7 +46,7 @@ A ZX diagram is \term{graph-like} when:
 \begin{enumerate}[label=(\alph*)]
     \item Every spider is a Z-spider.
     \item Spiders are only connected via Hadamard edges.
-    \item There are no self loops or parallel / duplicate edges.
+    \item There are no self loops or parallel i.e. duplicate edges.
     \item Every Z-spider is connected to at most one input and at most one output via a regular edge.
     \item Every input and output is connected to a Z-spider.
 \end{enumerate}
@@ -138,10 +138,7 @@ That is, prepare the $\ket{+}^{\otimes |V|}$ state and apply a $\CZ$ gate betwee
 \end{equation}
 \end{definition}
 
-\begin{example}
-The triangle graph has the following circuit and ZX graph state:
 \input{figures/triangle-graph.tex}
-\end{example}
 
 \begin{definition}
 \label{def:gslc}
@@ -171,10 +168,10 @@ Let $D$ be a graph-state ZX diagram, and $u$ some vertex in $G(D)$. Then we can 
 \begin{align}
     \begin{ZX}
         \dar & \dar & \dar & \dar \\
-            \zxX{-\frac{\pi}{2}} \dar & 
-            \zxZ{\frac{\pi}{2}} \ar[dd] &
-            \zxZ{\frac{\pi}{2}} \ar[d] &
-            \zxZ{\frac{\pi}{2}} \ar[dd] \\
+            \zxX{\pm\frac{\pi}{2}} \dar & 
+            \zxZ{\mp\frac{\pi}{2}} \ar[dd] &
+            \zxZ{\mp\frac{\pi}{2}} \ar[d] &
+            \zxZ{\mp\frac{\pi}{2}} \ar[dd] \\
         \zxZ{} \ar[rr,hw] \ar[dr,hw] \ar[drrr,hw] & & \zxZ{} \ar[r,3 dots] \ar[dr,hw] & \\
         u & \zxZ{} & & \zxZ{} \\[\zxNRow]
         & \zxVInputMulti{3}{N(u)} & &
@@ -186,7 +183,7 @@ Let $D$ be a graph-state ZX diagram, and $u$ some vertex in $G(D)$. Then we can 
         \zxZ{} \ar[rr,hw] \ar[dr,hw] \ar[drrr,hw] & & \zxZ{} \ar[r,3 dots] & \\
         u & \zxZ{} \ar[ur,hw] \ar[rr,hw]& & \zxZ{} \\[\zxNRow]
         & \zxVInputMulti{3}{N(u)} & &
-    \end{ZX}
+    \end{ZX}.
 \end{align}
 Thus by applying local Cliffords we can local complement a graph state.
 \end{lemma}
@@ -211,7 +208,7 @@ The following holds:
         \zxZ{\alpha_n \mp \frac{\pi}{2}} \rightManyDots{} \\
         & \leftManyDots{} \zxZ{\alpha_2 \mp \frac{\pi}{2}} \ar[urrr,hw] \ar[rr,hw] & &
         \zxZ{\alpha_{n-1} \mp \frac{\pi}{2}} \ar[ur,hw] \rightManyDots{} &
-    \end{ZX}
+    \end{ZX}.
 \end{align}
 Here, the $\star$ above \zx{\zxZ{\pm \frac{\pi}{2}}} indicates a local complementation at this vertex.
 \end{lemma}
@@ -280,13 +277,13 @@ The following holds:
         \zxZ{\gamma_o + j \pi} \rightManyDots{}\\
         & & & \zxZ{\beta_m + (j + k + 1) \pi} 
             \ar[uurr,hw] \ar[urr,hw] &
-    \end{ZX}
+    \end{ZX}.
 \end{align}
 Note that the vertices $\beta_1, \ldots, \beta_m$ may have other wires, but we suppress them here to reduce clutter.
 \end{lemma}
 
 \begin{proof}
-We provide a proof sketch: Let $u$ denote the vertex with phase $j \pi$ and $v$ the vertex with phase $k \pi$. First, push out all the phases via \zxref{f} to obtain a graph state where all the vertices are phase-free Z-spiders. Apply pivoting on $uv$. Then $u$ will have \zx{\zxZ{k \pi} \rar & \zxH{} \rar &} dangling from it (note the change from $j$ to $k$ due to the pivoting's swap gate). Apply \zxref{cc} and \zxref{cp} to obtain the RHS after fusing with \zxref{f}. For a step-by-step proof, see Appendix B.3 of \cite{zx-clifford-simplification}.
+We provide a proof sketch: Let $u$ denote the vertex with phase $j \pi$ and $v$ the vertex with phase $k \pi$. First, push out all the phases via \zxref{f} to obtain a graph state where all the vertices are phase-free Z-spiders. Apply pivoting on $uv$. Then $u$ will have \zx{\zxZ{k \pi} \rar & \zxH{} \rar &} dangling from it (note the change from $j$ to $k$ due to the pivoting's swap gate), and similarly for $v$. Apply \zxref{cc} and \zxref{cp} to obtain the RHS after fusing with \zxref{f}. For a step-by-step proof, see Appendix B.3 of \cite{zx-clifford-simplification}.
 \end{proof}
 
 \begin{proof}[Proof of Theorem \ref{thm:clifford-to-gslc}]
@@ -306,18 +303,18 @@ The GSLC form of a CLifford ZX diagram may be written as follows:
     \zxZ{} \rightManyHDots{} &
     \leftManyHDots{} \zxZ{} \rar &
     \zxGate{LC} \rar &
-    \end{ZX}
+    \end{ZX}.
 \end{align}
 Here \zx{\zxGate{LC}} refers to circuits of the form $H^iS^j$ for some $i \in [0,1]$ and $j \in [0,1,2,3]$. 
 \end{lemma}
 
 \begin{proof}
-First note that we may topologically morph the GSLC state such that input wires face left and output wires face right. Now, note that the local Clifford generated must be of the form $H^iS^j$. Namely, when applying Lemma \ref{lemma:remove-half-pi-from-graph}, we only modify the phase of boundary spiders. When we apply Lemma \ref{lemma:remove-pi-from-graph}, we may add a Hadamard gate to an input or output wire. Since two Hadamards cancel, each input or output wire has at most one Hadamard. Since the phase of each boundary spider is a multiple of $\tfrac{\pi}{2}$ modulo $2\pi$, unfusing the phase requires at most three $S$ gates.
+First note that we may topologically morph the GSLC form such that input wires face left and output wires face right. Now, note that the local Clifford generated must be of the form $H^iS^j$. Namely, when applying Lemma \ref{lemma:remove-half-pi-from-graph}, we only modify the phase of boundary spiders. When we apply Lemma \ref{lemma:remove-pi-from-graph}, we may add a Hadamard gate to an input or output wire. Since two Hadamards cancel, each input or output wire has at most one Hadamard. Since the phase of each boundary spider is a multiple of $\tfrac{\pi}{2}$ modulo $2\pi$, unfusing the phase requires at most three $S$ gates.
 \end{proof}
 
 \begin{lemma}
 \label{lemma:zx-8-layer-form}
-Let $U$ be a Clifford unitary. Then $U$ can be written as a circuit consisting of 8 layers made out of only the following gates in order:
+Let $U$ be a Clifford unitary. Then $U$ can be written as a circuit consisting of 8 layers respectively made up of only the following gates:
 \begin{align}
     \Had \quad 
     \Sgate \quad 
@@ -327,7 +324,7 @@ Let $U$ be a Clifford unitary. Then $U$ can be written as a circuit consisting o
     \CZ \quad 
     \Sgate \quad 
     \Had
-\end{align}
+\end{align}.
 \end{lemma}
 
 \begin{proof}

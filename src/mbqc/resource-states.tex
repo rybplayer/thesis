@@ -16,7 +16,7 @@ There is a unique quantum circuit construction for every graph state, up to reor
 \end{fact}
 
 \begin{proof}
-By \zxref{f}, CZ gates commute past each other. Then each pair of qubits (vertices) has zero or one $CZ$s (edges) between them.
+By \zxref{f}, CZ gates commute past each other. Then a graph state's $CZ$s are completely characterized by the set of unordered pairs of vertices that have a $CZ$ between them.
 \end{proof}
 
 \begin{fact}
@@ -29,13 +29,13 @@ Vizing's theorem states that any graph with maximum degree $\Delta$ admits an ed
 
 \begin{fact}
 \label{fact:vertex-deletion}
-Given a graph state $\ket{G}$, a measurement in the YZ plane is equivalent to vertex deletion.
+Given a graph state $\ket{G}$, a measurement in the Z plane is equivalent to vertex deletion.
 \end{fact}
 
 \begin{proof}
 Consider a graph state $\ket{G}$ in its ZX-Calculus representation.
 \input{figures/yz-vertex-deletion.tex}
-By Lemma \ref{lemma:measurement-plane-maps}, the ZX effect of a YZ plane measurement is a $\zx{\zxX{a \pi}}$ where $a$ is the measurement outcome bit. By \zxref{cp}, we may push the $\zx{\zxX{a \pi}}$ through the vertex being measured, deleting it in the process. The result is a graph state with the measured vertex removed, and an additional phase of $a \pi$ on all vertices connected to the measured vertex.
+By Lemma \ref{lemma:measurement-plane-maps}, the ZX effect of a Z plane measurement is a $\zx{\zxX{a \pi}}$ where $a$ is the measurement outcome bit. By \zxref{cp}, we may push the $\zx{\zxX{a \pi}}$ through the vertex being measured, deleting it in the process. The result is a graph state with the measured vertex removed, and an additional phase of $a \pi$ on all vertices connected to the measured vertex.
 \end{proof}
 
 \begin{fact}
@@ -76,7 +76,7 @@ The $\Grid$ is universal.
 \begin{proof}
 The full proof is quite involved and very tedious. The original proof is given in \cite{MBQCOriginal}, and a more accessible proof is available in \cite{Raussendorf_2003}. A modern proof through the ZX-Calculus is available in Chapter 9 of \cite{PQS}. 
 
-There are three great difficulties in the proof. We informally discuss them. First, we need to be able to implement arbitrary single qubit gates. This is done by deleting (via $Z$ plane measurements) vertices to create line graphs, each resulting in a chain like Example \ref{ex:teleportation-gadget}. It can be shown that this allows the application of arbitrary single qubit gates up to some Pauli error.
+There are three great difficulties in the proof. We informally discuss them. First, we need to be able to implement arbitrary single qubit gates. This is done by deleting (via $Z$ plane measurements) vertices to create line graphs, each resulting in a chain like those in Example \ref{ex:teleportation-gadget}. It can be shown that this allows the application of arbitrary single qubit gates up to some Pauli error.
 
 Second, we need to be able to entangle qubits. If the two line graphs containing the qubits we wish to entangle are adjacent, i.e. there are no other line graphs between them, then creating a orthogonal line of vertices between the wires may entangle them. Now, if they are not adjacent, we can swap qubits between lines (by implementing CNOT thrice) until they become adjacent.
 

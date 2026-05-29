@@ -1,0 +1,74 @@
+\newcommand{\zg}[1]{\zxZ{#1}}
+\newcommand{\zr}[1]{\zxX{#1}}
+\newcommand{\sg}{\zxZ{}}
+\newcommand{\sr}{\zxX{}}
+\newcommand{\ys}{\zxH{}}
+\newcommand{\wireR}{\arrow[r,dash]}
+\newcommand{\wireD}{\arrow[d,dash]}
+\newcommand{\wireUUR}{\arrow[uur,dash]}
+\newcommand{\wireUURH}{\arrow[uuuurr,H={pos=.25},(={10}]}
+\newcommand{\wireuuR}{\arrow[uuuurr]}
+
+\begin{figure}[H]
+\centering
+\[
+\begin{ZX}
+{}\wireR & \zg{\alpha_1}\wireR\wireD   & \ys\wireR       & \zg{\beta_1}\wireR\wireD   & \ys\wireR       & \zg{\gamma_1}\wireR\wireD   & \ys\wireR       & \zg{\delta_1}\wireR\wireD   & \ys\wireR       & \zg{\epsilon_1}\wireR\wireD & {} \\
+         & \ys\wireD                   &                 & \ys\wireD                  &                 & \ys\wireD                   &                 & \ys\wireD                   &                 & \ys\wireD                   &    \\
+{}\wireR & \zg{\alpha_2}\wireR\wireD   & \ys\wireR & \zg{\beta_2}\wireR\wireD   & \ys\wireR & \zg{\gamma_2}\wireR\wireD   & \ys\wireR & \zg{\delta_2}\wireR\wireD   & \ys\wireR & \zg{\epsilon_2}\wireR\wireD & {} \\
+         & \ys\wireD                   &                 & \ys\wireD                  &                 & \ys\wireD                   &                 & \ys\wireD                   &                 & \ys\wireD                   &    \\
+{}\wireR & \zg{\alpha_3}\wireR\wireUURH & \ys\wireR       & \zg{\beta_3}\wireR\wireUURH & \ys\wireR       & \zg{\gamma_3}\wireR\wireUURH & \ys\wireR       & \zg{\delta_3}\wireR\wireUURH & \ys\wireR       & \zg{\epsilon_3}\wireR       & {}
+\end{ZX}
+\]
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\[
+\begin{ZX}
+{}\wireR & \zg{\alpha_1}\wireR\wireD & {}\wireR & \zr{\beta_1}\wireR\wireD & {}\wireR & \zg{\gamma_1}\wireR\wireD & {}\wireR & \zr{\delta_1}\wireR\wireD & {}\wireR & \zg{\epsilon_1}\wireR\wireD & {} \\
+         & \ys\wireD                 &          & \ys\wireD                &          & \ys\wireD                 &          & \ys\wireD                 &          & \ys\wireD                   &    \\
+{}\wireR & \zg{\alpha_2}\wireR\wireD & {}\wireR & \zr{\beta_2}\wireR\wireD & {}\wireR & \zg{\gamma_2}\wireR\wireD & {}\wireR & \zr{\delta_2}\wireR\wireD & {}\wireR & \zg{\epsilon_2}\wireR\wireD & {} \\
+         & \ys\wireD                 &          & \ys\wireD                &          & \ys\wireD                 &          & \ys\wireD                 &          & \ys\wireD                   &    \\
+{}\wireR & \zg{\alpha_3}\wireR\wireuuR       & {}\wireR & \zr{\beta_3}\wireR\wireuuR       & {}\wireR & \zg{\gamma_3}\wireR\wireuuR       & {}\wireR & \zr{\delta_3}\wireR\wireuuR       & {}\wireR & \zg{\epsilon_3}\wireR       & {}
+\end{ZX}
+\]
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\[
+\begin{ZX}
+{}\wireR & \zg{\alpha_1}\wireR & \sg\wireR\wireD & {}\wireR        & \sr\wireR\wireD & 
+    \zr{\beta_1}\wireR & \sr\wireR\wireD & {}\wireR        & \sr\wireR\wireD & 
+    \zg{\gamma_1}\wireR & \sg\wireR\wireD & {}\wireR        & \sr\wireR\wireD & 
+    \zr{\delta_1}\wireR & \sr\wireR\wireD & {}\wireR        & \sr\wireR\wireD & 
+    \zg{\epsilon_1}\wireR & {} \\
+         &                     & \ys\wireD       &                 & {}\wireD        &                     & \ys\wireD       &                 & {}\wireD        &                     & \ys\wireD       &                 & {}\wireD        &                     & \ys\wireD       &                 & {}\wireD        &                      &    \\
+{}\wireR & \zg{\alpha_2}\wireR & \sg\wireR       & \sg\wireR\wireD & {}\wireR\wireD  & 
+    \zr{\beta_2}\wireR & \sr\wireR       & \sr\wireR\wireD & {}\wireR\wireD  & 
+    \zg{\gamma_2}\wireR & \sg\wireR       & \sg\wireR\wireD & {}\wireR\wireD  & 
+    \zr{\delta_2}\wireR & \sr\wireR       & \sr\wireR\wireD & {}\wireR\wireD  & 
+    \zg{\epsilon_2}\wireR & {} \\
+         &                     &                 & \ys\wireD       & {}\wireD        &                     &                 & \ys\wireD       & {}\wireD        &                     &                 & \ys\wireD       & {}\wireD        &                     &                 & \ys\wireD       & {}\wireD        &                      &    \\
+{}\wireR & \zg{\alpha_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & 
+    \zr{\beta_3}\wireR & {}\wireR        & \sr\wireR       & \sg\wireR       & 
+    \zg{\gamma_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & 
+    \zr{\delta_3}\wireR & {}\wireR        & \sr\wireR       & \sg\wireR       & 
+    \zg{\epsilon_3}\wireR & {}
+\end{ZX}
+\]
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\[
+\begin{ZX}
+{}\wireR & \zg{\alpha_1}\wireR & \sg\wireR\wireD & {}\wireR        & \sr\wireR\wireD & \ys\wireR & \zg{\beta_1}\wireR & \sg\wireR\wireD & {}\wireR        & \sr\wireR\wireD & \ys\wireR & \zg{\gamma_1}\wireR & \sg\wireR\wireD & {}\wireR        & \sr\wireR\wireD & \ys\wireR & \zg{\delta_1}\wireR & \sg\wireR\wireD & {}\wireR        & \sr\wireR\wireD & \ys\wireR & \zg{\epsilon_1}\wireR & {} \\
+         &                     & \ys\wireD       &                 & {}\wireD        &           &                     & \ys\wireD       &                 & {}\wireD        &           &                     & \ys\wireD       &                 & {}\wireD        &           &                     & \ys\wireD       &                 & {}\wireD        &           &                      &    \\
+{}\wireR & \zg{\alpha_2}\wireR & \sg\wireR       & \sg\wireR\wireD & {}\wireR\wireD  & \ys\wireR & \zg{\beta_2}\wireR & \sg\wireR       & \sg\wireR\wireD & {}\wireR\wireD  & \ys\wireR & \zg{\gamma_2}\wireR & \sg\wireR       & \sg\wireR\wireD & {}\wireR\wireD  & \ys\wireR & \zg{\delta_2}\wireR & \sg\wireR       & \sg\wireR\wireD & {}\wireR\wireD  & \ys\wireR & \zg{\epsilon_2}\wireR & {} \\
+         &                     &                 & \ys\wireD       & {}\wireD        &           &                     &                 & \ys\wireD       & {}\wireD        &           &                     &                 & \ys\wireD       & {}\wireD        &           &                     &                 & \ys\wireD       & {}\wireD        &           &                      &    \\
+{}\wireR & \zg{\alpha_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & \ys\wireR & \zg{\beta_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & \ys\wireR & \zg{\gamma_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & \ys\wireR & \zg{\delta_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & \ys\wireR & \zg{\epsilon_3}\wireR & {}
+\end{ZX}
+\]
+\end{figure}

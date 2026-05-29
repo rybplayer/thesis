@@ -26,14 +26,14 @@ Say a matrix $A$ is a \term{stabilizer} of the state $\ket{\psi}$ when $\ket\psi
 \begin{definition}
 \label{def:pauli-group}
 The $n$-qubit Pauli group is defined as follows:
-\begin{align*}
+\begin{align}
     \cP_n := \{i^k P_1 \otimes \cdots P_n \mid 
     k \in \{0,1,2,3\}, P_j \in \{I,X,Y,Z\} \}.
-\end{align*}
+\end{align}
 Call the elements of $\cP_n$ as \term{Pauli strings}, written as vectors of length $n$:
-\begin{align*}
+\begin{align}
     \vec{P} := i^k P_1 \otimes \cdots \otimes P_n.
-\end{align*}
+\end{align}
 \end{definition}
 
 \begin{proof}
@@ -123,11 +123,11 @@ If $\Stab(\cS) \neq \{0\}$, call $\cS$ a \term{stabilizer group}.
 
 \begin{proof}
 If $A$, $B$ are stabilizers of $\ket\psi$, then $AB \ket\psi = A \ket\psi = \ket\psi$ so $AB$ is also a stabilizer. Furthermore,
-\begin{align*}
+\begin{align}
     A \ket\psi = \ket \psi 
     \implies 
     \ket\psi = A^{-1} \ket\psi
-\end{align*}
+\end{align}
 so $A^{-1}$ is also a stabilizer of $\ket\psi$. Thus $\cS$ is a subgroup. On the other hand, if two states $\ket\psi$ and $\ket\phi$ are stabilized by $A$, then 
 \begin{align}
     A (\lambda\ket\psi + \mu \ket\phi) 
@@ -139,7 +139,7 @@ for any $\lambda, \mu \in \C$. Since $0$ is trivially in every $\Stab(\cS)$, thi
 
 \begin{lemma}
 \label{lemma:stab-group-properties}
-If a subgroup $\cS \subseteq \P_n$ is a stabilizer subgroup, then:
+If a subgroup $\cS \subseteq \cP_n$ is a stabilizer subgroup, then:
 \begin{enumerate}
     \item $-I \notin \cS$,
     \item $\vec{P}^2 = I$ for all $\vec{P} \in \cS$, and
@@ -160,7 +160,7 @@ This is Theorem 1 of \cite{sim_stab_circuits}. Given an $n$-qubit state $\ket\ps
     \item $\ket\psi$ is stabilized by exactly $2^n$ Pauli operators.
     \item $\ket\psi$ is uniquely determined by $\Stab(\ket\psi)$.
 \end{enumerate}
-Thus, we can all any circuit consisting entirely of Clifford gates and measurements a \term{stabilizer circuit}, and any state obtainable by applying a stabilizer circuit to $\ket{0}^{\otimes n}$ a \term{stabilizer state}. Equivalently, a stabilizer state is a state $\ket\psi \in \C^{2^n}$ such that $\vec{P} \ket{\psi} = \ket\psi$ for all $\vec{P} \in \cS \subseteq \cP_n$.
+Thus, we can all any circuit consisting entirely of Clifford gates and measurements a \term{stabilizer circuit}, and any state obtainable by applying a stabilizer circuit to $\ket{0}^{\otimes n}$ a \term{stabilizer state}. Equivalently, a stabilizer state is a state $\ket\psi \in \C^{2^n}$ such that $\vec{P} \ket{\psi} = \ket\psi$ for all $\vec{P} \in \cS$, for some $\cS \subseteq \cP_n$.
 \end{theorem}
 
 \begin{proof}
@@ -179,11 +179,23 @@ Note that $|\cP_n| = 4^{n+1}$. Furthermore, the number of stabilizer states on $
 The first claim follows almost immediately from Definition \ref{def:pauli-group}. By Theorem \ref{thm:aaronson-sim-clifford}, to obtain the second claim we can equivalently count the number of ordered generating sets for stabilizer groups, divided by the number of generating sets for a given stabilizer. This is the proof used in Proposition 2 of \cite{sim_stab_circuits}.
 \end{proof}
 
-Informally, what this stabilizer formalism tells us is that states obtainable by applying Clifford circuits to $\ket{0}^{\otimes n}$ are precisely the pure stabilizer states. This is significant for a whole host of reasons, not the least of which is the tableau formalism below. This tableau formalism essentially tells us that we can keep track of a Clifford computation by keeping track of changes to the stabilizer of the state.
+Informally, the stabilizer formalism tells us that the states obtainable by
+applying Clifford circuits to $\ket{0}^{\otimes n}$ are exactly the pure
+stabilizer states. This is useful because stabilizer states admit a compact
+classical description. The tableau formalism below is one such description: it
+keeps track of how a Clifford circuit conjugates a convenient set of Pauli
+generators.
 
 \begin{definition}
 \label{def:tableau}
-The tableau of a state $\ket\psi$ is a matrix consisting of binary variables $x_{ij}$ and $z_{ij}$ for $i \in [2n]$ and $j \in [n]$, and $r_i$ for all $i \in [2n]$:
+Let $\ket\psi$ be an $n$-qubit stabilizer state with stabilizer group
+$\mathcal S(\ket\psi)$. A \term{tableau} for $\ket\psi$ is a binary matrix
+encoding $2n$ signed Pauli strings
+\begin{align}
+    R_i = (-1)^{r_i} P_{i,1} \otimes \cdots \otimes P_{i,n},
+    i \in [2n].
+\end{align}
+A tableau has the form
 \begin{align}
 \left[
 \begin{array}{ccc|ccc|c}
@@ -224,39 +236,53 @@ z_{(2n)1} & \cdots & z_{(2n)n}
 &
 r_{2n}
 \end{array}
-\right]
+\right],
 \end{align}
 where
 \begin{align}
 x_{ij}
 &=
 \begin{cases}
-1 & \text{if } P_{ij} = X \text{ or } P_{ij} = Y, \\
+1 & \text{if } P_{i,j}=X \text{ or } P_{i,j}=Y, \\
 0 & \text{otherwise,}
 \end{cases}
-\\[1em]
+&
 z_{ij}
 &=
 \begin{cases}
-1 & \text{if } P_{ij} = Y \text{ or } P_{ij} = Z, \\
-0 & \text{otherwise,}
-\end{cases}
-\\[1em]
-r_i
-&=
-\begin{cases}
-1 & \text{if } R_i \text{ has negative phase,} \\
+1 & \text{if } P_{i,j}=Z \text{ or } P_{i,j}=Y, \\
 0 & \text{otherwise.}
 \end{cases}
 \end{align}
+The bit $r_i$ records the sign of the Pauli string:
+\begin{align}
+    r_i =
+    \begin{cases}
+    0 & \text{if } R_i \text{ has sign } +1,\\
+    1 & \text{if } R_i \text{ has sign } -1.
+    \end{cases}
+\end{align}
+
+The bottom $n$ rows are stabilizer generators for $\ket\psi$. The top $n$
+rows are \term{destabilizer generators}. They do not stabilize $\ket\psi$.
+Rather, they are auxiliary Pauli strings chosen so that, together with the
+stabilizer generators, they form a convenient \emph{symplectic} basis of the Pauli
+group. In the Aaronson--Gottesman tableau, the destabilizers are what make the
+row operations and measurements efficient and canonical.
 \end{definition}
 
 \begin{theorem}
-Using the tableau representation, we can efficiently simulate CNOT, H, and S gates. This is an alternative method of simulation compared to Theorem \ref{thm:Gottesman-Knill}.\footnote{As it turns out, both methods of simulation, i.e. the ZX-Calculus GSLC algorithm and the tableau representation, will be used in this thesis.}
+\label{thm:tableau-simulation}
+Using the tableau representation, Clifford gates such as $H$, $S$, and
+$\CNOT$ can be simulated efficiently by updating the binary entries of the
+tableau. Pauli measurements can also be simulated efficiently using the same
+representation. This gives the tableau-based form of the Gottesman--Knill
+simulation algorithm \cite{sim_stab_circuits}.
 \end{theorem}
 
-\begin{proof}
-The proof surmounts to a clever bookkeeping of the stabilizers of a state as Clifford gates are applied to it. This proof can be found in \cite{sim_stab_circuits}. Here we provide some intuition for why this is the case. The key observation is that each Pauli gate and $I$ can be represented by two classical bits $(x,z)$:
+\begin{proof}[Proof intuition]
+The key observation is that each $P_{i,j}$ may be encoded by
+two bits:
 \begin{align}
     \begin{array}{c|cc}
     P & x & z \\
@@ -267,7 +293,17 @@ The proof surmounts to a clever bookkeeping of the stabilizers of a state as Cli
     Y & 1 & 1
     \end{array}
 \end{align}
-Note that we represent $Y$ as $(1,1)$ even though $Y = iXZ$. This is due to Lemma \ref{lemma:stab-group-properties}; each Pauli stabilizer cannot have a phase of $\pm i$, but may have a sign $\pm 1$. Thus, for a Pauli string $\vec{P}$ of length $n$, we can capture its data using two bits for each of the $n$ qubits, plus an extra bit $r$ for the overall sign. The tableau has $2n$ rows for bookkeeping and algorithmic reasons.\footnote{The first $n$ rows keep track of the \emph{de-stabilizers} of the state, while the next $n$ rows keep track of the stabilizers. See \cite{sim_stab_circuits} for more details.}
+Thus an $n$-qubit Pauli string can be encoded by $2n$ bits, together with one
+additional sign bit. This is possible since stabilizer generators never have phases $\pm i$ by Lemma \ref{lemma:stab-group-properties}.
+
+A Clifford gate maps Pauli strings to Pauli strings under conjugation. Hence,
+to update the state after applying a Clifford gate, it suffices to update how
+that gate conjugates each row of the tableau. For example, applying $H$ to
+qubit $j$ swaps the $x_{ij}$ and $z_{ij}$ entries in column $j$, up to the
+appropriate sign change when $Y$ is involved. Similarly, $S$ and $\CNOT$ act by
+simple binary updates on the entries. Thus the tableau is
+best viewed not as a list of stabilizers, but as an algorithmic data
+structure for simulating stabilizer computations.
 \end{proof}
 
-This algorithm may be improved further. See \cite{faster-sim-stab} for such an example.
+Note that this algorithm may be improved further. See \cite{faster-sim-stab} for such an example.

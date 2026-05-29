@@ -16,7 +16,7 @@ The figure below shows the $3 \times 3$ comparability grid:
 \input{figures/comp_grid_example}
 \end{example}
 
-The comparability grid is the ``maximal'' object of what are called circle graphs.
+The comparability grid is a ``maximal'' object of what are called circle graphs.
 
 \begin{definition}
 \label{def:circle-graph}
@@ -32,9 +32,9 @@ To see that comparability graphs are circle graphs, we introduce another kind of
 \begin{definition}
 \label{def:permutation-graph}
 A \term{permutation graph} is a graph that records which pairs of objects are in opposite order in two different lists. More precisely, let $V$ be a finite set of labels, and choose two total orders $<_1$ and $<_2$ on $V$. The permutation graph $(G = V,E)$ associated with these two orders has $V$ as its vertices, and edges
-\begin{align*}
+\begin{align}
     uv \in E \iff (u <_1 v \land v <_2 u) \lor (v <_1 u \land u <_2 v).
-\end{align*}
+\end{align}
 To draw a permutation graph, place the vertices in $<_1$ order on one horizontal line, and place the vertices in $<_2$ order on a second horizontal line below it. Connect matching labels with a line segment. Then two vertices are adjacent exactly when their line segments cross. Denote the family of all permutation graphs as $\PGraph$.
 \end{definition}
 
@@ -47,10 +47,10 @@ A comparability grid is a permutation graph, and hence a circle graph.
 
 \begin{proof}
 Fix a $G = \CGrid_{m \times n}$. We start by recasting the edge condition to a more tractable form. For vertices $(i,j), (i',j') \in V(G)$, write $(i,j) \sim_G (i',j')$ if there is an edge between them in $G$. Then
-\begin{align*}
+\begin{align}
     (i,j) \sim_G (i',j') \iff 
     (i - i')(j - j') > 0.
-\end{align*}
+\end{align}
 Define two orders on $V(G)$:
 \begin{align}
     (i,j) <_1 (i',j') &\iff i < i' \lor (i = i' \land j < j') \\
@@ -87,7 +87,7 @@ This is Corollary 53 of \cite{brijder2016isotropicmatroidsiicircle}, strengthene
 
 \begin{theorem}
 \label{thm:cgraph-vertex-minor-cgrid}
-This is Lemma 3.1, 3.2, and 3.3 of \cite{grid-theorem}. Every circle graph on $n$ vertices is isomorphic to a vertex minor of the $3n \times 3n$ comparability grid. More specifically, every $n$-vertex permutation graph is isomorphic to an induced subgraph of the $n \times n$ comparability grid, and every circle graph on $n$ vertices is a vertex minor of a permutation graph on $3n$ vertices.\footnote{This is what we meant when we introduced comparability grids as the ``maximal'' object of circle graphs in the remark before Definition \ref{def:circle-graph}.}
+This is Lemma 3.1, 3.2, and 3.3 of \cite{grid-theorem}. Every circle graph on $n$ vertices is isomorphic to a vertex minor of the $3n \times 3n$ comparability grid. More specifically, every $n$-vertex permutation graph is isomorphic to an induced subgraph of the $n \times n$ comparability grid, and every circle graph on $n$ vertices is a vertex minor of a permutation graph on $3n$ vertices.\footnote{This is what we meant when we introduced comparability grids as a ``maximal'' object of circle graphs in the remark before Definition \ref{def:circle-graph}.}
 \end{theorem}
 
 \begin{theorem}

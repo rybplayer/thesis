@@ -88,7 +88,7 @@ Define \term{$\LC$-equivalent} correspondingly.
 
 \begin{lemma}
 \label{lem:lu-equivalent-families-universality}
-Let $\Phi$ and $\Psi$ be $\LU$-equivalent families of resource states. Then $\Phi$ is a universal resource for MBQC if and only if $\Psi$ is a universal resource for MBQC.
+Let $\Phi$ and $\Psi$ be $\LU$-equivalent families of resource states. Then $\Phi$ is a universal resource for MBQC if $\Psi$ is a universal resource for MBQC, and vice versa.
 \end{lemma}
 
 \begin{proof}
@@ -98,19 +98,19 @@ $
     \ket{\phi}
     \geq_{\LOCC}
     \ket{\rho}
-$
+$.
 Since $\Phi =_{\LU} \Psi$, there exists $\ket{\psi}\in\Psi$ such that
 $\ket{\psi} =_{\LU}\ket{\phi}$. Local unitaries are reversible $\LOCC$
 operations, so
 $
     \ket{\psi}\geq_{\LOCC}\ket{\phi}.
-$
+$.
 Composing $\LOCC$ transformations gives
 $
     \ket{\psi}
     \geq_{\LOCC}
     \ket{\rho}
-$
+$.
 Thus $\Psi$ is universal. The reverse implication is identical.
 \end{proof}
 
@@ -143,43 +143,43 @@ We choose to prove a more powerful result using rank-width as our measure $E$.
 \label{def:rank-width}
 Let $G=(V,E)$ be a graph. For any subset $A \subseteq V$, interpret it as a graph cut with $A$ on one side and $V \setminus A$ on the other. Define
 the \term{cut-rank} of $A$ by
-\[
+\begin{align}
     \rho_G(A)
     :=
     \operatorname{rank}_{\mathbb F_2}
     M_A,
-\]
+\end{align}
 where $M_A$ is the $|A| \times |V \setminus A|$ matrix whose entries are
-\[
+\begin{align}
     (M_A)_{uv}
     =
     \begin{cases}
         1 & \text{if } u \in A,\ v \in V \setminus A,\text{ and } uv \in E,\\
         0 & \text{otherwise.}
     \end{cases}
-\]
+\end{align}
 In words, $\rho_G(A)$ is the rank, over $\mathbb F_2$, of the adjacency
 matrix recording which edges cross the cut
-\[
+\begin{align}
     A \mid V \setminus A.
-\]
+\end{align}
 A \term{rank decomposition} of $G$ is a binary tree $T$ whose leaves are
 the vertices of $G$. Every edge $e$ of $T$ splits the leaves into two
 parts, and therefore determines a cut
-\[
+\begin{align}
     A_e \mid V \setminus A_e
-\]
+\end{align}
 of the vertices of $G$. The \term{width} of the decomposition $T$ is
-\[
+\begin{align}
     \max_{e \in E(T)} \rho_G(A_e).
-\]
+\end{align}
 Finally, the \term{rank width} of $G$ is the smallest possible width over
 all such decompositions:
-\[
+\begin{align}
     \operatorname{rwd}(G)
     :=
     \min_T \max_{e \in E(T)} \rho_G(A_e).
-\]
+\end{align}
 Thus, rank width measures how well the vertices of $G$ can be arranged in
 a tree so that every cut appearing in the tree has low binary adjacency
 rank.
@@ -194,12 +194,12 @@ Every tree has rank width at most 1.
 Let $G=(V,E)$ be a tree. We will construct a rank decomposition where every cut has cut-rank at most $1$. Root the tree $G$ at some vertex $r$. For each vertex $v \neq r$, let $G_v$ denote the subtree consisting of $v$ and all of its descendants.
 
 Let $A_v := V(G_v)$. Since $G$ is a tree, there is exactly one edge between $A_v$ and $V \setminus A_v$, namely the edge from $v$ to its parent Therefore, the cut matrix $M_{A_v}$ has exactly one nonzero entry. Hence
-\[
+\begin{align}
     \rho_G(A_v)
     =
     \operatorname{rank}_{\mathbb F_2} M_{A_v}
     \leq 1.
-\]
+\end{align}
 Now choose a binary decomposition tree $T$ that recursively separates rooted subtrees of $G$. Every cut appearing in this decomposition is of the form $A_v \mid V \setminus A_v$ or a union of such subtrees attached to a common vertex. In either case, because $G$ is a tree, the edges crossing the cut are incident to a single vertex on one side of the cut. Thus the corresponding bipartite adjacency matrix has all nonzero entries contained in a single row or a single column, so its rank over $\mathbb F_2$ is at most $1$. Hence this rank decomposition has width at most $1$. Therefore $\operatorname{rwd}(G) \leq 1$.
 \end{proof}
 

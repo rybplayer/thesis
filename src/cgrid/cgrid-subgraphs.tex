@@ -1,6 +1,6 @@
 \subsection{Subgraphs of the Comparability Grid}
 
-Recall that, by Fact \ref{fact:vertex-deletion}, vertex deletion is an operation allowable in the Measurement Calculus model of MBQC. Thus, if we can show that a family of induced subgraphs of comparability grids is universal, we obtain that comparability grids are universal. We begin by characterizing the data of a comparability grid.
+Recall that, by Fact \ref{fact:vertex-deletion}, vertex deletion is an operation allowable in the Measurement Calculus model of MBQC. Thus, if we can show that a family of induced subgraphs of comparability grids is universal, we obtain that comparability grids are universal. We begin by characterizing the data of a subgraph of a comparability grid.
 
 \begin{fact}
 \label{fact:tuple-construction}
@@ -192,6 +192,7 @@ The rightmost graph is a forbidden vertex minor of circle graphs. If the $\Grid_
 An exhaustive search (using the algorithms described in the next section) reveals that we may strengthen this result a little bit.
 
 \begin{fact}
+\label{fact:grid-3-times-3-not-subgraph}
 $\Grid_{3 \times 3}$ is not a induced subgraph of any circle graph. Consequently, $\Grid_{m \times n}$ is not an induced subgraph of any circle graph, for $m,n \geq 3$.
 \end{fact}
 
@@ -201,6 +202,6 @@ The proof surmounts to enumerating every possible 9-vertex subgraph of a $\CGrid
 
 Let us summarize what we have seen this section. Through vertex minors, we see that any potential proof of the universality of the comparability grid cannot involve reducing, via local complementation and vertex deletion, a comparability grid into some desired grid graph. This is the implication of Fact \ref{fact:grid-not-vertex-minor-cgraph}.
 
-Furthermore, if the comparability grid is universal, its MBQC protocol must asymptotically use a strictly super-polynomial or faster growing number of qubits with respect to the number of qubits in the desired output quantum state. This follows from \ref{thm:cgrid-efficiently-simulable}.
+Furthermore, if the comparability grid is universal, its MBQC protocol must asymptotically use a strictly super-polynomial or faster growing number of qubits with respect to the number of qubits in the desired output quantum state. This follows from Theorem \ref{thm:cgrid-efficiently-simulable}.
 
-Suppose comparability grids are universal. If we are to present a constructive proof of this, i.e. given a target state $\ket\phi$ on $n$ qubits, an explicit vertex minor of some comparability grid and a measurement pattern that generates $\ket\phi$ using it, then this vertex minor must have asymptotically super-polynomial or larger number of vertices with respect to $n$. In the next section, we outline the key methodology of this thesis: a series of algorithms for enumerating and characterizing the vertex minors of comparability graphs. We run these algorithms to create constructions which we conjecture may show the universality of the comparability grid. These are presented in Section \ref{sec:conclusions}.
+Suppose comparability grids are universal. If we are to present a constructive proof of this, i.e. given a target state $\ket\phi$ on $n$ qubits, an explicit vertex minor of some comparability grid and a measurement pattern that generates $\ket\phi$ using it, then this vertex minor must have asymptotically super-polynomial or larger number of vertices with respect to $n$. In the next section, we outline the key methodology of this thesis: a series of algorithms for enumerating and characterizing the vertex minors of comparability graphs. We run these algorithms to create constructions which we conjecture may show the universality of the comparability grid via a constructive proof. These are presented in Section \ref{sec:conclusions}.

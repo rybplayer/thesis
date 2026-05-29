@@ -2,7 +2,7 @@
 \subsection{The One-Way Model}
 
 \begin{definition}
-Informally, \term{measurement-based quantum computation} (MBQC) is a deterministic\footnote{in the sense that we will always produce the same final qubit, whose measurement outcomes may be non-deterministic} protocol for quantum computation that roughly goes as follows:
+Informally, \term{measurement-based quantum computation} (MBQC) is a deterministic\footnote{in the sense that the same protocol will always produce the same final qubit, whose measurement outcomes may be non-deterministic} protocol for quantum computation that roughly goes as follows:
 \begin{enumerate}
     \item A classical description acts as input, specifying the desired quantum state $\ket\psi$.
     \item A resource state $\ket{\phi_k}$ is chosen from some family of resource states $\Phi = \{ \ket{\phi_1}, \ket{\phi_2}, \ldots \}$. A graph state is an example of a resource state.
@@ -28,7 +28,7 @@ For now, we will focus on what this circuit does. Commuting a Hadamard through t
 \lstick{$\ket{\phi}$} \& \ctrl{1} \& \gate{H} \& \meter{} \\
 \lstick{$\ket{+}$}    \& \ctrl{-1} \& \qw      \& \qw
 \end{quantikz}
-\;=\;
+\;\overset{\zxref{cc}}{=}\;
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$\ket{\phi}$} \& \gate{\Had} \& \targ{}  \& \meter{} \\
 \lstick{$\ket{+}$}    \& \qw      \& \ctrl{-1}\& \qw
@@ -50,7 +50,7 @@ Two $\CNOT$s cancel each other out and a $\CNOT$'s target has no effect on $\ket
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$\Had\ket{\phi}$} \& \ctrl{1} \& \targ{}  \& \ctrl{1} \& \ctrl{1} \& \meter{} \\
 \lstick{$\ket{+}$}     \& \targ{}  \& \ctrl{-1}\& \targ{}  \& \targ{}  \& \qw
-\end{quantikz}
+\end{quantikz}.
 \end{equation}
 The first three $\CNOT$s are equivalent to a swap gate. Thus
 \begin{equation}
@@ -63,7 +63,7 @@ The first three $\CNOT$s are equivalent to a swap gate. Thus
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$\ket{+}$}     \& \ctrl{1} \& \meter{} \\
 \lstick{$\Had\ket{\phi}$} \& \targ{}  \& \qw
-\end{quantikz}
+\end{quantikz}.
 \end{equation}
 The final state before measurement is
 \begin{align}
@@ -93,7 +93,7 @@ Let $m \in \{0,1\}$ be the measurement outcome of measuring in the computational
 \end{example}
 
 \begin{proof}
-We show that the RHS circuit is indeed the LHS circuit. First note that, by \zxref{f}, the $R_Z(\theta)$ gate commutes through the CZ unchanged. The rest of the analysis is identical to Example \ref{example:one-qubit-teleportation}.
+Note that, by \zxref{f}, the $R_Z(\theta)$ gate commutes through the CZ unchanged. The rest of the analysis is identical to Example \ref{example:hadamard-gadget}.
 \end{proof}
 
 \begin{example}

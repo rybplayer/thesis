@@ -49,7 +49,7 @@ The standard quantum states can be written as spiders without inputs:
     \end{ZX}
     = \sqrt{2} \ket{1} \propto \ket{1}.
 \end{align}
-Single qubit gates can be written as spiders with 1 input and 1 output:
+Single qubit gates can be written as spiders with one input and one output:
 \begin{align}
     \begin{ZX}
         \zxN{} \rar & \zxZ{\alpha} \rar & \zxN{}
@@ -60,14 +60,14 @@ Single qubit gates can be written as spiders with 1 input and 1 output:
     = e^{i\alpha/2}\begin{bmatrix}
         e^{-i\alpha/2} & 0 \\ 0 & e^{i\alpha/2}
     \end{bmatrix}
-    = e^{i\alpha/2} R_z(\alpha) \\
+    = e^{i\alpha/2} R_z(\alpha), \\
     \begin{ZX}
         \zxN{} \rar & \zxX{\alpha} \rar & \zxN{}
     \end{ZX}
     &= \frac{1}{2} \begin{bmatrix}
         1 + e^{i\alpha} & 1 - e^{i\alpha} \\ 1 - e^{i\alpha} & 1 + e^{i\alpha}
     \end{bmatrix}
-    = e^{i\alpha/2} R_x(\alpha)
+    = e^{i\alpha/2} R_x(\alpha).
 \end{align}
 Thus $\begin{ZX}[circuit]
     \rar & \zxBox{Z} \rar &
@@ -82,7 +82,7 @@ Thus $\begin{ZX}[circuit]
 
 \begin{definition}
 \label{def:zx-composition}
-Informally, the composition of spiders in ZX diagrams is similar to the composition of quantum gates in quantum circuits: Spiders connected via wires matrix multiply, while spiders ``stacked vertically'' are tensored together.\footnote{Formally, the category of ZX diagrams, \term{$\mathsf{ZX}$}, is a compact closed symmetric monoidal category. The objects are non-negative integers and the morphisms ZX diagrams. The composition of morphisms correspond to the composition of ZX diagrams. The tensor product on objects satisfies $n \otimes m := n + m$ and the tensor product of two ZX diagrams is given by ``stacking'' the diagrams on top of another. Due to the existence of the cup and cap, this is a compact closed category. Interested readers should see \cite{zx-category} for more details.}
+Informally, the \term{composition} of spiders in ZX diagrams is similar to the composition of quantum gates in quantum circuits: Spiders connected via wires matrix multiply, while spiders ``stacked vertically'' are tensored together.\footnote{Formally, the category of ZX diagrams, \term{$\mathsf{ZX}$}, is a compact closed symmetric monoidal category. The objects are non-negative integers and the morphisms ZX diagrams. The composition of morphisms correspond to the composition of ZX diagrams. The tensor product on objects satisfies $n \otimes m := n + m$ and the tensor product of two ZX diagrams is given by ``stacking'' the diagrams on top of another. Due to the existence of the cup and cap, this is a compact closed category. Interested readers should see \cite{zx-category} for more details.}
 \end{definition}
 
 \begin{definition}
@@ -132,11 +132,11 @@ Due to this verbose representation, we shorthand $\begin{ZX}
         1 & 0 & 0 & 1
     \end{bmatrix}.
 \end{align}
-These are called ``swap,'' ``cup,'' and ``cap,'' respectively from left to right, and their composition is treated like the composition with a 2-qubit gate.
+These are called ``swap,'' ``cup,'' and ``cap,'' respectively from left to right, and their composition is done by matrix multiplication.
 \end{definition}
 
 \begin{definition}
-We will be doing plenty of work with spiders moving forward, so we will set some conventions: The \term{arity} of a spider is the number of inputs and outputs it has. If a spider has phase $0$, we say it is \term{phase-less}, and often do not bother writing the $0$. Namely, $\zx{\zxZ{}} := \zx{\zxZ{0}}$ and $\zx{\zxX{}} := \zx{\zxX{0}}$.
+The \term{arity} of a spider is the number of inputs and outputs it has. If a spider has phase $0$, we say it is \term{phase-less}, and often do not bother writing the $0$. Namely, $\zx{\zxZ{}} := \zx{\zxZ{0}}$ and $\zx{\zxX{}} := \zx{\zxX{0}}$.
 \end{definition}
 
 \begin{definition}
@@ -162,7 +162,7 @@ Any ZX diagram is topologically invariant; only connectivity matters.
 \end{theorem}
 
 \begin{proof}
-The proof surmounts to a tedious enumeration of all possible rearrangements of the same quantum circuit \cite{PQP}. Like in quantum circuits, we often write ZX diagrams where inputs come from the left and outputs go to the right. This is simply convention. More formally, it suffices to maintain an ordered list of wires considered the input(s) and output(s).
+The proof surmounts to a tedious enumeration of all possible rearrangements a quantum circuit \cite{PQP}. Like in quantum circuits, we often write ZX diagrams where inputs come from the left and outputs go to the right. This is simply convention. More formally, it suffices to maintain an ordered list of wires considered input(s) and output(s).
 \end{proof}
 
 \begin{example}
@@ -240,7 +240,7 @@ Notice\footnote{Here we use the fact that composition between ZX diagrams that a
     \right\rrbracket
     = 2.
 \end{align}
-Then 
+Furthermore,
 \begin{align}
     \cos(\theta) = \frac{e^{i\theta} + e^{-i\theta}}{2}
     = \frac{1}{2} \left(
