@@ -1,0 +1,73 @@
+\usetikzlibrary{shapes.geometric,shapes.misc}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+x=.35cm,
+y=.35cm,
+edge/.style={draw=black!55, line width=.25pt},
+circlev/.style={circle, fill=black, draw=black, inner sep=1.4pt},
+starv/.style={star, star points=5, star point ratio=2.1, fill=black, draw=black, inner sep=0pt, minimum size=6pt},
+crossv/.style={cross out, draw=black, line width=.6pt, inner sep=0pt, minimum size=5pt},
+crossv /.style={cross out, draw=black, line width=.6pt, inner sep=0pt, minimum size=5pt},
+squarev/.style={rectangle, fill=black, draw=black, inner sep=1.4pt}
+]
+
+\def\nodedata{
+n1/1/25/circlev,
+n2/5/23/circlev,
+n3/6/30/circlev,
+n4/7/21/circlev,
+n5/8/28/circlev,
+n7/10/26/circlev,
+n8/12/24/circlev,
+n10/9/17/starv,
+n11/13/15/starv,
+n12/14/22/starv,
+n13/15/13/starv,
+n14/16/20/starv,
+n16/18/18/starv,
+n17/20/16/starv,
+n19/17/9/crossv,
+n20/21/7/crossv,
+n21/22/14/crossv,
+n22/23/5/crossv,
+n24/25/1/squarev,
+n25/26/10/crossv,
+n26/28/8/crossv,
+n27/30/6/squarev,
+n28/24/12/crossv
+}
+
+\foreach[count=\i] \name/\xx/\yy/\style in \nodedata {
+    \coordinate (\name) at (\xx,\yy);
+    \expandafter\xdef\csname X\i\endcsname{\xx}
+    \expandafter\xdef\csname Y\i\endcsname{\yy}
+    \expandafter\xdef\csname Name\i\endcsname{\name}
+    \xdef\NNodes{\i}
+}
+
+\pgfmathtruncatemacro{\LastButOne}{\NNodes-1}
+\foreach \i in {1,...,\LastButOne} {
+    \pgfmathtruncatemacro{\jstart}{\i+1}
+    \foreach \j in {\jstart,...,\NNodes} {
+        \edef\Xi{\csname X\i\endcsname}
+        \edef\Yi{\csname Y\i\endcsname}
+        \edef\Xj{\csname X\j\endcsname}
+        \edef\Yj{\csname Y\j\endcsname}
+        \edef\NameI{\csname Name\i\endcsname}
+        \edef\NameJ{\csname Name\j\endcsname}
+        \pgfmathtruncatemacro{\cmp}{((\Xj>=\Xi)&&(\Yj>=\Yi)) || ((\Xi>=\Xj)&&(\Yi>=\Yj))}
+        \ifnum\cmp=1
+            \draw[edge] (\NameI) -- (\NameJ);
+        \fi
+    }
+}
+
+\foreach \name/\xx/\yy/\style in \nodedata {
+    \node[\style] at (\name) {};
+}
+
+\end{tikzpicture}
+\caption{Three tiled copies of the diagonal graph gadget. The first copy excluding its right boundary is shown in $\bullet$. The second copy excluding its right boundary is shown in $\filledstar$. The third copy excluding its right boundary is shown in $\times$. The third copy's right boundary is shown in $\filledsquare$.}
+\end{figure}

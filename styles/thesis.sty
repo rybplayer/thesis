@@ -22,6 +22,23 @@
 
 % graphics
 \usepackage{graphicx}
+% \usepackage{MnSymbol}
+
+\DeclareFontFamily{U}{MnSymbolC}{}
+\DeclareFontShape{U}{MnSymbolC}{m}{n}{
+  <-6> MnSymbolC5
+  <6-7> MnSymbolC6
+  <7-8> MnSymbolC7
+  <8-9> MnSymbolC8
+  <9-10> MnSymbolC9
+  <10-12> MnSymbolC10
+  <12-> MnSymbolC12
+}{}
+
+\DeclareSymbolFont{mnsymbols}{U}{MnSymbolC}{m}{n}
+
+\DeclareMathSymbol{\filledsquare}{\mathbin}{mnsymbols}{"69}
+\DeclareMathSymbol{\filledstar}{\mathbin}{mnsymbols}{"81}
 
 % algorithms
 \usepackage{algorithm,algpseudocode}
@@ -214,8 +231,8 @@
 \renewcommand{\o}[1]{\overline{#1}}
 \newcommand{\smatrix}[4]{\left(\begin{smallmatrix}#1&#2 \\ #3&#4\end{smallmatrix}\right)}
 \newcommand{\svect}[2]{\left(\begin{smallmatrix}#1\\#2\end{smallmatrix}\right)}
-\newcommand{\mat}[4]{\begin{pmatrix}#1&#2\\#3&#4\end{pmatrix}}
-\newcommand{\vect}[2]{\begin{pmatrix}#1\\#2\end{pmatrix}}
+\newcommand{\mat}[4]{\begin{bmatrix}#1&#2\\#3&#4\end{bmatrix}}
+\newcommand{\vect}[2]{\begin{bmatrix}#1\\#2\end{bmatrix}}
 \newcommand{\Choose}[2]{{}^{#1}C_{#2}}
 \newcommand{\Perm}[2]{{}^{#1}P_{#2}}
 \newcommand{\Id}{\text{Id}}

@@ -1,27 +1,25 @@
 \subsection{Resource States}
 
 \begin{definition}
-A \term{resource state} is a state, typically containing entanglement, on which a measurement pattern can be applied to conduct measurement-based quantum computation. Under the Measurement Calculus (Definition \ref{def:measurement-calculus}), a resource state is a graph state.
+A \term{resource state} is a state, typically containing entanglement, on which a measurement pattern can be applied to conduct measurement-based quantum computation. For the purposes of this thesis, a resource state is a graph state.
 \end{definition}
 
 \begin{definition}
-A \term{family} of resource states is some collection of resource states. A family of resource states $\Psi$ is \term{universal for MBQC} if, for every $n$-qubit state $\ket\phi$, there exists some resource state $\ket{\Psi_n} \in \Psi$ and a measurement pattern $\cB$ such that the output state is $\ket\phi$. We say a family of resource states is \term{$n$-qubit universal for MBQC} if this holds for all $m$-qubit $\ket\phi$ with $m \leq n$. When the meaning is clear, we may drop the phrase ``for MBQC'' and simply say a family of resource states is universal.
+A \term{family} of resource states is some collection of resource states. A family of resource states $\Psi$ is \term{universal for MBQC} if, for every $n$-qubit state $\ket\phi$, there exists a resource state $\ket{\Psi} \in \Psi$ on at least $n$ qubits and a measurement pattern $\cB$ whose output is $\ket\phi$. We say a family of resource states is \term{$n$-qubit universal for MBQC} if this holds for all $m$-qubit $\ket\phi$ with $m \leq n$. When the meaning is clear, we may drop the phrase ``for MBQC'' and simply say a family of resource states is universal.
 \end{definition}
 
-We start by reciting some well-known results related to graph states.
+We start by recalling some well-known results related to graph states.
 
 \begin{fact}
 \label{fact:graph-state-unique-construction}
-There is a unique quantum circuit construction for every graph state, up to reordering of $\cl Z$.
+Every graph state has a canonical construction by preparing $\ket+^{\otimes |V(G)|}$
+and applying one $\CZ$ gate for each edge of $G$, uniquely up to reordering of the
+commuting $\CZ$ gates.
 \end{fact}
-
-\begin{proof}
-By \zxref{f}, CZ gates commute past each other. Then a graph state's $CZ$s are completely characterized by the set of unordered pairs of vertices that have a $CZ$ between them.
-\end{proof}
 
 \begin{fact}
 \label{fact:graph-circuit-depth-is-max-degree}
-Let $G$ be a graph with maximum degree $\Delta$. Then $\ket{G}$ can be constructed in depth $\Delta + 1$.
+Let $G$ be a graph with maximum degree $\Delta$. Ignoring the initial preparation of $\ket{+}^{\otimes |V(G)|}$, $\ket{G}$ can be constructed using at most $\Delta+1$ layers of $\CZ$ gates.
 \begin{proof}
 Vizing's theorem states that any graph with maximum degree $\Delta$ admits an edge coloring with $\Delta + 1$ colors such that no two edges that share a vertex have the same color. All edges of the same color can be implemented in the graph state in the same layer of CZs. Thus, at most $\Delta + 1$ layers are needed.
 \end{proof}
@@ -29,18 +27,19 @@ Vizing's theorem states that any graph with maximum degree $\Delta$ admits an ed
 
 \begin{fact}
 \label{fact:vertex-deletion}
-Given a graph state $\ket{G}$, a measurement in the Z plane is equivalent to vertex deletion.
+Given a graph state $\ket{G}$, a $Z$-basis measurement of a vertex is equivalent
+to deleting that vertex, up to local Pauli byproducts on its neighbors.
 \end{fact}
 
 \begin{proof}
 Consider a graph state $\ket{G}$ in its ZX-Calculus representation.
 \input{figures/yz-vertex-deletion.tex}
-By Lemma \ref{lemma:measurement-plane-maps}, the ZX effect of a Z plane measurement is a $\zx{\zxX{a \pi}}$ where $a$ is the measurement outcome bit. By \zxref{cp}, we may push the $\zx{\zxX{a \pi}}$ through the vertex being measured, deleting it in the process. The result is a graph state with the measured vertex removed, and an additional phase of $a \pi$ on all vertices connected to the measured vertex.
+By Lemma \ref{lemma:measurement-plane-maps}, the ZX effect of a Z plane measurement is a $\zx{\zxX{a \pi}}$ where $a$ is the measurement outcome bit. By \zxref{cp}, we may push the $\zx{\zxX{a \pi}}$ through the vertex being measured, deleting it in the process. The result is a graph state with the measured vertex removed, and a local $Z^{a}$ byproduct on each neighbor of the measured vertex.
 \end{proof}
 
 \begin{fact}
 \label{fact:can-local-complement-graph-state}
-Given a graph state $\ket{G}$, applying $\sqrt{X} = \zx{\rar & \zxX{\pi/2} \rar &}$ on a vertex $v$ and $\sqrt{Z} = \zx{\rar & \zxZ{\pi/2} \rar &}$ on $N_G(v)$ is equivalent to a local complementation around $v$, and yields $\ket{G \star v}$. Applying a $Y$ plane measurement on $v$ instead gives $\ket{G \star v - v}$ with additional phases.
+Given a graph state $\ket{G}$, applying $\sqrt{X} = \zx{\rar & \zxX{\pi/2} \rar &}$ on a vertex $v$ and $\sqrt{Z} = \zx{\rar & \zxZ{\pi/2} \rar &}$ up to global phase on $N_G(v)$ is equivalent to a local complementation around $v$, and yields $\ket{G \star v}$. Applying a $Y$ plane measurement on $v$ instead gives $\ket{G \star v - v}$ with additional phases.
 \end{fact}
 
 \begin{proof}
@@ -49,7 +48,7 @@ The first claim is Lemma \ref{lemma:zx-local-complement-without-deletion} and th
 
 \begin{fact}
 \label{fact:can-pivot-graph-state}
-Given a graph state $\ket{G}$, applying $\Had$ on vertices $u$, $v$ and $Z$ on $N_G(u) \cap N_G(v)$ gives $\ket{G \land uv}$. Applying a $X$ plane measurement on both $u$ and $v$ instead gives $\ket{G \land uv - u - v}$ with additional phases. 
+Given a graph state $\ket{G}$ and an edge $uv \in E(G)$, applying $\Had$ on vertices $u$, $v$ and $Z$ on $N_G(u) \cap N_G(v)$ gives $\ket{G \land uv}$. Applying a $X$ plane measurement on both $u$ and $v$ instead gives $\ket{G \land uv - u - v}$ with additional phases. 
 \end{fact}
 
 \begin{proof}
@@ -61,7 +60,7 @@ The first claim is Lemma \ref{lemma:zx-pivot-without-deleting} and the second is
 A $m \times n$ grid graph $G = (V,E)$ has
 \begin{align}
     V &= \{(i,j) \mid i \in [m], j \in [n]\}, \\
-    E &= \{\{(i_1,j_1),(i_2,j_2)\} \mid (i_1,j_1),(i_2,j_2) \in V, |i_2-i_1| + |j_2-j_1| = 1\}
+    E &= \{\{(i_1,j_1),(i_2,j_2)\} \mid (i_1,j_1),(i_2,j_2) \in V, |i_2-i_1| + |j_2-j_1| = 1\}.
 \end{align}
 In other words, $m$ rows and $n$ columns with edges between nodes of taxicab distance $1$. Denote such graphs as $\Grid_{m \times n}$. Let \term{$\Grid$} denote the family of all such graphs.
 \end{definition}
@@ -74,12 +73,13 @@ The $\Grid$ is universal.
 \input{figures/mbqc-grid}
 
 \begin{proof}
-The full proof is quite involved and very tedious. The original proof is given in \cite{MBQCOriginal}, and a more accessible proof is available in \cite{Raussendorf_2003}. A modern proof through the ZX-Calculus is available in Chapter 9 of \cite{PQS}. 
+The full proof is quite involved, so we only summarize the main ingredients. The original proof is given in \cite{MBQCOriginal}, and a more accessible proof is available in \cite{Raussendorf_2003}. A modern proof through the ZX-Calculus is available in Chapter 9 of \cite{PQS}. 
 
-There are three great difficulties in the proof. We informally discuss them. First, we need to be able to implement arbitrary single qubit gates. This is done by deleting (via $Z$ plane measurements) vertices to create line graphs, each resulting in a chain like those in Example \ref{ex:teleportation-gadget}. It can be shown that this allows the application of arbitrary single qubit gates up to some Pauli error.
+There are three great difficulties in the proof. We informally discuss them. First, we need to be able to implement arbitrary single-qubit gates. This is done by deleting (via $Z$ plane measurements) vertices to create line graphs, each resulting in a chain like those in Example \ref{ex:teleportation-gadget}. It can be shown that this allows the application of arbitrary single-qubit gates up to some Pauli error.
 
-Second, we need to be able to entangle qubits. If the two line graphs containing the qubits we wish to entangle are adjacent, i.e. there are no other line graphs between them, then creating a orthogonal line of vertices between the wires may entangle them. Now, if they are not adjacent, we can swap qubits between lines (by implementing CNOT thrice) until they become adjacent.
+Second, we need to be able to entangle qubits. If the two line graphs containing the qubits we wish to entangle are adjacent, i.e. there are no other line graphs between them, then an orthogonal connecting chain of vertices can be used to implement an
+entangling operation between the two logical wires. Now, if they are not adjacent, we can swap qubits between lines (by implementing three CNOT gates) until they become adjacent.
 
-Third, we need to ensure measurement is done in the correct order. For example, suppose we delete all vertices connecting the input and output vertices. Then this computation is deterministic and not invertible, and thus does not implement a unitary. As it turns out, there is a criterion called \emph{flow} that ensures this does not happen, as well as variants of flow such as \emph{gflow} and \emph{Pauli flow} that further ensure that we can deal with the Pauli errors. Interested readers should see \cite{McElvanney_2023,Backens_2021,PQS} for more details.
+Third, we need to ensure that measurements are performed in the correct order. For example, suppose we delete all vertices connecting the input and output vertices. Then this computation is deterministic and not invertible, and thus does not implement a unitary. As it turns out, there is a criterion called \emph{flow} that ensures this does not happen, as well as variants of flow such as \emph{gflow} and \emph{Pauli flow} that further ensure that we can deal with the Pauli errors. Interested readers should see \cite{McElvanney_2023,Backens_2021,PQS} for more details.
 \end{proof}
 

@@ -4,17 +4,18 @@ Given the difficulty of the proof of Theorem \ref{thm:grid-universal}, we now tu
 
 \begin{fact}
 \label{fact:1-qubit-and-entangling-universal}
-Any 1-qubit universal gate set and a 2 qubit entangling gate is universal \cite{1qubit-entangling-universal}.
+Any universal set of single-qubit gates, together with any entangling two-qubit
+gate, is universal \cite{1qubit-entangling-universal}.
 \end{fact}
 
 \begin{proof}
-The proof in \cite{1qubit-entangling-universal} turns out to be quite technical, involving many tricks from Lie Algebra. It surmounts to proving the following restatement of the theorem: Let $V$ be a 2-qubit gate. The following are equivalent:
+The proof in \cite{1qubit-entangling-universal} turns out to be quite technical, involving many tricks from Lie algebra. It amounts to proving the following restatement of the theorem: Let $V$ be a 2-qubit gate. The following are equivalent:
 \begin{enumerate}
     \item The collection of all 1-qubit gates $\cA$ together with $V$ is QQ-universal.
     \item The collection of all 1-qubit gates $\cA$ together with $V$ is exactly QQ-universal.
     \item $V$ is not primitive, or \term{imprimitive}.
 \end{enumerate}
-Here, say $V$ is \term{primitive} iff $V = S \otimes T$ or $V = (S \otimes T)P$ for some $1$-qubit gates $S$ and $T$, with $P$ being the swap gate.
+Here, say $V$ is \term{primitive} iff $V = S \otimes T$ or $V = (S \otimes T)P$ for some single-qubit gates $S$ and $T$, with $P$ being the swap gate.
 \end{proof}
 
 \begin{theorem}
@@ -23,43 +24,43 @@ Any universal gate set must include at least one multi-qubit entangling gate, as
 \end{theorem}
 
 \begin{proof}
-This follows from Fact \ref{fact:1-qubit-and-entangling-universal}.
-\end{proof}
-
-\begin{theorem}
-\label{thm:line-not-universal}
-Let \term{$\mathsf{Line}$} denote the family of graphs made out of line graphs. Then $\mathsf{Line}$ is not a universal resource.
-\end{theorem}
-
-\begin{proof}
-This follows from Theorem \ref{thm:any-universal-need-entanglement}.
+A circuit made only of single-qubit gates maps product states to product states:
+\[
+(U_1\otimes\cdots\otimes U_n)(\ket{\psi_1}\otimes\cdots\otimes\ket{\psi_n})
+=
+U_1\ket{\psi_1}\otimes\cdots\otimes U_n\ket{\psi_n}.
+\]
+Hence such a circuit cannot produce an entangled state from a product input.
 \end{proof}
 
 We now turn to universality criteria specifically for MBQC. We start by addressing why we only consider CQ-universality rather than QQ-universality.
 
 \begin{theorem}
 \label{thm:cq-implies-qq}
-This is Observation 2 of \cite{MBQC-universal}. Every CQ-universal resource can be made QQ-universal by allowing quantum inputs to be coupled into the resource state using the same coupling method, i.e. CZ gates.
+This is Observation 2 of \cite{MBQC-universal}. Every CQ-universal resource can be made QQ-universal by allowing quantum inputs to be coupled into the resource state by attaching the input qubits to the resource using the same entangling operation,
+namely $\CZ$ gates.
 \end{theorem}
 
 We now introduce a new characterization of the universality of graph states.
 
 \begin{definition}
-Let \term{$\LO$} denote local operations, i.e. any single qubit unitary and measurement. Let \term{$\LC$} denote local Clifford operations, i.e. any ZX diagram with spiders of arity at most $2$ and phases multiples of $\tfrac{\pi}{2}$. Let \term{$\CC$} denote \term{classical communication}, which represents the measurement correction and Pauli error tracking done on-the-fly in MBQC.
+Let \term{$\LO$} denote local operations, i.e. any single qubit unitary and measurement. Let \term{$\LC$} denote local Clifford operations, i.e. tensor products of
+single-qubit Clifford unitaries. Let \term{$\CC$} denote \term{classical communication}, which represents the measurement correction and Pauli error tracking performed adaptively in MBQC.
 
-States $\ket\psi$ and $\ket\phi$ both on $n$ qubits are called \term{$\LU$-equivalent} if there is a unitary $U = \otimes_{i=1}^n U_i$, where every $U_i$ is a local unitary, such that $\ket\psi = U \ket\phi$. In this case, write $\ket\psi =_\LU \ket\phi$. Now, if every $U_i$ is made up of only local Clifford gates, say they are \term{$\LC$-equivalent} and write $\ket\psi =_\LC \ket\phi$.
+States $\ket\psi$ and $\ket\phi$ both on $n$ qubits are called \term{$\LU$-equivalent} if there is a unitary $U = \otimes_{i=1}^n U_i$, where every $U_i$ is a local unitary, such that $\ket\psi = U \ket\phi$. In this case, write $\ket\psi =_\LU \ket\phi$. Now, if every $U_i$ is a single-qubit Clifford unitary, say they are \term{$\LC$-equivalent} and write $\ket\psi =_\LC \ket\phi$.
 \end{definition}
 
 \begin{theorem}
-This is the main result of \cite{stab-lc-equiv-graph}. Graph states $\ket{G_1}$ and $\ket{G_2}$ are $\LC$-equivalent iff there is a series of local complementations that transform one graph to another. 
+This is the main result of \cite{stab-lc-equiv-graph}. Graph states $\ket{G_1}$ and $\ket{G_2}$ are $\LC$-equivalent iff the graphs
+$G_1$ and $G_2$ are related by a sequence of local complementations.
 \end{theorem}
 
 \begin{proof}[Proof sketch]
-The backwards direction follows from Lemma \ref{lemma:zx-local-complement-without-deletion}. The forward direction surmounts to showing that the successive application of local complementation generates the orbit of any graph state under local Clifford operations. Informally, the proof in \cite{stab-lc-equiv-graph} does this by a clever characterization of local Clifford operations as graph operations, before showing that all these operations can be implemented using local complementation alone.
+The reverse direction follows from Lemma \ref{lemma:zx-local-complement-without-deletion}. The forward direction amounts to showing that the successive application of local complementation generates the orbit of any graph state under local Clifford operations. Informally, the proof in \cite{stab-lc-equiv-graph} does this by a clever characterization of local Clifford operations as graph operations, before showing that all these operations can be implemented using local complementation alone.
 \end{proof}
 
 \begin{theorem}
-This is the main result of \cite{lu-lc-false}. There are graphs that are $\LU$-equivalent but not $\LC$-equivalent. On the other hand, there are some types of graphs which are $\LU$-equivalent iff they are $\LC$-equivalent \cite{lu-equal-lc-example-1,lu-equal-lc-example-2}.
+This is the main result of \cite{lu-lc-false}. There are graphs that are $\LU$-equivalent but not $\LC$-equivalent. On the other hand, there are some classes of graphs which are $\LU$-equivalent iff they are $\LC$-equivalent \cite{lu-equal-lc-example-1,lu-equal-lc-example-2}.
 \end{theorem}
 
 \begin{proof}
@@ -67,7 +68,7 @@ In \cite{lu-lc-false}, they present 27-vertex graphs that are $\LU$-equivalent b
 \end{proof}
 
 \begin{theorem}
-A family of states $\Phi$ is a universal resource for MBQC if for all $n$-qubit states $\ket\psi$, $\exists \ket\phi \in \Phi$ with $m \geq n$ qubits, such that the transformation $\ket\phi \to \ket\psi$ is possible deterministically with $\LO$ and $\CC$. We denote this by $\ket\phi \geq_{\LOCC} \ket\psi$. 
+A family of states $\Phi$ is a universal resource for MBQC iff for every $n$-qubit state $\ket\psi$, there exists $\ket\phi \in \Phi$ on $m \geq n$ qubits, such that the transformation $\ket\phi \to \ket\psi$ is possible with $\LO$ and $\CC$. We denote this by $\ket\phi \geq_{\LOCC} \ket\psi$. 
 \end{theorem}
 
 \begin{proof}
@@ -114,23 +115,31 @@ $.
 Thus $\Psi$ is universal. The reverse implication is identical.
 \end{proof}
 
-Note that, if we have a family of resource states $\Phi$ that is not $\LU$ equivalent to some universal family of resource states $\Psi$, this does not necessarily imply $\Phi$ is not universal. This concludes our overview of the main universality results concerning $\LU$-, $\LO$, and $\LC$ equivalence. To finish off this section, we present one other universality criteria.
+Note that, if we have a family of resource states $\Phi$ that is not $\LU$ equivalent to some universal family of resource states $\Psi$, this does not necessarily imply $\Phi$ is not universal. This concludes our overview of the main universality results concerning $\LU$-, $\LO$, and $\LC$ equivalence. To finish off this section, we present one other universality criterion.
 
 \begin{theorem}
 \label{thm:measure-for-universal}
-[From \cite{MBQC-measures}] Let $\Psi$ be a family of resource states and $\ket\phi, \ket{\phi'}$ arbitrary states with the same number of qubits. Let $E: \ket\phi \to \R$ be a function that satisfies the following properties:
+[From \cite{MBQC-measures}] Let $\Psi$ be a family of resource states and $\ket\phi, \ket{\phi'}$ arbitrary states with the same number of qubits. Let $E$ be a real-valued function on pure states, possibly taking the value $\infty$, satisfying the following properties:
 \begin{enumerate}
     \item $E(\ket\phi) \geq E(\ket{\phi'})$ whenever $\ket\phi \geq_\LOCC \ket{\phi'}$;
-    \item $\sup_{\ket\phi} E(\ket\phi) > \sup_{\ket\psi \in \Psi} E(\ket\psi)$. 
+    \item $\sup_{\text{Pure states }\ket\phi} E(\ket\phi) > \sup_{\ket\psi \in \Psi} E(\ket\psi)$. 
 \end{enumerate}
 Then $\Psi$ cannot be a universal resource.
 \end{theorem}
 
 \begin{proof}
-The first condition states that $\LOCC$ cannot increase this measure, while the second says that the supremum value of $E$, which can be $\infty$, is not reached among all $\ket\psi \in \Psi$. If both were true, then clearly universality is not possible.
+The first condition states that $\LOCC$ cannot increase this measure, while the second says that the supremum value of $E$, which can be $\infty$, is not reached among all $\ket\psi \in \Psi$. If $\Psi$ were universal, then for every pure state $\ket\phi$ there would be
+some $\ket\psi\in\Psi$ with $\ket\psi\geq_{\LOCC}\ket\phi$. By monotonicity,
+$E(\ket\psi)\geq E(\ket\phi)$. Taking suprema over all target states would give
+\begin{align}
+    \sup_{\ket\psi\in\Psi}E(\ket\psi)
+    \ge
+    \sup_{\text{pure states }\ket\phi}E(\ket\phi),
+\end{align}
+contradicting the second condition.
 \end{proof}
 
-The above theorem is very general and consequently very powerful, as we will soon see. However, note that satisfying the converse of the second condition for some measure $E$ is not sufficient to guarantee universality. For example, the family of \emph{toric code states} have unbounded entanglement width but are not universal \cite{toric-not-universal}.
+The above theorem is very general and consequently very powerful, as we will soon see. However, note that satisfying the converse of the second condition for some measure $E$ is not sufficient to guarantee universality. For example, the family of \emph{toric code states} has unbounded entanglement width but are not universal \cite{toric-not-universal}.
 
 \begin{theorem}
 \label{thm:star-not-universal}
@@ -139,7 +148,7 @@ Consider the family of all star graphs $\Star$. A \term{star graph} on $n$ verti
 
 We choose to prove a more powerful result using rank-width as our measure $E$.
 
-\begin{definition}[Rank width]
+\begin{definition}[Rank-width]
 \label{def:rank-width}
 Let $G=(V,E)$ be a graph. For any subset $A \subseteq V$, interpret it as a graph cut with $A$ on one side and $V \setminus A$ on the other. Define
 the \term{cut-rank} of $A$ by
@@ -173,38 +182,38 @@ of the vertices of $G$. The \term{width} of the decomposition $T$ is
 \begin{align}
     \max_{e \in E(T)} \rho_G(A_e).
 \end{align}
-Finally, the \term{rank width} of $G$ is the smallest possible width over
+Finally, the \term{rank-width} of $G$ is the smallest possible width over
 all such decompositions:
 \begin{align}
     \operatorname{rwd}(G)
     :=
     \min_T \max_{e \in E(T)} \rho_G(A_e).
 \end{align}
-Thus, rank width measures how well the vertices of $G$ can be arranged in
+Thus, rank-width measures how well the vertices of $G$ can be arranged in
 a tree so that every cut appearing in the tree has low binary adjacency
 rank.
 \end{definition}
 
 \begin{lemma}
 \label{lemma:tree-rank-width-1}
-Every tree has rank width at most 1.
+Every tree has rank-width at most 1.
 \end{lemma}
 
 \begin{proof}
 Let $G=(V,E)$ be a tree. We will construct a rank decomposition where every cut has cut-rank at most $1$. Root the tree $G$ at some vertex $r$. For each vertex $v \neq r$, let $G_v$ denote the subtree consisting of $v$ and all of its descendants.
 
-Let $A_v := V(G_v)$. Since $G$ is a tree, there is exactly one edge between $A_v$ and $V \setminus A_v$, namely the edge from $v$ to its parent Therefore, the cut matrix $M_{A_v}$ has exactly one nonzero entry. Hence
+Let $A_v := V(G_v)$. Since $G$ is a tree, there is exactly one edge between $A_v$ and $V \setminus A_v$, namely the edge from $v$ to its parent. Therefore, the cut matrix $M_{A_v}$ has exactly one nonzero entry. Hence
 \begin{align}
     \rho_G(A_v)
     =
     \operatorname{rank}_{\mathbb F_2} M_{A_v}
     \leq 1.
 \end{align}
-Now choose a binary decomposition tree $T$ that recursively separates rooted subtrees of $G$. Every cut appearing in this decomposition is of the form $A_v \mid V \setminus A_v$ or a union of such subtrees attached to a common vertex. In either case, because $G$ is a tree, the edges crossing the cut are incident to a single vertex on one side of the cut. Thus the corresponding bipartite adjacency matrix has all nonzero entries contained in a single row or a single column, so its rank over $\mathbb F_2$ is at most $1$. Hence this rank decomposition has width at most $1$. Therefore $\operatorname{rwd}(G) \leq 1$.
+Now choose a binary decomposition tree $T$ that recursively separates rooted subtrees of $G$.\footnote{This is always possible. After rooting $G$, every edge separates a rooted subtree from its complement. Recursively applying such separations gives a decomposition. If a split produces more than two parts, we refine it arbitrarily into binary splits.} Every cut appearing in this decomposition is of the form $A_v \mid V \setminus A_v$ or a union of such subtrees attached to a common vertex. In either case, because $G$ is a tree, the edges crossing the cut are incident to a single vertex on one side of the cut. Thus the corresponding bipartite adjacency matrix has all nonzero entries contained in a single row or a single column, so its rank over $\mathbb F_2$ is at most $1$. Hence this rank decomposition has width at most $1$. Therefore $\operatorname{rwd}(G) \leq 1$.
 \end{proof}
 
 \begin{proof}[Proof of Theorem \ref{thm:star-not-universal}]
-Every graph in $\Star$ is a tree, so by Lemma \ref{lemma:tree-rank-width-1} any Star graph has at most rank width 1. On the other hand, $C_5$, the cycle on 5 vertices, has rank-width at least 2. To see this, take any rank decomposition of $C_5$. This tree has 5 leaves, so there must be some edge whose removal separates the leaves into a $2 \mid 3$ split. It suffices to show that every $2 \mid 3$ cut of $C_5$ has cut-rank 2.
+Every graph in $\Star$ is a tree, so by Lemma \ref{lemma:tree-rank-width-1} any star graph has at most rank-width 1. On the other hand, $C_5$, the cycle on 5 vertices, has rank-width at least 2. To see this, take any rank decomposition of $C_5$. This tree has 5 leaves, so there must be some edge whose removal separates the leaves into a $2 \mid 3$ split. It suffices to show that every $2 \mid 3$ cut of $C_5$ has cut-rank 2.
 
 Let $C_5$ have vertices labelled by $[5]$. Let $A = \{u,v\}$ for some distinct $u,v \in V(C_5)$ and $B = V(C_5) \setminus A$. If $u$ and $v$ are adjacent, by symmetry it suffices to consider $A = \{1,2\}$. Then
 \begin{align}
@@ -215,7 +224,7 @@ Let $C_5$ have vertices labelled by $[5]$. Let $A = \{u,v\}$ for some distinct $
         2 & 1 & 0 & 0
     \end{array}.
 \end{align}
-Hence the cut-rank of $A$ is $2$. Now if $u$ and $v$ are not adjacent, by symmetry is suffices to consider $A = \{1,3\}$. Then 
+Hence the cut-rank of $A$ is $2$. Now if $u$ and $v$ are not adjacent, by symmetry it suffices to consider $A = \{1,3\}$. Then 
 \begin{align}
     M_A = \begin{array}{c|c c c}
         & 2 & 4 & 5 \\
@@ -241,31 +250,31 @@ for all cuts $A \mid B$ and $v \in V(G)$. Suppose first that $v \in A$. Let $r_v
 $v$. Let $u \in A \setminus \{v\}$. Local complementation at $v$ toggles the
 edge $uw$, with $w \in B$, exactly when both $u$ and $w$ are adjacent to
 $v$. Then the row of $M_A(G \star v)$ indexed by $u$ is
-\[
+\begin{align}
     r_u'
     =
     \begin{cases}
         r_u + r_v & \text{if } uv \in E(G),\\
         r_u & \text{if } uv \notin E(G),
     \end{cases}
-\]
+\end{align}
 where the addition is over $\F_2$. The row indexed by $v$ is unchanged,
-since local complementation does not change edges incident to $v$. This is an elementary row operation.
+since local complementation does not change edges incident to $v$. From here, it is not too hard to see that the cut-rank is preserved.
 
 Now suppose $v \in B$. The same argument applies with columns instead of
 rows. Let $c_v$ be the column of $M_A(G)$ indexed by $v$. For each
 $w \in B \setminus \{v\}$, local complementation at $v$ toggles the edge
 $uw$, with $u \in A$, exactly when both $u$ and $w$ are adjacent to $v$.
 Thus the column indexed by $w$ becomes
-\[
+\begin{align}
     c_w'
     =
     \begin{cases}
         c_w + c_v & \text{if } vw \in E(G),\\
         c_w & \text{if } vw \notin E(G).
     \end{cases}
-\]
-The column indexed by $v$ is unchanged. Once again, this is an elemetary column operation.
+\end{align}
+The column indexed by $v$ is unchanged. Once again, it is not too hard to see that the cut-rank is preserved.
 Therefore every cut has the same cut-rank in $G$ and in $G \star v$. Thus
 $
     \operatorname{rwd}(G)
@@ -280,5 +289,9 @@ The family $\CompleteGraphs$ of complete graph states is not universal.
 \end{theorem}
 
 \begin{proof}
-We first show that every complete graph is local-complementable to a star. Let $n$ be the number of vertices. $n=1$ is trivial. For $n \geq 2$, local complementation at any $v \in V(K_n)$ toggles all edges not incident to $v$. The result is a star rooted at $v$. By Theorem \ref{thm:local-complementation-preserves-rank-width} and Theorem \ref{thm:star-not-universal}, $\CompleteGraphs$ is not universal.
+We first show that every complete graph is local-complementable to a star. Let $n$ be the number of vertices. $n=1$ is trivial. For $n \geq 2$, local complementation at any $v \in V(K_n)$ toggles all edges not incident to $v$. The result is a star rooted at $v$. Thus every complete graph is LC-equivalent to a star graph. Hence the family
+$\CompleteGraphs$ is LC-equivalent to $\Star$. By
+Lemma~\ref{lem:lu-equivalent-families-universality}, LC-equivalent families have the
+same universality status. Since $\Star$ is not universal by
+Theorem~\ref{thm:star-not-universal}, $\CompleteGraphs$ is not universal.
 \end{proof}

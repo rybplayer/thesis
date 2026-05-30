@@ -7,7 +7,7 @@ The \term{ZX-Calculus} is a graphical language for representing quantum computat
         \leftManyDots{n} \zxX{\alpha} \rightManyDots{m}
     \end{ZX}
     :=
-    \ket{0}^{\otimes m} \bra{0}^{\otimes n} + e^{i \alpha} \ket{1}^{\otimes m} \bra{1}^{\otimes n}.
+    \ket{+}^{\otimes m} \bra{+}^{\otimes n} + e^{i \alpha} \ket{-}^{\otimes m} \bra{-}^{\otimes n}.
 \end{align}
 We say that the above spider has a \term{phase} $\alpha \in [0,2\pi)$. Similarly, the \term{Z-spider} is defined
 \begin{align}
@@ -15,7 +15,7 @@ We say that the above spider has a \term{phase} $\alpha \in [0,2\pi)$. Similarly
         \leftManyDots{n} \zxZ{\alpha} \rightManyDots{m}
     \end{ZX}
     := 
-    \ket{+}^{\otimes m} \bra{+}^{\otimes n} + e^{i \alpha} \ket{-}^{\otimes m} \bra{-}^{\otimes n}.
+    \ket{0}^{\otimes m} \bra{0}^{\otimes n} + e^{i \alpha} \ket{1}^{\otimes m} \bra{1}^{\otimes n}.
 \end{align}
 In other words, the ZX-Calculus is a calculus (i.e. rules) for manipulating Z and X spiders.
 \end{definition}
@@ -25,7 +25,7 @@ In the literature, the X-spider is often red and the Z-spider is often green, e.
 \end{remark}
 
 \begin{definition}
-Write $a \propto b$ if $a = c \cdot b$, for some $c \in \C$. Furthermore, if $D$ is a ZX diagram, write $\llbracket D \rrbracket$ to denote the matrix represented by $D$. To reduce notational clutter, we will use $\llbracket D \rrbracket$ only when it is necessary to distinguish a diagram from its matrix.
+Write $a \propto b$ if $a = c \cdot b$, for some $0 \neq c \in \C$. Furthermore, if $D$ is a ZX diagram, write $\llbracket D \rrbracket$ to denote the matrix represented by $D$. To reduce notational clutter, we will use $\llbracket D \rrbracket$ only when it is necessary to distinguish a diagram from its matrix.
 \end{definition}
 
 \begin{example}
@@ -35,19 +35,19 @@ The standard quantum states can be written as spiders without inputs:
     \begin{ZX}
         \zxX{0} \rar & \zxN{}
     \end{ZX}
-    &= \sqrt{2} \ket{+} \propto \ket{+},
+    &= \sqrt{2} \ket{0} \propto \ket{0},
     &&\begin{ZX}
         \zxX{\pi} \rar & \zxN{}
     \end{ZX}  
-    = \sqrt{2} \ket{-} \propto \ket{-}, \\
+    = \sqrt{2} \ket{1} \propto \ket{1}, \\
     \begin{ZX}
         \zxZ{0} \rar & \zxN{}
     \end{ZX}
-    &= \sqrt{2} \ket{0} \propto \ket{0},
+    &= \sqrt{2} \ket{+} \propto \ket{+},
     &&\begin{ZX}
         \zxZ{\pi} \rar & \zxN{}
     \end{ZX}
-    = \sqrt{2} \ket{1} \propto \ket{1}.
+    = \sqrt{2} \ket{-} \propto \ket{-}.
 \end{align}
 Single qubit gates can be written as spiders with one input and one output:
 \begin{align}
@@ -60,14 +60,14 @@ Single qubit gates can be written as spiders with one input and one output:
     = e^{i\alpha/2}\begin{bmatrix}
         e^{-i\alpha/2} & 0 \\ 0 & e^{i\alpha/2}
     \end{bmatrix}
-    = e^{i\alpha/2} R_z(\alpha), \\
+    = e^{i\alpha/2} R_Z(\alpha), \\
     \begin{ZX}
         \zxN{} \rar & \zxX{\alpha} \rar & \zxN{}
     \end{ZX}
     &= \frac{1}{2} \begin{bmatrix}
         1 + e^{i\alpha} & 1 - e^{i\alpha} \\ 1 - e^{i\alpha} & 1 + e^{i\alpha}
     \end{bmatrix}
-    = e^{i\alpha/2} R_x(\alpha).
+    = e^{i\alpha/2} R_X(\alpha).
 \end{align}
 Thus $\begin{ZX}[circuit]
     \rar & \zxBox{Z} \rar &

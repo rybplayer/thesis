@@ -1,10 +1,10 @@
 \subsection{Subgraphs of the Comparability Grid}
 
-Recall that, by Fact \ref{fact:vertex-deletion}, vertex deletion is an operation allowable in the Measurement Calculus model of MBQC. Thus, if we can show that a family of induced subgraphs of comparability grids is universal, we obtain that comparability grids are universal. We begin by characterizing the data of a subgraph of a comparability grid.
+Recall that, by Fact \ref{fact:vertex-deletion}, vertex deletion is an operation allowable in the Measurement Calculus model of MBQC. Thus, if we can show that a family of induced subgraphs of comparability grids is universal, we obtain that comparability grids are universal. Henceforth, when we refer to a subgraph, assume we refer to an induced subgraph unless otherwise noted. We begin by characterizing the data of a subgraph of a comparability grid.
 
 \begin{fact}
 \label{fact:tuple-construction}
-Let \(H\) be an induced subgraph of a comparability grid \(\CGrid\), with
+Let \(H\) be an induced subgraph of $\CGrid_{m \times r}$, with
 \(|V(H)|=n\). Then \(H\) admits a canonical encoding by a permutation
 \(\pi(H)\in S_n\). Conversely, every permutation \(\pi\in S_n\) determines
 an induced subgraph \(H(\pi)\) of \(\CGrid\).
@@ -15,13 +15,13 @@ Write the vertices of \(H\) as points \((x,y)\) in the comparability grid,
 where two vertices are adjacent precisely when they are comparable:
 \begin{align}
     (x_1,y_1)(x_2,y_2)\in E(H)
-    &\iff (x_1-x_2)(y_1-y_2)>0.
+    &\iff (x_1-x_2)(y_1-y_2)\geq0.
 \end{align}
-Define a perturbed point set
+Choose an integer $N > \max\{m,r\}$ and define
 \begin{align}
     V'
     &:= \left\{
-        \left(x+\frac{y}{n+1},\ y+\frac{x}{n+1}\right)
+        \left(x+\frac{y}{N},\ y+\frac{x}{N}\right)
         : (x,y)\in V(H)
     \right\}.
 \end{align}
@@ -30,11 +30,11 @@ This perturbation preserves the relative comparability of every pair of
 vertices, but ensures that no two vertices have the same first coordinate and
 no two vertices have the same second coordinate. Indeed, if
 \begin{align}
-    x_1+\frac{y_1}{n+1}
-    = x_2+\frac{y_2}{n+1}
+    x_1+\frac{y_1}{N}
+    = x_2+\frac{y_2}{N}
     \Rightarrow
     x_1-x_2
-    = \frac{y_2-y_1}{n+1}.
+    = \frac{y_2-y_1}{N}.
 \end{align}
 The left-hand side is an integer, while the right-hand side has absolute value
 strictly less than \(1\). Hence both sides are \(0\), so \(x_1=x_2\) and
@@ -43,8 +43,8 @@ second coordinates.
 
 Now sort the perturbed vertices by increasing first coordinate. Since the
 second coordinates are all distinct, their relative order is a permutation of
-\([n]\). Denote this permutation by \(\pi(H)\). Thus, after relabeling the
-vertices by their \(x\)-order, we may write the vertices as
+\([n]\). Denote this permutation by \(\pi(H)\). After relabeling the vertices by increasing perturbed first coordinate, we may
+represent their relative order abstractly as
 \begin{align}
     v_i=(i,\pi(H)(i)), \qquad i\in[n].
 \end{align}
@@ -53,14 +53,15 @@ The adjacency rule becomes
     v_i v_j \in E(H)
     &\iff (i-j)\bigl(\pi(H)(i)-\pi(H)(j)\bigr)>0.
 \end{align}
-Hence \(H\) is exactly the permutation graph encoded by \(\pi(H)\).
+Hence \(H\) is the permutation graph encoded by \(\pi(H)\), using the convention
+that the second order is reversed.
 
 Conversely, given \(\pi\in S_n\), define
 \begin{align}
     V(H(\pi)) := \{(i,\pi(i)) : i\in[n]\},
 \end{align}
 with the induced comparability grid edges. This gives an induced subgraph
-\(H(\pi)\subseteq \CGrid\).
+\(H(\pi)\subseteq \CGrid_{n \times n}\).
 \end{proof}
 
 \begin{fact}
@@ -126,10 +127,7 @@ Let \(\pi\in S_n\). Define its \term{reverse-complement} by
     \pi^{\mathrm{rc}}(i)
     &:= n+1-\pi(n+1-i).
 \end{align}
-Then
-$
-    H(\pi)\cong H(\pi^{\mathrm{rc}})
-$.
+Then \(H(\pi)\cong H(\pi^{\mathrm{rc}})\).
 \end{fact}
 
 \begin{proof}
@@ -165,10 +163,10 @@ is preserved. Hence \(v_i v_j\) is an edge if and only if \(f(v_i)f(v_j)\)
 is an edge. Thus \(f\) is a graph isomorphism, and $H(\pi)\cong H(\pi^{\mathrm{rc}})$.
 \end{proof}
 
-This representation of a subgraph will come very handy in Section \ref{sec:algorihmic-approaches}. We now conclude this section with a few observations regarding whether grids are induced subgraphs of some comparability grid.
+This representation of a subgraph will come in handy in Section \ref{sec:algorithmic-approaches}. We now conclude this section with a few observations regarding whether grids are induced subgraphs of some comparability grid.
 
 \begin{fact}
-For all $n \in \N$, $\Grid_{2 \times n}$ is a subgraph of a $\CGrid_{n+1 \times n+1}$.
+For all $n \in \N$, $\Grid_{2 \times n}$ is an induced subgraph of a $\CGrid_{n+1 \times n+1}$.
 \end{fact}
 
 \begin{proof}
@@ -180,28 +178,43 @@ This result is quite exciting, as it immediately implies that $\CGrid$ is 2-qubi
 
 \begin{fact}
 \label{fact:grid-not-vertex-minor-cgraph}
-$\Grid_{3 \times 4}$ is not a vertex minor of any circle graph. Since vertex minors is a strictly more powerful operation than vertex deletion, $\Grid_{3 \times 4}$ is not an induced subgraph of any $\CGrid$.
+$\Grid_{3 \times 4}$ is not a vertex-minor of any circle graph. Since vertex-minors are a strictly more powerful operation than vertex deletion, \(\Grid_{3\times4}\) is not a vertex minor of any circle graph. Since every
+induced subgraph is a vertex minor, \(\Grid_{3\times4}\) is not an induced
+subgraph of any circle graph, and hence not of any comparability grid.
 \end{fact}
 
 \begin{proof}
 Look at the following figure:
 \input{figures/grid-forbidden-vertex-minor.tex}
-The rightmost graph is a forbidden vertex minor of circle graphs. If the $\Grid_{3 \times 4}$ was the vertex minor of some circle graph, then so would be this forbidden minor. Thus, no circle graph, and consequently no comparability grid, has any $\Grid_{m \times n}$ with $m \geq 3$ and $n \geq 4$ as a vertex minor.
+The rightmost graph is a forbidden vertex-minor of circle graphs. The figure shows that the rightmost forbidden graph is a vertex minor of
+\(\Grid_{3\times4}\). If \(\Grid_{3\times4}\) were a vertex minor of some
+circle graph, then by transitivity this forbidden graph would also be a vertex
+minor of a circle graph, contradicting Theorem~\ref{thm:forbidden-minor-of-cgraph}. 
 \end{proof}
 
-An exhaustive search (using the algorithms described in the next section) reveals that we may strengthen this result a little bit.
+Thus, no circle graph, and consequently no comparability grid, has any $\Grid_{m \times n}$ with $m \geq 3$ and $n \geq 4$ as a vertex-minor. An exhaustive search (using the algorithms described in the next section) reveals that we may strengthen this result a little bit.
 
 \begin{fact}
 \label{fact:grid-3-times-3-not-subgraph}
-$\Grid_{3 \times 3}$ is not a induced subgraph of any circle graph. Consequently, $\Grid_{m \times n}$ is not an induced subgraph of any circle graph, for $m,n \geq 3$.
+\(\Grid_{3\times3}\) is not an induced subgraph of any comparability grid.
+Consequently, \(\Grid_{m\times n}\) is not an induced subgraph of any
+comparability grid for \(m,n\ge3\).
 \end{fact}
 
 \begin{proof}
-The proof surmounts to enumerating every possible 9-vertex subgraph of a $\CGrid$, and concluding that none are isomorphic to $\Grid_{3 \times 3}$.
+By Fact~\ref{fact:tuple-construction}, every embedded 9-vertex induced subgraph
+of a comparability grid is represented by some permutation in \(S_9\). Thus it
+suffices to enumerate the finitely many graphs \(H(\pi)\) for \(\pi\in S_9\).
+The enumeration finds no graph isomorphic to \(\Grid_{3\times3}\).
 \end{proof}
 
-Let us summarize what we have seen this section. Through vertex minors, we see that any potential proof of the universality of the comparability grid cannot involve reducing, via local complementation and vertex deletion, a comparability grid into some desired grid graph. This is the implication of Fact \ref{fact:grid-not-vertex-minor-cgraph}.
+Let us summarize what we have seen this section. Through vertex-minors, we see that any potential proof of the universality of the comparability grid cannot involve reducing, via local complementation and vertex deletion, a comparability grid into some desired grid graph. This is the implication of Fact \ref{fact:grid-not-vertex-minor-cgraph}.
 
-Furthermore, if the comparability grid is universal, its MBQC protocol must asymptotically use a strictly super-polynomial or faster growing number of qubits with respect to the number of qubits in the desired output quantum state. This follows from Theorem \ref{thm:cgrid-efficiently-simulable}.
+Furthermore, Theorem~\ref{thm:cgrid-efficiently-simulable} rules out an efficient
+MBQC universality proof for comparability grids under the assumption
+\(\BPP\neq\BQP\). In particular, an efficient construction using only polynomial-size
+circle-graph resources and polynomial-time classical control would yield an efficient
+classical simulation, contradicting the expected separation between \(\BPP\) and
+\(\BQP\).
 
-Suppose comparability grids are universal. If we are to present a constructive proof of this, i.e. given a target state $\ket\phi$ on $n$ qubits, an explicit vertex minor of some comparability grid and a measurement pattern that generates $\ket\phi$ using it, then this vertex minor must have asymptotically super-polynomial or larger number of vertices with respect to $n$. In the next section, we outline the key methodology of this thesis: a series of algorithms for enumerating and characterizing the vertex minors of comparability graphs. We run these algorithms to create constructions which we conjecture may show the universality of the comparability grid via a constructive proof. These are presented in Section \ref{sec:conclusions}.
+Suppose comparability grids are universal. If we are to present a constructive proof of this, i.e. given a target state $\ket\phi$ on $n$ qubits, an explicit vertex-minor of some comparability grid and a measurement pattern that generates $\ket\phi$ using it, then this vertex-minor would have to use super-polynomially many vertices with respect to $n$. In the next section, we outline the key methodology of this thesis: a series of algorithms for enumerating and characterizing the vertex-minors of comparability grids. We use these algorithms to find constructions that we conjecture may lead to a proof of the universality of the comparability grids.

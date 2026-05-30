@@ -1,0 +1,77 @@
+\usetikzlibrary{shapes.geometric,shapes.misc}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+x=.5cm,
+y=.5cm,
+edge/.style={draw=black!55, line width=.25pt},
+circlev/.style={circle, fill=black, draw=black, inner sep=1.4pt},
+starv/.style={star, star points=5, star point ratio=2.1, fill=black, draw=black, inner sep=0pt, minimum size=6pt},
+crossv/.style={cross out, draw=black, line width=.6pt, inner sep=0pt, minimum size=5pt},
+squarev/.style={rectangle, fill=black, draw=black, inner sep=1.4pt},
+squarev /.style={rectangle, fill=black, draw=black, inner sep=1.4pt},
+]
+
+\def\nodedata{
+n1/1/16/circlev,
+n2/3/13/circlev,
+n3/3/18/circlev,
+n4/4/14/circlev,
+n5/5/20/circlev,
+n6/7/17/circlev,
+n7/6/11/starv,
+n8/8/13/starv,
+n9/10/15/starv,
+n10/8/8/starv,
+n11/9/9/starv,
+n12/11/6/crossv,
+n13/12/12/starv,
+n14/13/8/crossv,
+n15/15/10/crossv,
+n16/13/3/crossv,
+n17/14/4/crossv,
+n18/16/1/squarev,
+n19/17/7/crossv,
+n20/18/3/squarev,
+n21/20/5/squarev
+}
+
+\foreach[count=\i] \name/\xx/\yy/\style in \nodedata {
+    \coordinate (\name) at (\xx,\yy);
+    \expandafter\xdef\csname X\i\endcsname{\xx}
+    \expandafter\xdef\csname Y\i\endcsname{\yy}
+    \expandafter\xdef\csname Name\i\endcsname{\name}
+}
+
+\foreach \i in {1,...,20} {
+    \pgfmathtruncatemacro{\jstart}{\i+1}
+    \foreach \j in {\jstart,...,21} {
+        \edef\Xi{\csname X\i\endcsname}
+        \edef\Yi{\csname Y\i\endcsname}
+        \edef\Xj{\csname X\j\endcsname}
+        \edef\Yj{\csname Y\j\endcsname}
+        \edef\NameI{\csname Name\i\endcsname}
+        \edef\NameJ{\csname Name\j\endcsname}
+        \pgfmathtruncatemacro{\cmp}{((\Xj>=\Xi)&&(\Yj>=\Yi)) || ((\Xi>=\Xj)&&(\Yi>=\Yj))}
+        \ifnum\cmp=1
+            \draw[edge] (\NameI) -- (\NameJ);
+        \fi
+    }
+}
+
+\foreach \name/\xx/\yy/\style in \nodedata {
+    \node[\style] at (\name) {};
+}
+
+\draw[edge] (n1)  to[bend right=20] (n5);
+\draw[edge] (n2)  to[bend right=20] (n6);
+\draw[edge] (n7)  to[bend right=20] (n9);
+\draw[edge] (n10) to[bend right=20] (n13);
+\draw[edge] (n12) to[bend right=20] (n15);
+\draw[edge] (n16) to[bend right=20] (n19);
+\draw[edge] (n18) to[bend right=20] (n21);
+
+\end{tikzpicture}
+\caption{Three tiled copies of the width 3 graph gadget. The first copy excluding its right boundary is shown in $\bullet$. The second copy excluding its right boundary is shown in $\filledstar$. The third copy excluding its right boundary is shown in $\times$. The third copy's right boundary is shown in $\filledsquare$.}
+\end{figure}

@@ -37,7 +37,7 @@ Call the elements of $\cP_n$ as \term{Pauli strings}, written as vectors of leng
 \end{definition}
 
 \begin{proof}
-We need to show that this is indeed a group. Associativity follows from matrix multiplication. $I$ is the identity. Each Pauli matrix is its own inverse, i.e. $X^2 = Y^2 = Z^2 = 1$, and it is easy to see that the inverses of $i^kP$ exist for all $k$ and $P$. Finally, since two Pauli matrices $P_1 \neq P_2$ anti-commute, i.e. $P_1 P_2 = -P_2 P_1$, an exhaustive multiplication table shows the group is closed and finite.
+We need to show that this is indeed a group. Associativity follows from matrix multiplication. $I$ is the identity. Each Pauli matrix is its own inverse, i.e. $X^2 = Y^2 = Z^2 = 1$, and it is easy to see that the inverses of $i^kP$ exist for all $k$ and $P$. Finally, since two non-identity Pauli matrices $P_1 \neq P_2$ anti-commute, i.e. $P_1 P_2 = -P_2 P_1$, an exhaustive multiplication table shows the group is closed and finite.
 \end{proof}
 
 \begin{theorem}
@@ -114,7 +114,7 @@ For the CNOT gate,
 \end{proof}
 
 \begin{definition}
-For a group $\cS \subseteq \cP_n$, define the \term{stabilizer subspace}\footnote{This is a strictly more restrictive definition of stabilizer subspaces and stabilizer groups than the definitions found in algebra, for instance. However, since we are only dealing with pure states, and are only concerned with the stabilizer subspaces of $\cP_n$, this definition suffices.} of $\cS$ as 
+For a set $\cS \subseteq \cP_n$, define the \term{stabilizer subspace}\footnote{This is a strictly more restrictive definition of stabilizer subspaces and stabilizer groups than the definitions found in algebra, for instance. However, since we are only dealing with pure states, and are only concerned with the stabilizer subspaces of $\cP_n$, this definition suffices.} of $\cS$ as 
 \begin{align}
     \Stab(\cS) := \{ \ket\psi \mid \vec{P} \ket\psi = \ket\psi, \forall \vec{P} \in \cS \}.
 \end{align}
@@ -148,7 +148,7 @@ If a subgroup $\cS \subseteq \cP_n$ is a stabilizer subgroup, then:
 \end{lemma}
 
 \begin{proof}
-If $-I \in \cS$, then all $\ket\psi \in \Stab(\cS)$ has $\ket\psi = -I \ket\psi = -\ket\psi$ such that $\Stab(\cS) = \{0\}$, a contradiction. An exhaustive multiplication table for $\cP_1$ reveals that if $\vec{P}^2 \neq I$, then $\vec{P}^2 = -I$ so again $\Stab(\cS) = \{0\}$. Thus, each $P \in \cS$ must have $P^2 = Q^2 = I$. Then $P^\dagger = P$, since $P^{-1} = P$ and its phase cannot be $\pm i$. Then for any $P,Q \in \cS$, $PQ = (PQ)^\dagger = Q^\dagger P^\dagger = QP$.
+If $-I \in \cS$, then all $\ket\psi \in \Stab(\cS)$ satisfies $\ket\psi = -I \ket\psi = -\ket\psi$ such that $\Stab(\cS) = \{0\}$, a contradiction. An exhaustive multiplication table for $\cP_1$ reveals that if $\vec{P}^2 \neq I$, then $\vec{P}^2 = -I$ so again $\Stab(\cS) = \{0\}$. Thus, each $P \in \cS$ must have $P^2 = I$. Then $P^\dagger = P$, since $P^{-1} = P$ and its phase cannot be $\pm i$. Then for any $P,Q \in \cS$, $PQ = (PQ)^\dagger = Q^\dagger P^\dagger = QP$.
 \end{proof}
 
 \begin{theorem}
@@ -160,7 +160,7 @@ This is Theorem 1 of \cite{sim_stab_circuits}. Given an $n$-qubit state $\ket\ps
     \item $\ket\psi$ is stabilized by exactly $2^n$ Pauli operators.
     \item $\ket\psi$ is uniquely determined by $\Stab(\ket\psi)$.
 \end{enumerate}
-Thus, we can all any circuit consisting entirely of Clifford gates and measurements a \term{stabilizer circuit}, and any state obtainable by applying a stabilizer circuit to $\ket{0}^{\otimes n}$ a \term{stabilizer state}. Equivalently, a stabilizer state is a state $\ket\psi \in \C^{2^n}$ such that $\vec{P} \ket{\psi} = \ket\psi$ for all $\vec{P} \in \cS$, for some $\cS \subseteq \cP_n$.
+Thus, we can all any circuit consisting entirely of Clifford gates and measurements a \term{stabilizer circuit}, and any state obtainable by applying a stabilizer circuit to $\ket{0}^{\otimes n}$ a \term{stabilizer state}.
 \end{theorem}
 
 \begin{proof}

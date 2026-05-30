@@ -2,22 +2,22 @@
 \label{sec:subgraph-vertex-minor-alg}
 
 \begin{fact}
-Given a finite graph $G = (V,E)$, we can decide whether it is the vertex minor of some circle graph in linear time, with respect to the number of vertices and edges of $G$.
+Given a finite graph $G = (V,E)$, we can decide whether it is a vertex-minor of some circle graph in linear time, with respect to the number of vertices and edges of $G$.
 \end{fact}
 
 \begin{proof}
-By Theorem \ref{thm:circle-graph-closed-vertex-minor}, circle graphs are closed under vertex minors. Thus to decide whether $G$ is a vertex minor of some circle graph is equivalent to deciding whether $G$ is a circle graph. \cite{paul2025circlegraphsrecognizedlinear} presents a linear time algorithm for this, using PC-trees \cite{paul2025circlegraphsrecognizedlinear}.
+By Theorem \ref{thm:circle-graph-lu-equals-lc}, circle graphs are closed under vertex-minors. Thus to decide whether $G$ is a vertex-minor of some circle graph is equivalent to deciding whether $G$ is a circle graph. \cite{paul2025circlegraphsrecognizedlinear} presents a linear time algorithm for this, using PC-trees.
 \end{proof}
 
-Note that by Theorem \ref{thm:cgraph-vertex-minor-cgrid}, the above is equivalent to deciding if $G$ is a vertex minor of some comparability grid. If we restrict our attention to deciding if $G$ is an induced subgraph of some comparability grid, we obtain similar results.
+Note that by Theorem \ref{thm:cgraph-vertex-minor-cgrid}, the above is equivalent to deciding if $G$ is a vertex-minor of some comparability grid. If we restrict our attention to deciding if $G$ is an induced subgraph of some comparability grid, we obtain similar results.
 
 \begin{fact}
 \label{fact:perm-graph-iff-subgraph-cgrid}
-A finite graph $G$ is an induced subgraph of a comparability grid if and only if $G$ is a permutation graph.
+A finite graph $G$ is an induced subgraph of a comparability grid if and only if $G$ is a permutation graph. Furthermore, the data of a $k$-vertex permutation graph obtained in this way is completely characterized by a permutation $\pi \in S_k$.
 \end{fact}
 
 \begin{proof}
-This is just a restatement of Fact \ref{fact:tuple-construction}.
+This is a restatement of Fact \ref{fact:tuple-construction}.
 \end{proof}
 
 \begin{lemma}
@@ -82,12 +82,13 @@ number of permutations fixed by reverse-complement is
 Substituting into Burnside's lemma gives the desired result.
 \end{proof}
 
-We remark that, for $k\geq 3$, $R_k$ is strictly smaller than $k!$. For $k \geq 10$, $R_k$ is strictly smaller than the number of connected circle graphs with $k$ vertices. The latter is given by sequence $A156808$ in the Online Encyclopedia of Integer Sequences \cite{OEIS_A156808}. 
+We remark that, for $k\geq 3$, $R_k$ is strictly smaller than $k!$. According to the enumeration recorded as OEIS~A156808, for \(k\ge 10\) \(R_k\) is smaller than the number of connected circle graphs on
+\(k\) vertices \cite{OEIS_A156808}.
 
-We would like this number to be as small as possible so that we may more easily conduct a census of all $k$-vertex subgraphs of $\CGrid$. For example, we may be interested in a census of the degree sequences of all $k$-vertex subgraphs. The following fact and lemma show that we may do this in $O(R_k \cdot k \log k)$ time.
+We would like this number to be as small as possible so that we may more easily conduct a census of all $k$-vertex subgraphs of $\CGrid$. For example, we may be interested in a census of the degree sequences of all $k$-vertex subgraphs of $\CGrid$. The following fact and lemma show that we may do this in $O(R_k \cdot k \log k)$ time.
 
 \begin{fact}
-In order to enumerate every $k$-vertex subgraph of any $\CGrid$, it suffices to enumerate $R_k$ objects.
+In order to enumerate every $k$-vertex subgraph of any $\CGrid$ up to graph isomorphism, it suffices to enumerate $R_k$ objects.
 \end{fact}
 
 \begin{proof}
@@ -102,15 +103,15 @@ Let \(\pi\in S_k\). We can compute the degree sequence of \(H(\pi)\) in
 \begin{proof}
 Recall that \(ij\in E(H(\pi))\) iff
 \begin{align}
-    (i-j)(\pi(i)-\pi(j))>0.
+    (i-j)(\pi(i)-\pi(j))\geq 0.
 \end{align}
 Thus the degree of vertex \(i\) splits into a {\color{red}forward contribution} and a {\color{blue}backward contribution}:
 \begin{align}
     \deg(i)
     =
-    {\color{red}\#\{j<i:\pi(j)<\pi(i)\}}
+    {\color{blue}\#\{j<i:\pi(j)<\pi(i)\}}
     +
-    {\color{blue}\#\{j>i:\pi(i)<\pi(j)\}}.
+    {\color{red}\#\{j>i:\pi(i)<\pi(j)\}}.
 \end{align}
 
 A Fenwick tree is a well-known data structure that stores counts over the values
@@ -182,4 +183,248 @@ Then insert \(\pi(i)\). The {\color{blue}backward term} is analogous, but we sca
 \label{fig:fenwick-tree-example}
 \end{figure}
 
-With these results in hand, we can conduct a census of $k$-vertex subgraphs relatively easily. For example, we can enumerate all $9$-vertex subgraphs of $\CGrid$ that themselves have the $\Grid_{3 \times 3}$ as an induced subgraph. From this, we obtain that the $\CGrid$ is not an induced subgraph of any comparability grid (Fact \ref{fact:grid-3-times-3-not-subgraph}). On the other hand, we obtain two interesting 
+With these results in hand, we can conduct a census of $k$-vertex subgraphs relatively easily. For example, we can enumerate all $9$-vertex subgraphs of $\CGrid$ that themselves have the $\Grid_{3 \times 3}$ as an induced subgraph. From this, we obtain that the $\Grid_{3 \times 3}$ is not an induced subgraph of any comparability grid (Fact \ref{fact:grid-3-times-3-not-subgraph}). On the other hand, we obtain two interesting induced subgraphs. One has two additional edges compared to $\Grid_{3 \times 3}$, while the other has five. We will introduce these subgraphs as tileable graph gadgets.
+
+\begin{definition}
+\label{def:graph-gadget}
+A \term{graph gadget} is a tuple
+\begin{align}
+    \Lambda=(H,L,R),
+\end{align}
+where $H$ is a finite induced subgraph of $\CGrid$, and
+\begin{align}
+    L=(\ell_1,\ldots,\ell_n),
+    \quad
+    R=(r_1,\ldots,r_n),
+\end{align}
+are ordered subsets of $V(H)$ called the \term{left boundary} and
+\term{right boundary}. We assume \(L\cap R=\emptyset\). We may also call $\Lambda$ a \term{$n$-wire graph gadget}.
+\end{definition}
+
+\begin{definition}
+\label{def:tileable-graph-gadget}
+Let $\Lambda=(H,L,R)$ be an $n$-wire graph gadget, with
+$L=(\ell_1,\ldots,\ell_n)$ and $R=(r_1,\ldots,r_n)$. Say that $\Lambda$ is
+\term{tileable} if, for every positive integer $a$, there exist induced
+subgraphs
+\begin{align}
+    H^{(1)},H^{(2)},\ldots,H^{(a)} \subseteq \CGrid
+\end{align}
+such that each $H^{(m)}$ is isomorphic to $H$. Let
+$L^{(m)}=(\ell^{(m)}_1,\ldots,\ell^{(m)}_n)$ and
+$R^{(m)}=(r^{(m)}_1,\ldots,r^{(m)}_n)$ denote the corresponding left and right
+boundary vertices of $H^{(m)}$. We require that consecutive copies are glued
+boundary-to-boundary:
+\begin{align}
+    r^{(m)}_j=\ell^{(m+1)}_j
+    \qquad
+    \text{for every } m\in[a-1] \text{ and } j\in[n].
+\end{align}
+Furthermore, the union of these glued copies must be an induced subgraph of
+$\CGrid$ with no edges except those already appearing inside the individual
+copies.
+\end{definition}
+
+Equivalently, \(\Lambda\) is tileable if arbitrarily many copies of \(H\)
+can be embedded in a comparability grid in a chain, with the right boundary of
+each copy glued to the left boundary of the next, without introducing any
+additional edges.
+
+\begin{definition}
+Let the \term{diagonal graph gadget} denote the induced subgraph of $\CGrid$ given by the permutation $\pi=649281753$, with left boundary $L=(9,2,5)$ and right boundary $R=(8,4,3)$.
+\end{definition}
+
+\input{figures/diagonal-gadget.tex}
+
+\begin{fact}
+The diagonal gadget is tileable.
+\end{fact}
+
+\begin{proof}
+Look at the following figure.
+\end{proof}
+
+\input{figures/diagonal-tileable.tex}
+
+\begin{definition}
+Let the \term{width 3 gadget} denote the induced subgraph of $\CGrid$ given by the permutation $\pi=628491735$, with left boundary $L=(9,6,8)$ and right boundary $R=(5,1,3)$.
+\end{definition}
+
+\input{figures/width-3-gadget.tex}
+
+\begin{proof}
+Look at the following figure.
+\end{proof}
+
+\input{figures/width-3-tileable.tex}
+
+The previous two proofs are visual proofs purely for brevity. Indeed, we can formally verify these visual proofs by the following lemma.
+
+\begin{lemma}[Tileable Witness]
+\label{lem:tileable-witness}
+Let $\Lambda=(H,L,R)$ be an $n$-wire graph gadget.
+Suppose we are given a vector $t=(\Delta x,\Delta y)$ with
+$\Delta x>0$ and $\Delta y<0$ such that
+$r_j=\ell_j+t$ for every $j\in[n]$.
+Let
+\begin{align}
+    X := \max_{p,q\in V(H)} |x(p)-x(q)|,
+    \qquad
+    Y := \max_{p,q\in V(H)} |y(p)-y(q)|,
+\end{align}
+and set
+\begin{align}
+    A
+    :=
+    2+
+    \max\left\{
+        \left\lceil \frac{X}{\Delta x} \right\rceil,
+        \left\lceil \frac{Y}{-\Delta y} \right\rceil
+    \right\}.
+\end{align}
+Determine an embedding of $H$ into the $\CGrid$. If the union of the first \(A\) translated copies, with the intended boundary
+identifications, has no edges except those contained in the copies themselves,
+then \(\Lambda\) is tileable.
+\end{lemma}
+
+\begin{proof}
+Suppose the first $A$ translated copies have no extra edges. We show that no later copy can introduce one. Let $p,q\in V(H)$, and consider vertices $p$ and $q+dt$ from two copies separated by $d\geq 1$ steps. An edge exists in $\CGrid$ exactly when 
+\begin{align}
+    q+dt-p = (x,y)
+\end{align}
+has both coordinates nonnegative or both coordinates nonpositive. Since $t=(\Delta x,\Delta y)$ with $\Delta x>0$ and $\Delta y<0$, increasing $d$ increases the first coordinate and decreases the second. If 
+\begin{align} 
+    d> \max\left\{ \left\lceil \frac{X}{\Delta x} \right\rceil, \left\lceil \frac{Y}{-\Delta y} \right\rceil \right\}, 
+\end{align}
+then the first coordinate of $q+dt-p$ is positive and the second coordinate is negative. Hence the two vertices are incomparable, so no edge can appear. Therefore every possible extra edge would already occur between two of the first $A$ copies. Since no such edge occurs there, no extra edge occurs in any longer chain. Thus arbitrarily many translated copies may be glued in sequence, so $\Lambda$ is tileable. Finally, note that this check runs in time roughly $O(A^2|V(H)|^2)$.
+\end{proof}
+
+Without this witness embedding and translation vector $t$, it does not seem we can efficiently decide if a given graph gadget is tileable.
+
+\begin{definition}
+\label{def:a-chain-graph}
+Let $\Lambda=(H,L,R)$ be an $n$-wire graph gadget, and let $a\geq 1$. The
+\term{$a$-chain graph} of $\Lambda$, denoted $T_a(\Lambda)$, is obtained from
+$a$ disjoint labeled copies
+\[
+    H^{(1)},H^{(2)},\ldots,H^{(a)}
+\]
+by identifying the right boundary of each copy with the left boundary of the
+next copy:
+\begin{align}
+    r^{(m)}_j \sim \ell^{(m+1)}_j
+    \qquad
+    \text{for every }m\in[a-1]\text{ and }j\in[n].
+\end{align}
+Equivalently, \(T_a(\Lambda)\) is the abstract graph obtained by gluing
+copies of \(H\) boundary-to-boundary in a chain.
+\end{definition}
+
+\begin{definition}
+\label{def:a-tileable}
+Let $\Lambda=(H,L,R)$ be an $n$-wire graph gadget. Say that $\Lambda$ is
+\term{$a$-tileable} if there exists a point set \(P\subseteq \mathbb Z^2\)
+such that
+\begin{align}
+    \CGrid[P]\cong T_a(\Lambda).
+\end{align}
+Say that $\Lambda$ is \term{tileable} if it is $a$-tileable for every
+positive integer \(a\).
+\end{definition}
+
+\begin{lemma}
+\label{lem:rank-compression-cgrid}
+Let \(P\subseteq \mathbb Z^2\) be a finite point set with \(|P|=N\). Then
+there exists \(P'\subseteq [N]\times[N]\) such that
+\begin{align}
+    \CGrid[P']\cong \CGrid[P].
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Replace each \(x\)-coordinate by its rank among the distinct \(x\)-coordinates
+appearing in \(P\), and do the same for \(y\)-coordinates. Thus
+\(p=(x(p),y(p))\) is sent to
+\begin{align}
+    p'
+    =
+    (\operatorname{rank}_x(x(p)),\operatorname{rank}_y(y(p))).
+\end{align}
+This preserves the coordinate-wise order. Hence, for all \(p,q\in P\),
+\begin{align}
+    x(p)\leq x(q)\text{ and }y(p)\leq y(q)
+    \iff
+    x(p')\leq x(q')\text{ and }y(p')\leq y(q').
+\end{align}
+Therefore comparability edges are preserved, so
+\(\CGrid[P']\cong \CGrid[P]\). Since at most \(N\) distinct ranks occur in
+each coordinate, \(P'\subseteq [N]\times[N]\).
+\end{proof}
+
+\begin{algorithm}[H]
+\caption{Finite test for \(a\)-tileability}
+\label{alg:a-tileability-test}
+Input: An \(n\)-wire graph gadget \(\Lambda=(H,L,R)\) and \(a\geq 1\).
+
+Construct the glued chain graph \(T_a=T_a(\Lambda)\).
+
+Let \(N=|V(T_a)|=a(|V(H)|-n)+n\).
+
+Enumerate functions
+\begin{align}
+    X:V(T_a)\to[N],
+    \qquad
+    Y:V(T_a)\to[N].
+\end{align}
+
+For each pair \((X,Y)\), first check that the map
+\begin{align}
+    v\mapsto (X(v),Y(v))
+\end{align}
+is injective. If it is not injective, discard \((X,Y)\).
+
+Otherwise, check whether for every distinct \(u,v\in V(T_a)\),
+\begin{align}
+    uv\in E(T_a)
+    \iff
+    \bigl(X(u)\leq X(v)\text{ and }Y(u)\leq Y(v)\bigr)
+    \text{ or }
+    \bigl(X(v)\leq X(u)\text{ and }Y(v)\leq Y(u)\bigr).
+\end{align}
+
+If this condition holds for all pairs \(u,v\), accept.
+
+If no coordinate assignment passes, reject.
+\end{algorithm}
+
+\begin{theorem}
+\label{thm:finite-a-tileability-test}
+Algorithm~\ref{alg:a-tileability-test} accepts if and only if
+\(\Lambda\) is \(a\)-tileable.
+\end{theorem}
+
+\begin{proof}
+Suppose the algorithm accepts. Then there are functions
+\(X,Y:V(T_a)\to[N]\) such that \(v\mapsto (X(v),Y(v))\) is injective and
+preserves exactly the comparability edges. Let
+\begin{align}
+    P:=\{(X(v),Y(v)):v\in V(T_a)\}.
+\end{align}
+Then \(P\subseteq [N]\times[N]\subseteq \mathbb Z^2\), and the pairwise check
+says precisely that
+\begin{align}
+    \CGrid[P]\cong T_a.
+\end{align}
+Hence \(\Lambda\) is \(a\)-tileable.
+
+Conversely, suppose \(\Lambda\) is \(a\)-tileable. Then there exists a point
+set \(P\subseteq\mathbb Z^2\) such that \(\CGrid[P]\cong T_a\). Since
+\(|V(T_a)|=N\), Lemma~\ref{lem:rank-compression-cgrid} gives an isomorphic
+realization \(P'\subseteq[N]\times[N]\). Writing each vertex \(v\in V(T_a)\)
+as \(v\mapsto (X(v),Y(v))\in P'\), the algorithm will eventually enumerate
+this coordinate assignment and accept.
+\end{proof}
+
+The algorithm enumerates \(N^{2N}=e^{O(N\log N)}\) coordinate assignments,
+and each assignment can be checked in \(O(N^2)\) time. Hence the total runtime is
+\(e^{O(N\log N)}\).

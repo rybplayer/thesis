@@ -2,12 +2,12 @@
 \subsection{The One-Way Model}
 
 \begin{definition}
-Informally, \term{measurement-based quantum computation} (MBQC) is a deterministic\footnote{in the sense that the same protocol will always produce the same final qubit, whose measurement outcomes may be non-deterministic} protocol for quantum computation that roughly goes as follows:
+Informally, \term{measurement-based quantum computation} (MBQC) is a deterministic\footnote{Here, deterministic means that all measurement branches implement the same intended transformation after the appropriate correction} protocol for quantum computation that roughly goes as follows:
 \begin{enumerate}
-    \item A classical description acts as input, specifying the desired quantum state $\ket\psi$.
+    \item A classical description specifies the desired computation.
     \item A resource state $\ket{\phi_k}$ is chosen from some family of resource states $\Phi = \{ \ket{\phi_1}, \ket{\phi_2}, \ldots \}$. A graph state is an example of a resource state.
     \item Measurements are done on the qubits of $\ket{\phi_k}$ in an adaptive fashion. Adaptive means that a classical computer may decide to change the next measurement's basis depending on a previous measurement outcome.
-    \item By the end, we will have a state $\ket\psi$, the desired quantum state.
+    \item By the end, the remaining unmeasured qubits contain the desired output state, up to known Pauli errors.
 \end{enumerate}
 We will make this definition more precise after we develop some more notation.
 \end{definition}
@@ -25,7 +25,7 @@ For now, we will focus on what this circuit does. Commuting a Hadamard through t
 \begin{equation}
 \label{eq:push-gates-mbqc}
 \begin{quantikz}[ampersand replacement=\&]
-\lstick{$\ket{\phi}$} \& \ctrl{1} \& \gate{H} \& \meter{} \\
+\lstick{$\ket{\phi}$} \& \ctrl{1} \& \gate{\Had} \& \meter{} \\
 \lstick{$\ket{+}$}    \& \ctrl{-1} \& \qw      \& \qw
 \end{quantikz}
 \;\overset{\zxref{cc}}{=}\;
@@ -39,7 +39,7 @@ For now, we will focus on what this circuit does. Commuting a Hadamard through t
 \lstick{$\ket{+}$}     \& \ctrl{-1}\& \qw
 \end{quantikz}.
 \end{equation}
-Two $\CNOT$s cancel each other out and a $\CNOT$'s target has no effect on $\ket+$. So
+Two $\CNOT$s cancel each other out and a $\CNOT$'s target acts trivially on $\ket+$. So
 \begin{equation}
 \label{eq:add-cnot-mbqc}
 \begin{quantikz}[ampersand replacement=\&]
@@ -73,7 +73,7 @@ The final state before measurement is
 In other words, a measurement of the first qubit in the \term{computational basis} ($\{\ket0, \ket1\}$) will tell us whether we have a $\Had \ket{\phi}$ or $X\Had \ket{\phi}$ on the output wire.
 \end{example}
 
-Now, suppose our intention in the above circuit was to apply a Hadamard gate to $\ket\phi$. Then there is a $0.5$ probability that we apply $X \Had$ instead of $\Had$, which is indicated when we measure a $1$. How can we get rid of this additional $X$?
+Now, suppose our intention in the above circuit was to apply a Hadamard gate to $\ket\phi$. Then there is a $\tfrac{1}{2}$ probability that we apply $X \Had$ instead of $\Had$, which is indicated when we measure a $1$. How can we get rid of this additional $X$?
 
 \begin{example}
 \label{ex:teleportation-gadget}
@@ -86,10 +86,10 @@ Define the \term{teleportation gadget} as the following circuit.
 \;=\;
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$\ket{+}$}              \& \ctrl{1}  \& \meter{} \\
-\lstick{$\Had R_z(\theta)\ket{\phi}$} \& \targ{}   \& \qw
+\lstick{$\Had R_Z(\theta)\ket{\phi}$} \& \targ{}   \& \qw
 \end{quantikz}.
 \end{equation}
-Let $m \in \{0,1\}$ be the measurement outcome of measuring in the computational basis. Then we apply $X^m H R_z(\theta)$ to $\ket{\phi}$. 
+Let $m \in \{0,1\}$ be the measurement outcome of measuring in the computational basis. Then we apply $X^m \Had R_Z(\theta)$ to $\ket{\phi}$. 
 \end{example}
 
 \begin{proof}
@@ -97,7 +97,7 @@ Note that, by \zxref{f}, the $R_Z(\theta)$ gate commutes through the CZ unchange
 \end{proof}
 
 \begin{example}
-Now, suppose we chain together two teleportation gadgets, taking the output of one as the input $\phi$ to another. Then we are applying the following gate:
+Now, suppose we chain together two teleportation gadgets, taking the output of one as the input $\ket\phi$ to another. Then we are applying the following gate:
 \begin{align}
     X^{m_2} H R_Z(\theta_2) X^{m_1} H R_Z(\theta_1)
     &\overset{\zxref{\pi}}{=}
@@ -114,7 +114,7 @@ Chaining three gadgets, we are applying the following gate:
     X^{m_3 + m_1} Z^{m_2} 
         \left(H R_Z((-1)^{m_2}\theta_3) H R_Z((-1)^{m_1} \theta_2) X^{m_1} H R_Z(\theta_1)\right).
 \end{align}
-Since $X^2 = Z^2 = I$, it is not too hard to see that chaining this gadget any number of times will result in an overall Pauli error of $X^{m} Z^{n}$ for some bits $m,n$.
+Inductively, since $X^2=Z^2=I$ and Pauli operators remain Pauli operators under conjugation by $\Had$ and $R_Z(\theta)$ up to the corresponding angle updates, chaining any number of gadgets produces an overall Pauli byproduct $X^mZ^n$ for some bits $m,n$.
 \end{example}
 
 The formal definition of the MBQC protocol incorporates these errors into the definition.
@@ -129,21 +129,21 @@ We use the formal definition from \cite{mbqc-def}, known as the \term{Measuremen
 \end{align}
 and denote its orthogonal state by 
 \begin{align}
-    \ket{+_{\theta,\phi}} 
-    := \cos\left(\frac{\theta}{2}\right)\ket{0}
-        - e^{i\phi} \sin\left(\frac{\theta}{2}\right)\ket{1}
+    \ket{-_{\theta,\phi}} 
+    := \sin\left(\frac{\theta}{2}\right)\ket{0}
+        - e^{i\phi} \cos\left(\frac{\theta}{2}\right)\ket{1}
 \end{align}
 where $\theta \in [0,\pi]$ and $\phi \in [0,2\pi)$. A computation in this model is a series of the following deterministic \term{commands}:
 \begin{enumerate}
     \item Preparation: 1-qubit preparations $N_i$, to prepare qubit $i$ in the state $\ket{+}$;
-    \item Entanglement: 2-qubit entangling operators $E_{i,j} := Z_{i,j}$;
-    \item Measurement: 1-qubit measurements $M_i^{\lambda, \alpha}$ on planes $\lambda \in \{(X,Y), (X,Z), (Y,Z)$\}, defined as projections into
+    \item Entanglement: 2-qubit entangling operators $E_{i,j} := \text{CZ}_{i,j}$;
+    \item Measurement: 1-qubit measurements $M_i^{\lambda, \alpha}$ on planes $\lambda \in \{(X,Y), (X,Z), (Y,Z)\}$, defined as projections into
     \begin{enumerate}[label=(\roman*)]
-        \item $\ket{\pm_{(X,Y),\alpha}} := \ket{+_{\pi/2, \alpha}}$ for $\lambda = (X,Y)$,
-        \item $\ket{\pm_{(X,Z),\alpha}} := \ket{+_{\alpha, 0}}$ for $\lambda = (X,Z)$, and
-        \item $\ket{\pm_{(Y,Z),\alpha}} := \ket{+_{\alpha, \pi/2}}$ for $\lambda = (Y,Z)$,
+        \item $\ket{\pm_{(X,Y),\alpha}} := \ket{\pm_{\pi/2,\alpha}}$ for $\lambda=(X,Y)$,
+        \item $\ket{\pm_{(X,Z),\alpha}} := \ket{\pm_{\alpha,0}}$ for $\lambda=(X,Z)$, and
+        \item $\ket{\pm_{(Y,Z),\alpha}} := \ket{\pm_{\alpha,\pi/2}}$ for $\lambda=(Y,Z)$,
     \end{enumerate}
-    with the convention that $\ket{+_{\theta,\phi}} \bra{+_{\theta,\phi}}$ corresponds to the outcome $0$ and $\ket{-_{\theta,\phi}} \bra{-_{\theta,\phi}}$ corresponds to 1; and
+    with the convention that $\ket{+_{\theta,\phi}} \bra{+_{\theta,\phi}}$ corresponds to the outcome $0$ and $\ket{-_{\theta,\phi}} \bra{-_{\theta,\phi}}$ corresponds to the outcome $1$; and
     \item Correction: 1-qubit Pauli corrections $X_i$ and $Z_i$.
 \end{enumerate}
 The measurements $M_i^{\lambda, \alpha}$ may depend on \term{signals}, namely sums of some outcomes of previous measurements mod $2$. These represent the Pauli errors of the form $X^m Z^n$ being carried through, for some bits $m,n$. A computation can then be expressed as a series of preparation, entanglement, measurement, and correction commands, strictly in this order, satisfying the following conditions:
@@ -153,31 +153,30 @@ The measurements $M_i^{\lambda, \alpha}$ may depend on \term{signals}, namely su
     \item No command acts on a qubit not yet prepared, unless it is an input qubit; and
     \item A qubit $i$ is measured if and only if $i$ is not an output.
 \end{enumerate}
-Equivalently, a computation may be defined as a \term{measurement pattern} on a some graph state $\ket{G}$. A measurement pattern $\cB = (V,I,O,S)$ consists of
+Finally, a \term{measurement pattern} $\cB=(V,I,O,S)$ consists of the following data, satisfying conditions (a)--(d):
 \begin{itemize}
-    \item a finite set of qubits $V \subset V(G)$,
-    \item an input set $I \subset V(G)$, possibly overlapping with
-    \item an output set $O \subset V(G)$,
-    \item and a finite sequence of measurement and correction commands $S$.
+    \item a finite set of qubits $V \subseteq V(G)$,
+    \item an input set $I \subseteq V$,
+    \item an output set $O \subseteq V$, and
+    \item a finite sequence $S$ of measurement and correction commands.
 \end{itemize}
-that satisfy the above conditions (a) to (d).
 \end{definition}
 
 Note that the measurement bases available in the Measurement Calculus model are different from the measurements in Examples \ref{example:hadamard-gadget} and \ref{ex:teleportation-gadget}. Thus, it will be convenient to find the operations applied by measurements in the XY, YZ, and XZ planes.
 
 \begin{lemma}
 \label{lemma:measurement-plane-maps}
-Let $\ket\psi = a\ket0+b\ket1$ be an arbitrary one-qubit input state. Prepare a second qubit $\ket+$, apply CZ, and measure the first qubit in a state
+Let $\ket\psi = a\ket0+b\ket1$ be an arbitrary one-qubit input state. Prepare a second qubit $\ket+$, apply CZ, and project the first qubit onto the state
 \begin{align}
     \ket m = u\ket0+v\ket1.
 \end{align}
 Conditioned on this measurement outcome, the unnormalized output state on the second qubit is
 \begin{align}
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         \overline u & 0 \\
         0 & \overline v
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi.
 \end{align}
 In particular, for the standard measurement planes we obtain:
@@ -209,10 +208,10 @@ In particular, for the standard measurement planes we obtain:
     \end{ZX}
     &
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         c&0\\
         0&-is
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi
     &
     \text{Only if } |c|=|s|
@@ -225,10 +224,10 @@ In particular, for the standard measurement planes we obtain:
     \end{ZX}
     &
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         c&0\\
         0&s
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi
     &
     \text{Only if } |c|=|s|
@@ -237,7 +236,7 @@ In particular, for the standard measurement planes we obtain:
     \bottomrule
 \end{array}
 \]
-where $P(\alpha)=\operatorname{Diag}(1,e^{i\alpha}) = \llbracket \zx{\zxZ{\alpha}} \rrbracket$, $c=\cos\left(\tfrac{\alpha}{2}\right)$, and $s=\sin\left(\frac{\alpha}{2}\right)$.
+where $P(\alpha)=\operatorname{diag}(1,e^{i\alpha}) = \llbracket \zx{\zxZ{\alpha}} \rrbracket$, $c=\cos\left(\tfrac{\alpha}{2}\right)$, and $s=\sin\left(\frac{\alpha}{2}\right)$.
 \end{lemma}
 
 \begin{proof}
@@ -267,10 +266,10 @@ Now project the first qubit onto $\ket m = u\ket0+v\ket1$. The resulting unnorma
     b\overline v\ket- \\
     &=
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         \overline u & 0 \\
         0 & \overline v
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi.
 \end{align}
 
@@ -298,25 +297,25 @@ $.
 Hence
 \begin{align}
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         \overline u & 0 \\
         0 & \overline v
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi
     =
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         1/\sqrt2 & 0 \\
         0 & e^{i\alpha}/\sqrt2
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi 
     =
     \frac1{\sqrt2}
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         1&0\\
         0&e^{i\alpha}
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi 
     =
     \frac1{\sqrt2}\Had P(\alpha)\ket\psi.
@@ -338,17 +337,17 @@ $.
 Therefore
 \begin{align}
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         \overline u & 0 \\
         0 & \overline v
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi
     &=
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         c&0\\
         0&-is
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi.
 \end{align}
 For the $XZ$-plane state,
@@ -368,50 +367,50 @@ $
 This gives
 \begin{align}
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         \overline u & 0 \\
         0 & \overline v
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi
     &=
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         c&0\\
         0&s
-    \end{pmatrix}
+    \end{bmatrix}
     \ket\psi.
 \end{align}
 Finally, since $\Had$ is unitary,
 $
     \Had
-    \begin{pmatrix}
+    \begin{bmatrix}
         \overline u & 0 \\
         0 & \overline v
-    \end{pmatrix}
+    \end{bmatrix}
 $
 is proportional to a unitary iff
 $
-    \begin{pmatrix}
+    \begin{bmatrix}
         \overline u & 0 \\
         0 & \overline v
-    \end{pmatrix}
+    \end{bmatrix}
 $
 is proportional to a unitary. A diagonal matrix
 $
     D=
-    \begin{pmatrix}
+    \begin{bmatrix}
         r_0&0\\
         0&r_1
-    \end{pmatrix}
+    \end{bmatrix}
 $
 is proportional to a unitary iff
 \begin{align}
     D^\dagger D
     &=
-    \begin{pmatrix}
+    \begin{bmatrix}
         |r_0|^2&0\\
         0&|r_1|^2
-    \end{pmatrix}
+    \end{bmatrix}
     =
     \lambda I
 \end{align}
@@ -456,7 +455,7 @@ The Pauli eigenstates occur as special cases of XY, XZ, and YZ plane measurement
     &
     \bra{+_{XY,\pi/2}}
     &
-    \bra{-i} := \frac{1}{\sqrt2}(\bra0-i\bra1)
+    \frac{1}{\sqrt2}(\bra0-i\bra1)
     &
     \begin{ZX}
         \zxZ{-\frac{\pi}{2}} \rar &
@@ -467,7 +466,7 @@ The Pauli eigenstates occur as special cases of XY, XZ, and YZ plane measurement
     &
     \bra{+_{XY,-\pi/2}}
     &
-    \bra{i} := \frac{1}{\sqrt2}(\bra0+i\bra1)
+    \frac{1}{\sqrt2}(\bra0+i\bra1)
     &
     \begin{ZX}
         \zxZ{\frac{\pi}{2}} \rar &
@@ -498,7 +497,7 @@ The Pauli eigenstates occur as special cases of XY, XZ, and YZ plane measurement
     \bottomrule
 \end{array}
 \]
-Consequently, $X$- and $Y$-basis measurements are contained in the $XY$-plane model, while $Z$-basis measurements require the $XZ$ (or $YZ$) plane,
+Consequently, $X$- and $Y$-basis measurements are contained in the $XY$-plane model, while $Z$-basis measurements require the $XZ$ (or $YZ$) plane.
 \end{lemma}
 
 \begin{proof}

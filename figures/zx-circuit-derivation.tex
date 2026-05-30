@@ -9,6 +9,8 @@
 \newcommand{\wireUURH}{\arrow[uuuurr,H={pos=.25},(={10}]}
 \newcommand{\wireuuR}{\arrow[uuuurr]}
 
+Since $\zx{\zxX{a \pi} \rar & \zxH{} \rar & \zxZ{\pi}} = \zx{\zxZ{(a + 1)\pi}}$, we may write 4 open tiles with one additional column of the diagonal gadget gate with measurements as below:
+
 \begin{figure}[H]
 \centering
 \[
@@ -18,9 +20,11 @@
 {}\wireR & \zg{\alpha_2}\wireR\wireD   & \ys\wireR & \zg{\beta_2}\wireR\wireD   & \ys\wireR & \zg{\gamma_2}\wireR\wireD   & \ys\wireR & \zg{\delta_2}\wireR\wireD   & \ys\wireR & \zg{\epsilon_2}\wireR\wireD & {} \\
          & \ys\wireD                   &                 & \ys\wireD                  &                 & \ys\wireD                   &                 & \ys\wireD                   &                 & \ys\wireD                   &    \\
 {}\wireR & \zg{\alpha_3}\wireR\wireUURH & \ys\wireR       & \zg{\beta_3}\wireR\wireUURH & \ys\wireR       & \zg{\gamma_3}\wireR\wireUURH & \ys\wireR       & \zg{\delta_3}\wireR\wireUURH & \ys\wireR       & \zg{\epsilon_3}\wireR       & {}
-\end{ZX}
+\end{ZX}.
 \]
 \end{figure}
+
+\noindent Applying \zxref{cc} gives us 
 
 \begin{figure}[H]
 \centering
@@ -31,9 +35,11 @@
 {}\wireR & \zg{\alpha_2}\wireR\wireD & {}\wireR & \zr{\beta_2}\wireR\wireD & {}\wireR & \zg{\gamma_2}\wireR\wireD & {}\wireR & \zr{\delta_2}\wireR\wireD & {}\wireR & \zg{\epsilon_2}\wireR\wireD & {} \\
          & \ys\wireD                 &          & \ys\wireD                &          & \ys\wireD                 &          & \ys\wireD                 &          & \ys\wireD                   &    \\
 {}\wireR & \zg{\alpha_3}\wireR\wireuuR       & {}\wireR & \zr{\beta_3}\wireR\wireuuR       & {}\wireR & \zg{\gamma_3}\wireR\wireuuR       & {}\wireR & \zr{\delta_3}\wireR\wireuuR       & {}\wireR & \zg{\epsilon_3}\wireR       & {}
-\end{ZX}
+\end{ZX}.
 \]
 \end{figure}
+
+\noindent Applying \zxref{f} gives
 
 \begin{figure}[H]
 \centering
@@ -57,8 +63,10 @@
     \zr{\delta_3}\wireR & {}\wireR        & \sr\wireR       & \sg\wireR       & 
     \zg{\epsilon_3}\wireR & {}
 \end{ZX}
-\]
+\].
 \end{figure}
+
+\noindent Finally, one more application of \zxref{cc} brings us to the same diagonal gadget gate:
 
 \begin{figure}[H]
 \centering
@@ -70,5 +78,5 @@
          &                     &                 & \ys\wireD       & {}\wireD        &           &                     &                 & \ys\wireD       & {}\wireD        &           &                     &                 & \ys\wireD       & {}\wireD        &           &                     &                 & \ys\wireD       & {}\wireD        &           &                      &    \\
 {}\wireR & \zg{\alpha_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & \ys\wireR & \zg{\beta_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & \ys\wireR & \zg{\gamma_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & \ys\wireR & \zg{\delta_3}\wireR & {}\wireR        & \sg\wireR       & \sg\wireR       & \ys\wireR & \zg{\epsilon_3}\wireR & {}
 \end{ZX}
-\]
+\].
 \end{figure}

@@ -1,13 +1,12 @@
 \subsection{Quantum Gates}
 
 \begin{definition}
-A 1-qubit quantum gate $U$ is a matrix $U \in \C^{2 \times 2}$ with:
+A one-qubit quantum gate $U$ is a matrix $U \in \C^{2 \times 2}$ with:
 \begin{enumerate}
     \item $U^\dagger U = UU^\dagger = I$;
-    \item equivalently, $U$ is a unitary matrix;
-    \item equivalently, $U = \ket{\phi_0}\bra0 + \ket{\phi_1}\bra1$, where $\{\ket{\phi_0}, \ket{\phi_1}\}$ form an orthonormal basis.
+    \item equivalently, $U = \ket{\phi_0}\bra0 + \ket{\phi_1}\bra1$, where $\{\ket{\phi_0}, \ket{\phi_1}\}$ forms an orthonormal basis.
 \end{enumerate}
-Common single qubit gates are given in Table \ref{fig:single-qubit-gates}.
+Common single-qubit gates are given in Table \ref{fig:single-qubit-gates}.
 \end{definition}
 
 \input{figures/single_qubit_gates.tex}
@@ -16,41 +15,41 @@ Common single qubit gates are given in Table \ref{fig:single-qubit-gates}.
 \label{thm:euler-decomposition}
 Every one-qubit unitary $U$ can be written as
 \begin{align}
-U = e^{i\alpha} R_z(\beta) R_x(\gamma) R_z(\delta),
+U = e^{i\alpha} R_Z(\beta) R_X(\gamma) R_Z(\delta),
 \end{align}
-where $\alpha,\beta,\gamma,\delta \in [0,2\pi)$.
+where $\alpha,\beta,\delta \in [0,2\pi)$ and $\gamma \in [0,\pi]$.
 \end{theorem}
 
 \begin{proof}
-This is a standard proof, seen for example in Section 4.2 of \cite{MikeIke}. Since $U$ is unitary, $|\det U|=1$. Choose $\alpha \in [0,2\pi)$ such that $\det U = e^{2i\alpha}$. Let $V := e^{-i\alpha}U$ satisfy $\det V=1$ while also being unitary. Now let
+This is a standard proof, seen for example in Section 4.2 of \cite{MikeAndIke}. Since $U$ is unitary, $|\det U|=1$. Choose $\alpha \in [0,2\pi)$ such that $\det U = e^{2i\alpha}$. Let $V := e^{-i\alpha}U$ satisfy $\det V=1$ while also being unitary. Now let
 \begin{align}
 V =
-\begin{pmatrix}
+\begin{bmatrix}
 a & b \\
 c & d
-\end{pmatrix}
+\end{bmatrix}
 \end{align}
 Since the columns of $V$ are orthonormal, the second column must be a unit vector orthogonal to the first. Thus
 \begin{align}
-\begin{pmatrix}
+\begin{bmatrix}
 b \\
 d
-\end{pmatrix}
+\end{bmatrix}
 &=
 \lambda
-\begin{pmatrix}
+\begin{bmatrix}
 -\overline c \\
 \overline a
-\end{pmatrix}
+\end{bmatrix}
 \end{align}
 for some $|\lambda|=1$. Hence
 \begin{align}
 V
 &=
-\begin{pmatrix}
+\begin{bmatrix}
 a & -\lambda \overline c \\
 c & \lambda \overline a
-\end{pmatrix}.
+\end{bmatrix}.
 \end{align}
 Taking determinants gives
 \begin{align}
@@ -73,16 +72,16 @@ Then
 \begin{align}
 V
 &=
-\begin{pmatrix}
+\begin{bmatrix}
 e^{i\eta}\cos(\gamma/2) & -e^{-i\mu}\sin(\gamma/2) \\
 e^{i\mu}\sin(\gamma/2) & e^{-i\eta}\cos(\gamma/2)
-\end{pmatrix}.
+\end{bmatrix}.
 \end{align}
-On the other hand, direct multiplication gives
+On the other hand, matrix multiplication gives
 \begin{align}
-R_z(\beta)R_x(\gamma)R_z(\delta)
+R_Z(\beta)R_X(\gamma)R_Z(\delta)
 &=
-\begin{pmatrix}
+\begin{bmatrix}
 e^{-i(\beta+\delta)/2}\cos(\gamma/2)
 &
 -i e^{-i(\beta-\delta)/2}\sin(\gamma/2)
@@ -90,7 +89,7 @@ e^{-i(\beta+\delta)/2}\cos(\gamma/2)
 -i e^{i(\beta-\delta)/2}\sin(\gamma/2)
 &
 e^{i(\beta+\delta)/2}\cos(\gamma/2)
-\end{pmatrix}.
+\end{bmatrix}.
 \end{align}
 Thus it is enough to choose $\beta,\delta$ so that
 \begin{align}
@@ -102,29 +101,36 @@ Equivalently, modulo $2\pi$, solving gives
 \beta &= \mu-\eta+\frac{\pi}{2}, \\
 \delta &= -\mu-\eta-\frac{\pi}{2}.
 \end{align}
-Therefore $V = R_z(\beta)R_x(\gamma)R_z(\delta)$. Since $U=e^{i\alpha}V$, we get
+Therefore $V = R_Z(\beta)R_X(\gamma)R_Z(\delta)$. Since $U=e^{i\alpha}V$, we get
 \begin{align}
-U = e^{i\alpha}R_z(\beta)R_x(\gamma)R_z(\delta)
+U = e^{i\alpha}R_Z(\beta)R_X(\gamma)R_Z(\delta)
 \end{align}
 as desired.
 \end{proof}
 
 \begin{fact} 
 \label{fact:tensor-properties}
-For matrices $A,B,C,D$ over $\C$, scalar $\lambda \in \C$, and vectors $\ket\phi$ and $\ket\psi$ over $\C$, the tensor product satisfies:
+For matrices $A,B,C,D$ over $\C$ of compatible dimensions, scalar $\lambda \in \C$, and vectors $\ket\phi$ and $\ket\psi$ over $\C$, the tensor product satisfies:
 \begin{enumerate}
-    \item Bi-linearity: $(A \otimes B)(C \otimes D) = (AC) \otimes (BD)$, so $(A \otimes B)(\ket\phi \otimes \ket\psi) = (A\ket\phi) \otimes (B\ket\psi)$.
+    \item Compatability with matrix multiplication: $(A \otimes B)(C \otimes D) = (AC) \otimes (BD)$, so $(A \otimes B)(\ket\phi \otimes \ket\psi) = (A\ket\phi) \otimes (B\ket\psi)$.
     \item Scalars commute: $\lambda(A \otimes B) = (\lambda A) \otimes B = A \otimes (\lambda B)$.
     \item Associativity: $(A \otimes B) \otimes C = A \otimes (B \otimes C)$.
     \item Unitary-preserving: If $A,B$ are unitary matrices, $A \otimes B$ is unitary.
 \end{enumerate}
 \end{fact}
 
-\begin{definition}[Multi-qubit gates]
-An \term{$n$-qubit gate} is a unitary matrix in $\C^{2^n \times 2^n}$. If gates $U_1, \ldots, U_k$ satisfy $U = \bigotimes_{i=1}^k U_i \in \C^{2^n}$, by Fact \ref{fact:tensor-properties}.4 $U$ is an $n$-qubit gate. Special named multi-qubit gates are given in Figure \ref{fig:multi-qubit-gates}.
+\begin{definition}
+    An \term{\(n\)-qubit gate} is a unitary matrix in
+    \(\C^{2^n\times 2^n}\). If \(U_i\) is an \(n_i\)-qubit gate for
+    \(i=1,\ldots,k\), and \(\sum_i n_i=n\), then
+    \begin{align}
+        U_1\otimes\cdots\otimes U_k
+    \end{align}
+    is an \(n\)-qubit gate by Fact~\ref{fact:tensor-properties}.
+    Special named multi-qubit gates are given in Table~\ref{fig:multi-qubit-gates}.
 \end{definition}
 
-\begin{definition}[Controlled Gates]
+\begin{definition}
 Many of the gates in Table \ref{fig:multi-qubit-gates} are \term{controlled} gates. Informally, controlled gates such as $\CNOT$ only apply their target operation when all controls
 \begin{ZX}[circuit,thick lines]\rar & \zxCtrl{} \rar &\end{ZX}
 are in the state $\ket{1}$. Formally, for any $n$-qubit gate $U$, the singly controlled gate, denoted $\cl U$, is defined by
@@ -134,8 +140,7 @@ are in the state $\ket{1}$. Formally, for any $n$-qubit gate $U$, the singly con
 This definition generalizes naturally to multiple controls. 
 \end{definition}
 
-\begin{remark}
-By the above definition, $\CNOT$ is just $\cl X$, and Toffoli is $\text{CC-}X$. Note that we may suppress the hyphen when the meaning is clear.
+By the above definition, $\CNOT$ is just $\cl X$, and the Toffoli gate is $\text{CC-}X$. Note that we may suppress the hyphen when the meaning is clear.
 
 The gate $\cl Z$ is special because either qubit can be interpreted as the control: it only applies a phase when both qubits are in the state $\ket{1}$. To see this, note that
 \begin{align}
@@ -149,6 +154,5 @@ Therefore,
     &= I \otimes I - 2 \ket{11} \bra{11}.
 \end{align}
 Thus $\cl Z$ acts as the identity on every computational basis state except $\ket{11}$, where it applies a phase of $-1$.
-\end{remark}
 
 \input{figures/multi_qubit_gates.tex}

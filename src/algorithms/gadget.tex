@@ -1,10 +1,80 @@
-\subsection{Gadget Extraction}
+\subsection{Circuit Extraction}
+\label{sec:circuit-extraction}
 
-In this section, we will focus on how we may extract a circuit gadget that captures the computational power of a tileable subgraph of a $\CGrid$.
+In the previous section, we identified two tileable graph gadgets: the
+diagonal gadget and the width $3$ gadget. In this section, we see how we can associate the 
+MBQC computational power of a tileable graph gadget with a single gate. 
+
+\begin{definition}
+\label{def:open-tile}
+Let $\Lambda=(H,L,R)$ be an $n$-wire graph gadget, with
+$L=(\ell_1,\ldots,\ell_n)$ and $R=(r_1,\ldots,r_n)$. The \term{open tile}
+associated to $\Lambda$ is the induced subgraph
+\begin{align}
+    H^\circ
+    :=
+    H[V(H)\setminus R].
+\end{align}
+We call $L$ the \term{input boundary} of $H^\circ$. The right boundary $R$ is
+removed because, when copies of $\Lambda$ are tiled, the right boundary of one
+copy is identified with the left boundary of the next.
+\end{definition}
+
+\begin{definition}
+\label{def:measurement-data-on-tile}
+Let $\Lambda=(H,L,R)$ be an $n$-wire graph gadget. A \term{measurement pattern}
+on $\Lambda$ is a function
+\begin{align}
+    \mu:
+    V(H^\circ)\setminus L
+    \to
+    \{\text{measurement planes}\}\times \{\text{angle parameters}\}.
+\end{align}
+We write $\theta$ for the tuple of all free angles. We also set the convention, for computational reasons, that measurements are conducted one ``column'' at a time, starting from $L$, then proceeding to the non-measured vertices adjacent to $L$, and so on.\footnote{One must also ensure that some form of \emph{flow} exists for this to be a valid quantum operation, as remarked in the proof of Theorem \ref{thm:grid-universal}. We take this for granted for now, to simplify computations.}
+\end{definition}
+
+\begin{lemma}
+For the unitary gadget gates considered in this section, after the graph gadget
+has already been fixed, it suffices to consider \(XY\)-plane measurements.
+\end{lemma}
+
+\begin{proof}
+By Lemma \ref{lemma:measurement-plane-maps}, the unnormalized one-step effect of a unitary single-qubit measurement gadget
+must be proportional to 
+\begin{align}
+    H \begin{bmatrix}
+        u & 0 \\
+        0 & v
+    \end{bmatrix} \propto
+    H P(\theta)
+\end{align}
+for some $\theta \in [0,2\pi)$. Thus, as we are not conducting any vertex deletion, it suffices to consider $XY$ plane measurements and $\mu$ is now a map to angle parameters alone.
+\end{proof}
+
+\begin{definition}
+\label{def:gadget-gate}
+Let $\Lambda=(H,L,R)$ be an $n$-wire graph gadget and let $\mu$ be a
+measurement pattern on $\Lambda$. The \term{gadget gate} associated to
+$(\Lambda,\mu)$ is the linear map
+\begin{align}
+    G_{\Lambda,\mu}(\theta):
+    (\C^2)^{\otimes n}
+    \to
+    (\C^2)^{\otimes n}
+\end{align}
+that implements the following: Place the input state on the ordered vertices
+$L=(\ell_1,\ldots,\ell_n)$, prepare every vertex in
+$V(H^\circ)\setminus L$ in $\ket{+}$, apply $CZ$ along every edge of
+$H^\circ$, and measure the vertices in $V(H^\circ)\setminus L$ according to
+$\mu$. After applying the Pauli byproduct corrections determined by the measurement
+outcomes, if the resulting map is proportional to a unitary for all choices of
+\(\theta\), we call \((\Lambda,\mu)\) a unitary gadget.
+\end{definition}
+
+Now, how can we find the gadget gate of a graph gadget? Let us compute a simple example together.
 
 \begin{fact}
 \label{fact:cnot-flip-identity}
-We start with a useful identity:
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$q_0$} \& \ctrl{2} \& \targ{}   \& \qw \\
@@ -50,17 +120,17 @@ This completes the proof.
 \end{proof}
 \end{fact}
 
-\begin{definition}
-We define a gadget that captures the computational power of the construction in Definition \ref{def:3n-subgrid}. Start with the standard MBQC protocol:
+\begin{example}
+We compute the gadget gate of the diagonal gadget. Here is our starting graph state and XY plane measurements:
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
 \lstick[wires=3]{$\ket{\psi}$} 
     \& \ctrl{3}  \& \qw      \& \qw      \& \qw
-    \& \gate{R_z(\theta_1)} \& \gate{H} \& \meter{} \& \qw \\
+    \& \gate{R_Z(\theta_1)} \& \gate{H} \& \meter{} \& \qw \\
     \& \qw       \& \ctrl{3} \& \qw      \& \qw
-    \& \gate{R_z(\theta_2)} \& \gate{H} \& \meter{} \& \qw \\
+    \& \gate{R_Z(\theta_2)} \& \gate{H} \& \meter{} \& \qw \\
     \& \qw       \& \qw      \& \ctrl{3} \& \ctrl{1} 
-    \& \gate{R_z(\theta_3)} \& \gate{H} \& \meter{} \& \qw \\
+    \& \gate{R_Z(\theta_3)} \& \gate{H} \& \meter{} \& \qw \\
 \lstick{$\ket{+}$}
     \& \ctrl{-3} \& \qw      \& \qw      \& \ctrl{-1}
     \& \qw                  \& \qw      \& \qw      \& \qw \\
@@ -70,12 +140,12 @@ We define a gadget that captures the computational power of the construction in 
 \lstick{$\ket{+}$}
     \& \qw       \& \qw     \& \qw       \& \qw
     \& \qw                 \& \qw      \& \qw      \& \qw
-\end{quantikz}
+\end{quantikz}.
 \end{equation}
-Pushing the gates through like in Equation \ref{eq:push-gates-mbqc}:
+Pushing gates through like in Equation \ref{eq:push-gates-mbqc}, we get
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
-\lstick[wires=3]{$(H^{\otimes 3}R_z(\theta))\ket{\psi}$}
+\lstick[wires=3]{$(H^{\otimes 3}R_Z(\vec\theta))\ket{\psi}$}
     \& \targ{} \& \qw       \& \qw      \& \qw      \& \meter{} \& \qw \\
     \& \qw     \& \targ{}   \& \qw      \& \qw      \& \meter{} \& \qw \\
     \& \qw     \& \qw       \& \targ{}  \& \targ{}  \& \meter{} \& \qw \\
@@ -85,12 +155,12 @@ Pushing the gates through like in Equation \ref{eq:push-gates-mbqc}:
     \& \qw     \& \ctrl{-3} \& \qw      \& \qw      \& \qw      \& \qw \\
 \lstick{$\ket{+}$}
     \& \qw     \& \qw       \& \ctrl{-3}\& \qw      \& \qw      \& \qw
-\end{quantikz}
+\end{quantikz}.
 \end{equation}
-We can add the following $\CNOT$s with affecting the circuit, like in Equation \ref{eq:add-cnot-mbqc}:
+We can add the following $\CNOT$s without affecting the circuit, like in Equation \ref{eq:add-cnot-mbqc}:
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
-\lstick[wires=3]{$(H^{\otimes 3}R_z(\theta))\ket{\psi}$} 
+\lstick[wires=3]{$(H^{\otimes 3}R_Z(\vec\theta))\ket{\psi}$} 
     \& \ctrl{3} \& \targ{}   \& \ctrl{3} \& \ctrl{3} 
     \& \qw      \& \qw       \& \qw      \& \qw      
     \& \qw      \& \qw       \& \qw      \& \qw
@@ -117,13 +187,13 @@ We can add the following $\CNOT$s with affecting the circuit, like in Equation \
     \& \qw      \& \qw       \& \qw      \& \qw
     \& \qw      \& \qw       \& \qw      \& \qw
     \& \targ{}  \& \ctrl{-3} \& \targ{}  \& \targ{}  
-    \& \qw      \\
-\end{quantikz}
+    \& \qw  
+\end{quantikz}.
 \end{equation}
-Applying the SWAP gate identity from Equation \ref{eq:swap-mbqc}:
+Applying the swap gate identity from Equation \ref{eq:swap-mbqc}, we get
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
-\lstick[wires=3]{$(H^{\otimes 3}R_z(\theta))\ket{\psi}$}
+\lstick[wires=3]{$(H^{\otimes 3}R_Z(\vec\theta))\ket{\psi}$}
     \& \swap{3} \& \ctrl{3} \& \qw      \& \qw 
     \& \qw      \& \qw      \& \qw      \& \qw
     \& \meter{} \\
@@ -145,9 +215,9 @@ Applying the SWAP gate identity from Equation \ref{eq:swap-mbqc}:
     \& \qw      \& \qw      \& \qw       \& \qw
     \& \targX{} \& \qw      \& \targ{}   \& \targ{}
     \& \qw
-\end{quantikz}
+\end{quantikz}.
 \end{equation}
-Finally, commuting the swap gates to the beginning gives
+Relabeling wires by moving the swaps to the beginning gives
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$\ket{+}$}
@@ -156,39 +226,53 @@ Finally, commuting the swap gates to the beginning gives
     \& \qw      \& \ctrl{3} \& \qw      \& \meter{} \& \qw \\
 \lstick{$\ket{+}$}
     \& \qw      \& \qw      \& \ctrl{3} \& \meter{} \& \qw \\
-\lstick[wires=3]{$(H^{\otimes 3}R_z(\theta))\ket{\psi}$} 
+\lstick[wires=3]{$(H^{\otimes 3}R_Z(\vec\theta))\ket{\psi}$} 
     \& \targ{}  \& \qw      \& \qw      \& \qw      \& \qw \\
     \& \qw      \& \targ{}   \& \qw      \& \qw      \& \qw \\
     \& \qw      \& \qw       \& \targ{}   \& \qw   \& \qw
 \end{quantikz}.
 \end{equation}
-Dropping the Pauli gates, we get that we can apply blocks of
+Tracking the Pauli byproducts classically and suppressing them from the diagram,
+the non-Pauli part of the implemented block is
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$q_1$} 
-    \& \gate{R_z(\theta_1)} \& \ctrl{1} \& \qw      \& \targ{}   
+    \& \gate{R_Z(\theta_1)} \& \ctrl{1} \& \qw      \& \targ{}   
     \& \gate{H} \& \qw \\
 \lstick{$q_2$} 
-    \& \gate{R_z(\theta_2)} \& \ctrl{-1}\& \ctrl{1} \& \qw       
+    \& \gate{R_Z(\theta_2)} \& \ctrl{-1}\& \ctrl{1} \& \qw       
     \& \gate{H} \& \qw \\
 \lstick{$q_3$}
-    \& \gate{R_z(\theta_3)} \& \qw      \& \ctrl{-1}\& \ctrl{-2} 
+    \& \gate{R_Z(\theta_3)} \& \qw      \& \ctrl{-1}\& \ctrl{-2} 
     \&\gate{H}  \& \qw
 \end{quantikz}.
 \end{equation}
-Call the above the \term{width-3 gadget}. Using Fact \ref{fact:cnot-flip-identity}, the gadget simplifies to
+Call the above the \term{diagonal gadget gate}. Using Fact \ref{fact:cnot-flip-identity}, the gadget is equivalent to
 \begin{equation}
 \begin{quantikz}[ampersand replacement=\&]
 \lstick{$q_1$} 
-    \& \gate{R_z(\theta_1)} \& \targ{}   \& \ctrl{1} \& \gate{H} \& \qw \\
+    \& \gate{R_Z(\theta_1)} \& \targ{}   \& \ctrl{1} \& \gate{H} \& \qw \\
 \lstick{$q_2$} 
-    \& \gate{R_z(\theta_2)} \& \qw       \& \ctrl{-1}\& \gate{H} \& \qw \\
+    \& \gate{R_Z(\theta_2)} \& \qw       \& \ctrl{-1}\& \gate{H} \& \qw \\
 \lstick{$q_3$} 
-    \& \gate{R_z(\theta_3)} \& \ctrl{-2} \& \qw      \& \gate{H} \& \qw
+    \& \gate{R_Z(\theta_3)} \& \ctrl{-2} \& \qw      \& \gate{H} \& \qw
 \end{quantikz}.        
 \end{equation}
-\end{definition}
+\end{example}
+
+Now, let us do the same procedure in the ZX calculus. 
+
+\begin{example}
+\input{figures/zx-circuit-derivation.tex}
+\end{example}
 
 \begin{theorem}
-\cite{universal-lin-alg} provides an algorithm for determining the universality of a gate set, in terms of a linear algebra problem. \note{Though it is not polynomial in terms of the number of qubits and gates, it is massively parallelizable. Ideally, I would like a GPU kernel that does much of this work.}
+Both the quantum circuit and ZX Calculus circuit extraction methods can be automated.
 \end{theorem}
+
+\begin{proof}
+The algorithm is not very insightful and amounts to the bookkeeping of many cases, so we spare readers the details. Much of the key insights of this algorithm can be found in the proof of Theorem \ref{thm:clifford-circuits-are-clifford-diagrams}.
+\end{proof}
+
+Thus every extracted gadget gate has the form 
+\(R_Z(\theta)\circ C\) for a Clifford circuit \(C\). This turns out to be extremely useful.

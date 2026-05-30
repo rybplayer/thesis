@@ -1,27 +1,196 @@
-\subsection{Conjectures}
+In Section 5, we introduced a series of algorithms for developing and testing finite graph gadgets. Given a tileable graph gadget $\Lambda$, we associated to it a parametrized gate $G_\Lambda$ and tested the approximate universality of the resulting gate family. In particular, the diagonal gadget fails the 3-qubit approximate universality test, while the width 3 gadget passes. 
 
-\note{This is unfinished, but here is the main content: there are two iterative constructions which pass the Lie Algebra test up to 8 qubits. The first is the middle-all-connected construction: let $k$ be the number of qubits we desire for our computation. $k=1$ is trivial. $k=2$ is the $\Grid_{2 \times n}$.}
+In this section, we present a different kind of construction. Instead of searching for one finite tile, we define infinite families of gadgets $\hat\Lambda=(\Lambda_k)_{k\geq 1}$ where $\Lambda_k$ is intended to act on $k$ wires. 
 
-\note{To construct the graph state for $k+1$, take two copies of $k$ and tile them together. Assume the direction of MBQC is rightwards. Add three new vertices: One on the anti-diagonal of the first column, one on the middle column that joins the two copies of the $k$ construction, and one on the rightmost column. Then these three new vertices, $v_1$, $v_2$, and $v_3$ respectively, form a complete graph with all other vertices in the same column / anti-diagonal.}
+\begin{definition}
+\label{def:iterative-gadget}
+An \term{iterative graph gadget} is a sequence
+\begin{align}
+    \hat\Lambda=(\Lambda_k)_{k\geq 1},
+\end{align}
+where each $\Lambda_k=(H_k,L_k,R_k)$ is a $k$-wire graph gadget. We write
+\begin{align}
+    L_k=(\ell^{(k)}_1,\ldots,\ell^{(k)}_k),
+    \qquad
+    R_k=(r^{(k)}_1,\ldots,r^{(k)}_k)
+\end{align}
+for its ordered left and right boundaries.
+\end{definition}
 
-\note{Now, to make this construction an induced subgraph of some $\CGrid$, it turns out is suffices to make $v_2$ connected to all other vertices, including $v_1$ and $v_2$. This construction, when converted to its corresponding circuit and is tested with the Lie algebra criterion, outputs universal up to $k=8$. This takes about 15 minutes to run on a standard laptop.}
+\begin{definition}
+\label{def:middle-all-connected-gadget}
+The \term{middle-all-connected iterative gadget}
+\begin{align}
+    \hat\Lambda^{\mathrm{mid}}
+    =
+    (\Lambda^{\mathrm{mid}}_k)_{k\geq 1}
+\end{align}
+is defined inductively as follows. For \(k=1\), let
+\(\Lambda^{\mathrm{mid}}_1\) be the one-edge line gadget. For \(k=2\), let
+\(\Lambda^{\mathrm{mid}}_2\) be the $\Grid_{2 \times 2}$ gadget.
 
-\note{The other construction is called all-connected. This is similar, but now have $v_1$ also connect to every vertex on the left copy of the $k$ construction. Then have $v_2$ connect to every vertex on the right copy of the $k$ construction. This turns out to be universal up to $8$ qubits too.}
+Suppose \(\Lambda^{\mathrm{mid}}_k=(H_k,L_k,R_k)\) has been defined, with
+$
+    L_k=(\ell_1,\ldots,\ell_k)
+$, and $
+    R_k=(r_1,\ldots,r_k)
+$.
+To construct \(\Lambda^{\mathrm{mid}}_{k+1}\), take two copies
+\(H_k^{\mathrm{left}}\) and \(H_k^{\mathrm{right}}\), and glue the right
+boundary of the left copy to the left boundary of the right copy:
+\begin{align}
+    r^{\mathrm{left}}_j
+    =
+    \ell^{\mathrm{right}}_j,
+    \quad
+    \text{for every } j\in[k].
+\end{align}
+Let \(Q_k\) denote the result.
 
-\note{Remark. $8$ is such a large number that we may conjecture that this holds, for both constructions, for all $k$. Note that the problem becomes exponentially more difficult for every additional $k$ we wish to verify computationally. This is because the size of the gadget increases exponentially, and so does the size of the Pauli basis we wish to completely generate.}
+Now add three new vertices \(a_k,b_k,c_k\). The vertex \(a_k\) is adjacent to
+\(b_k\) and to every left input of \(H_k^{\mathrm{left}}\). The vertex
+\(c_k\) is adjacent to \(b_k\) and to every right output of
+\(H_k^{\mathrm{right}}\). The vertex \(ck\) is adjacent to every vertex of
+\(Q_k\), and also to \(a_k\) and \(c_k\). No other new edges are added.
+Equivalently,
+\begin{align}
+    N(a_k)
+    &=
+    \{b_k\}\cup L_k^{\mathrm{left}},\\
+    N(b_k)
+    &=
+    V(Q_k)\cup\{a_k,c_k\},\\
+    N(c_k)
+    &=
+    \{b_k\}\cup R_k^{\mathrm{right}}.
+\end{align}
+The new boundaries are
+\begin{align}
+    L_{k+1}
+    &:=
+    (a_k,\ell^{\mathrm{left}}_1,\ldots,\ell^{\mathrm{left}}_k),\\
+    R_{k+1}
+    &:=
+    (c_k,r^{\mathrm{right}}_1,\ldots,r^{\mathrm{right}}_k).
+\end{align}
+\end{definition}
 
-\note{Furthermore, a simple inductive proof is almost certainly impossible. For one, both $k+1$ constructions have many edges into all the vertices of the two $k$ gadgets within it. This makes it hard to use any facts about the $k$ gadget. Furthermore, it is not necessarily true that the $k$ gadget is one-step universal; we may need to tile the $k$ gadget many, many times to make it universal for $k$ qubits.}
+\input{figures/middle-all-connected.tex}
 
-\note{Now suppose we have a construction where, by some miracle, in the $k+1$ construction we may choose to apply the $k$ gadget as many times as we want. An easy proof shows that if we do this, there \emph{must} be additional edges from the $k+1$th qubit into each of these $k$ gadgets. In other words, a simple inductive proof where we say "because the $k$th gadget is universal for $k$ qubits, it can handle any after effects of the $k+1$th qubit" seem intractable.}
+\begin{lemma}
+\label{lem:middle-all-connected-extension}
+Let \(Q\) be a finite induced subgraph of some comparability grid, equipped with
+a fixed coordinate embedding \(V(Q)\subseteq \mathbb Z^2\), and let
+\(L=(\ell_1,\ldots,\ell_k)\), \(R=(r_1,\ldots,r_k)\) be ordered boundary sets.
+Suppose \(Q\) is embedded so that there exist real numbers \(\gamma<\alpha\)
+with
+\[
+\max_{p\in V(Q)\setminus L}y(p)<\alpha<\min_{j}y(\ell_j),
+\qquad
+\max_j y(r_j)<\gamma<\min_{p\in V(Q)\setminus R}y(p).
+\]
+Then one may add three vertices \(a,b,c\) so that the resulting graph remains
+an induced subgraph of some \(\CGrid\), and
+\begin{align}
+    N(a)
+    &=
+    \{b\}\cup L,\\
+    N(b)
+    &=
+    V(Q)\cup\{a,c\},\\
+    N(c)
+    &=
+    \{b\}\cup R.
+\end{align}
+\end{lemma}
 
-\note{Given the theory we have developed, there are five ways we may move forward.}
+\begin{proof}
+Let \(P\subseteq\mathbb Z^2\) be the point set realizing \(Q\). Choose
+\begin{align}
+    x_-<\min_{p\in P}x(p),
+    \qquad
+    x_+>\max_{p\in P}x(p).
+\end{align}
+By the separation hypotheses, choose real numbers \(\alpha,\gamma\) such that
+\begin{align}
+    \max_{p\in V(Q)\setminus L} y(p)
+    &<
+    \alpha
+    <
+    \min_{j\in[k]} y(\ell_j),\\
+    \max_{j\in[k]} y(r_j)
+    &<
+    \gamma
+    <
+    \min_{p\in V(Q)\setminus R} y(p),
+\end{align}
+and choose them with \(\alpha>\gamma\). Finally choose
+\begin{align}
+    \beta
+    <
+    \min\{\gamma,\min_{p\in P}y(p)\}.
+\end{align}
+Place
+\begin{align}
+    a&:=(x_-,\alpha),\\
+    b&:=(x_- -1,\beta),\\
+    c&:=(x_+,\gamma).
+\end{align}
 
-\note{First, we need to incorporate local complementation into every part of our construction. It may be possible that there is an iterative construction like the one above that, due to local complementation, become significantly easier to construct and prove theoretically.}
+Since \(b\) is below-left of every point in \(P\), and also below-left of
+\(a\) and \(c\), it is adjacent to every vertex of \(Q\) and to both \(a\)
+and \(c\). Now \(a\) lies to the left of every point of \(P\). Hence \(a\) is adjacent to
+a point \(p\in P\) exactly when \(\alpha\leq y(p)\). By construction, this
+holds exactly for \(p\in L\). Thus
+\begin{align}
+    N(a)=\{b\}\cup L.
+\end{align}
+Similarly, \(c\) lies to the right of every point of \(P\). Hence \(c\) is
+adjacent to \(p\in P\) exactly when \(y(p)\leq \gamma\). By construction, this
+holds exactly for \(p\in R\). Thus
+\begin{align}
+    N(c)=\{b\}\cup R.
+\end{align}
+Finally, since \(x(a)<x(c)\) but \(y(a)>y(c)\), the vertices \(a\) and \(c\)
+are incomparable. Therefore no other new edges are introduced, so the
+extension is induced in \(\CGrid\).
+\end{proof}
 
-\note{Second, we should understand more precisely what made the all-connected and middle-all-connected constructions work.}
+\begin{theorem}
+\label{thm:middle-all-connected-cgrid}
+For every \(k\ge 1\), the middle-all-connected gadget
+\(\Lambda_k^{\mathrm{mid}}=(H_k,L_k,R_k)\) admits an induced embedding into a
+comparability grid in which \(L_k\) is separated above the rest of the graph and
+\(R_k\) is separated below the rest of the graph.
+\end{theorem}
 
-\note{Third, we may attempt to more coarsely characterize the problem. Consider the set of all grid graphs with $k$ additional edges. For small graphs, we may compute the number of Pauli bases this gadget generates, taking for granted that the construction is tileable. Now create a plot, whose x axis is the number of additional edges $k$, and whose y axis is the average number of Pauli bases generated by this family with $k$ additional edges. What does this distribution look like?}
+\begin{proof}
+We prove by induction on \(k\).
+The cases \(k=1\) and \(k=2\) are realized directly by the line gadget and the
+\(2\times2\) grid gadget.
 
-\note{Fourth, consider instead a random variable that outputs a random vertex minor of the comparability grid that is guaranteed to have some grid as a subgraph. Can we use probabilistic methods to force a universality result out of this?}
+Assume \(\Lambda_k^{\mathrm{mid}}\) has such a separated embedding. Take two
+copies, translate them far apart if necessary, and glue the right boundary of
+the left copy to the left boundary of the right copy as in the definition. The
+resulting graph \(Q_k\) again satisfies the separation hypotheses. Lemma~\ref{lem:middle-all-connected-extension}
+then adds \(a_k,b_k,c_k\) without adding additional edges and produces the required
+separated embedding for \(\Lambda_{k+1}^{\mathrm{mid}}\).
+\end{proof}
 
-\note{Fifth, we have seen how vertex minors and rank-width are very powerful concepts for characterizing and studying the universality of comparability grids. What other measures are there?}
+\begin{conjecture}
+$\hat\Lambda^{\mathrm{mid}}$ is approximately universal for MBQC. That is, for every $k \in \N$, $\Lambda_k^{\mathrm{mid}}$ is approximately $k$-qubit universal.
+\end{conjecture}
+
+\begin{proof}[Evidence]
+Running the algorithm in Section \ref{subsec:lie-algebra-computations} on $\Lambda_k^{\mathrm{mid}}$ for $k \in [5]$ yields that $\Lambda_k^{\mathrm{mid}}$ is approximately universal for $k$ qubits for every $k \in [5]$.
+\end{proof}
+
+We now take a moment to discuss this result. First, note that the number of vertices in $\Lambda_k^{\mathrm{mid}}$ grows exponentially in $k$. This means that Theorem \ref{thm:cgrid-efficiently-simulable} does not eliminate the possibility that the conjecture is true. On the other hand, a proof for all $k \in \N$ is tricky primarily for two reasons. First, when constructing $\Lambda_{k+1}^{\mathrm{mid}}$, we introduce many new edges from $b$ to every other vertex. This almost certainly affects the computation of $H_k^\mathrm{left}$ and $H_k^\mathrm{right}$. Second, assuming we have shown that $\Lambda_{k}^{\mathrm{mid}}$ is approximately universal, this almost certainly does not imply that a single $G_{\Lambda_{k}^{\mathrm{mid}}}$ is $k$-qubit approximate universal. Indeed, we may need to apply $G_{\Lambda_{k}^{\mathrm{mid}}}$  many times to attain this. Both of these complications make a proof of the conjecture, and similar ones to it, challenging.
+
+We now conclude this section and the thesis by presenting some future directions.
+\begin{enumerate}
+    \item An immediate next step is to develop an algorithmic pipeline that incorporates local complementation into every part of the construction. The hope is that local complementation may introduce the additional structure and tools needed to prove conjectures like the one above.
+    \item Another future direction is to better characterize what makes families of graph states universal. In our particular case, a potential next step is to understand more precisely why the middle-all-connected construction works up to approximate $5$-qubit universality, and why other constructions don't.
+    \item We may attempt a new approach to the problem. Suppose instead that we have a random variable that gives us induced subgraphs of $\CGrid$ that themselves contain some $\Grid$ as a subgraph. Can probabilistic methods be used to show universality this way?
+    \item We have seen how the theory of vertex-minors and the rank-width measure are very powerful concepts for characterizing the universality of graph state families in general. What other measures are available, and can they be applied to the comparability grid?
+\end{enumerate}

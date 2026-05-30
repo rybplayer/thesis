@@ -19,7 +19,7 @@ A \term{Clifford circuit} is a quantum circuit made of \term{Clifford gates}:\fo
     \end{ZX}.
 \end{alignedat}
 \end{equation}
-Furthermore, let $\Had$ and $\Sgate$ be known as the \term{local Clifford gates}.
+Furthermore, let $\Had$ and $\Sgate$ be known as the generators of the \term{local Clifford gates}.
 \end{definition}
 
 \begin{definition}
@@ -54,7 +54,7 @@ A ZX diagram is \term{graph-like} when:
 
 \begin{theorem}
 \label{thm:zx-to-graph-like}
-Every ZX diagram can be efficiently rewritten as a graph-like diagram.
+Every ZX diagram, up to scalar factors, can be efficiently rewritten as a graph-like diagram.
 \end{theorem}
 
 \begin{proof}
@@ -62,7 +62,7 @@ Let $D$ be an arbitrary ZX diagram. Run the following algorithm:
 \begin{enumerate}
     \item Convert all X-spiders to Z-spiders via \zxref{cc}.
     \item Cancel adjacent $\Had$ with \zxref{hh}.
-    \item Fuse all connected spiders via \zxref{cc} until this cannot be done.
+    \item Fuse all connected spiders via \zxref{f} until this cannot be done.
     \item Remove parallel Hadamard edges via:
 \begin{align}
     \begin{ZX}
@@ -287,7 +287,7 @@ We provide a proof sketch: Let $u$ denote the vertex with phase $j \pi$ and $v$ 
 \end{proof}
 
 \begin{proof}[Proof of Theorem \ref{thm:clifford-to-gslc}]
-First note that by Theorem \ref{thm:yanking}, we can topologically morph the inputs of the Clifford circuit to face rightwards, like outputs, and that this has no effect on the operation represented by the diagram. Now, start by converting a Clifford ZX diagram to graph-like form. Apply Lemma \ref{lemma:remove-half-pi-from-graph} amd \ref{lemma:remove-pi-from-graph} to remove all internal spiders from the diagram, perhaps appending local Clifford gates to the output wires. This gives a circuit in GSLC form.
+First note that by Theorem \ref{thm:yanking}, we can topologically morph the inputs of the Clifford circuit to face rightwards, like outputs, and that this has no effect on the operation represented by the diagram. Now, start by converting a Clifford ZX diagram to graph-like form. Apply Lemma \ref{lemma:remove-half-pi-from-graph} amd \ref{lemma:remove-pi-from-graph} to remove all internal spiders from the diagram, perhaps appending local Clifford gates to the output wires. With some care it can be shown that this process terminates. This gives a circuit in GSLC form.
 \end{proof}
 
 \begin{lemma}
@@ -305,7 +305,7 @@ The GSLC form of a CLifford ZX diagram may be written as follows:
     \zxGate{LC} \rar &
     \end{ZX}.
 \end{align}
-Here \zx{\zxGate{LC}} refers to circuits of the form $H^iS^j$ for some $i \in [0,1]$ and $j \in [0,1,2,3]$. 
+Here \zx{\zxGate{LC}} refers to circuits of the form $H^iS^j$ for some $i \in \{0,1\}$ and $j \in \{0,1,2,3\}$. 
 \end{lemma}
 
 \begin{proof}
@@ -323,8 +323,8 @@ Let $U$ be a Clifford unitary. Then $U$ can be written as a circuit consisting o
     \Had \quad 
     \CZ \quad 
     \Sgate \quad 
-    \Had
-\end{align}.
+    \Had.
+\end{align}
 \end{lemma}
 
 \begin{proof}
@@ -370,7 +370,7 @@ Given a unitary Clifford ZX diagram, do the following:
         \end{ZX}.
     \end{align}
 \end{enumerate}
-Since we have provided an injective map in both directions, the proof of Theorem \ref{thm:clifford-circuits-are-clifford-diagrams} is complete.
+Thus the proof of Theorem \ref{thm:clifford-circuits-are-clifford-diagrams} is complete.
 \end{proof}
 
 \begin{corollary}
@@ -378,7 +378,7 @@ Any $n$-qubit Clifford unitary can be represented by an equivalent circuit in at
 \end{corollary}
 
 \begin{proof}
-Look at Lemma \ref{lemma:zx-8-layer-form}. Each Hadamard layer has at most $n$ gates, and there are three of those. Each S gate layer has at most $3n$ gates, and there are two of them. A circuit of CZ gates can have at most one CZ gate for every pair of qubits, as CZ gates commute past each other. Thus the CZ layer has at most $n(n-1)/2$ gates. CZs are made up of one CNOT and two Hadamards, so this contributes $3 \cdot n(n-1)/2$ gates. Finally, the CNOT circuit is essentially the number of distinct invertible maps from $\F_2^n \to \F_2^n$. It is left as an exercise to the reader to see that there are at most $n^2 - 1$ such maps. Thus, in total at most 
+Look at Lemma \ref{lemma:zx-8-layer-form}. Each Hadamard layer has at most $n$ gates, and there are three of those. Each S gate layer has at most $3n$ gates, and there are two of them. A circuit of CZ gates can have at most one CZ gate for every pair of qubits, as CZ gates commute past each other. Thus the CZ layer has at most $n(n-1)/2$ gates. CZs are made up of one CNOT and two Hadamards, so this contributes $3 \cdot n(n-1)/2$ gates. Finally, the CNOT circuit is essentially the number of distinct invertible linear transformations over $\F_2^n$. By Gaussian elimination, any such operation can be synthesized using $n^2 - 1$ CNOT gates. Thus, in total at most 
 \begin{align}
     9n + 2 \cdot 3 \cdot \frac{n(n-1)}{2} + n^2 - 1 = 4n(n + 3/2) - 1
 \end{align}
@@ -389,7 +389,7 @@ gates are used.
 \label{thm:Gottesman-Knill}
 Let $U$ be a $q$-qubit Clifford unitary with $N$ gates. We can rewrite this as a ZX diagram in GSLC form in $O(Nq^2)$ time, if $N \geq q$. Further, we can calculate any amplitude 
 \begin{align}
-    \bra{x_1, \ldots, x_n} U \ket{0, \ldots, 0}
+    \bra{x_1, \ldots, x_q} U \ket{0, \ldots, 0}
 \end{align}
 in $O(Nq^2)$ time. This is practically equivalent to the \term{Gottesman-Knill theorem}. If $U$ is already available in GSLC form, this can be done in $O(q^3)$ time.
 \end{theorem}
